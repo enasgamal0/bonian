@@ -1,0 +1,169 @@
+<template>
+  <div class="crud_form_wrapper">
+    <!-- Start:: Title -->
+    <div class="form_title_wrapper">
+      <h4>{{ $t("SIDENAV.AppContent.aboutUs") }}</h4>
+    </div>
+    <div class="col-12 text-end">
+      <v-btn @click="$router.go(-1)" style="color: #1b706f">
+        <i class="fas fa-backward"></i>
+      </v-btn>
+    </div>
+    <!-- End:: Title -->
+
+    <!-- Start:: Single Step Form Content -->
+    <div class="single_step_form_content_wrapper">
+      <form @submit.prevent="validateFormInputs">
+        <div class="row">
+          <!-- Start:: Image Upload Input -->
+          <base-image-upload-input
+            col="12"
+            identifier="admin_image"
+            :preSelectedImage="data.image.path"
+            :placeholder="$t('PLACEHOLDERS.image')"
+            @selectImage="selectImage"
+            required
+          />
+          <!-- End:: Image Upload Input -->
+          <!-- Start:: Ar Content Text Editor -->
+          <base-text-editor
+            col="6"
+            :placeholder="$t('PLACEHOLDERS.contentAr')"
+            v-model.trim="data.contentAr"
+            required
+          />
+          <!-- End:: Ar Content Text Editor -->
+
+          <!-- Start:: En Content Text Editor -->
+          <base-text-editor
+            col="6"
+            :placeholder="$t('PLACEHOLDERS.contentEn')"
+            v-model.trim="data.contentEn"
+            required
+          />
+          <!-- Start:: En Content Text Editor -->
+
+          <!-- Start:: Submit Button Wrapper -->
+          <div class="btn_wrapper">
+            <base-button
+              class="mt-2"
+              styleType="primary_btn"
+              :btnText="$t('BUTTONS.save')"
+              :isLoading="isWaitingRequest"
+              :disabled="isWaitingRequest"
+            />
+          </div>
+          <!-- End:: Submit Button Wrapper -->
+        </div>
+      </form>
+    </div>
+    <!-- END:: Single Step Form Content -->
+  </div>
+</template>
+
+<script>
+export default {
+  name: "AboutUs",
+
+  data() {
+    return {
+      // Start:: Loader Control Data
+      isWaitingRequest: false,
+      // End:: Loader Control Data
+
+      // Start:: Data Collection To Send
+      data: {
+        contentAr: null,
+        contentEn: null,
+        nameAr: null,
+        nameEn: null,
+        image: {
+          path: null,
+          file: null,
+        },
+      },
+      // End:: Data Collection To Send
+    };
+  },
+
+  methods: {
+    // Start:: Get Data To Edit
+    async getDataToEdit() {
+      try {
+        let res = await this.$axios({
+          method: "GET",
+          url: `settings?key=about-website`,
+        });
+        // Start:: Set Data
+        this.data.contentAr = res.data.data.data[0].value?.content.ar;
+        this.data.contentEn = res.data.data.data[0].value?.content.en;
+        this.data.image.path = res.data.data.data[0].value?.image;
+        // End:: Set Data
+      } catch (error) {
+        console.log(error.response.data.message);
+      }
+    },
+    // End:: Get Data To Edit
+
+    // Start:: validate Form Inputs
+    validateFormInputs() {
+      this.isWaitingRequest = true;
+      const isValidContent = (content) => {
+        // Check if the content is either empty or only contains whitespace or tags
+        const strippedContent = content.replace(/<[^>]*>/g, '').trim();
+        return strippedContent.length > 0;
+      };
+      if (!this.data.contentAr || !isValidContent(this.data.contentAr)) {
+        this.isWaitingRequest = false;
+        this.$message.error(this.$t("VALIDATION.contentAr"));
+        return;
+      } else if (!this.data.contentEn || !isValidContent(this.data.contentEn)) {
+        this.isWaitingRequest = false;
+        this.$message.error(this.$t("VALIDATION.contentEn"));
+        return;
+      } else {
+        this.submitForm();
+        return;
+      }
+    },
+    // End:: validate Form Inputs
+
+    // Start:: Submit Form
+    async submitForm() {
+      const REQUEST_DATA = new FormData();
+      // Start:: Append Request Data
+      REQUEST_DATA.append("key", "about-website");
+      REQUEST_DATA.append("value[title][ar]","عن التطبيق");
+      REQUEST_DATA.append("value[title][en]", "About App");
+      REQUEST_DATA.append("value[content][ar]", this.data.contentAr);
+      REQUEST_DATA.append("value[content][en]", this.data.contentEn);
+      REQUEST_DATA.append("value[image]", this.data.image?.file);
+      // REQUEST_DATA.append("_method", "PUT");
+
+      try {
+        await this.$axios({
+          method: "POST",
+          url: `settings?key=about-website`,
+          data: REQUEST_DATA,
+        });
+        this.isWaitingRequest = false;
+        this.$message.success(this.$t("MESSAGES.savedSuccessfully"));
+        this.getDataToEdit();
+      } catch (error) {
+        this.isWaitingRequest = false;
+        this.$message.error(error.response.data.message);
+      }
+    },
+    // End:: Submit Form
+    selectImage(selectedImage) {
+      this.data.image = selectedImage;
+    },
+  },
+
+  created() {
+    // Start:: Fire Methods
+    this.getDataToEdit();
+    // End:: Fire Methods
+  },
+};
+</script>
