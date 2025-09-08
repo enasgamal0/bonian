@@ -542,8 +542,8 @@ export default {
 
       try {
         await this.$axios({
-          method: "POST",
-          url: `roles/toggle-role/${targetItem.id}`,
+          method: "PUT",
+          url: `roles/toggle/${targetItem.id}`,
           data: REQUEST_DATA,
         });
         this.$message.success(this.$t("MESSAGES.changeActivation"));

@@ -306,9 +306,9 @@ export default {
         this.$message.success(this.$t("MESSAGES.editedSuccessfully"));
         this.modalIsOpen = false;
         this.setAuthenticatedUserData({
-          name: res.data.data.user.name,
-          email: res.data.data.user.email,
-          image: res.data.data.user.image,
+          name: res.data.data.user?.user?.name,
+          email: res.data.data.user?.user?.email,
+          image: res.data.data.user?.user?.image,
         });
         this.toggleModal();
         // this.logout();

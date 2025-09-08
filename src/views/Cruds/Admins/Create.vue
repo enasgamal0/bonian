@@ -87,7 +87,7 @@
           <!-- End:: Confirm Password Input -->
 
           <!-- Start:: Deactivate Switch Input -->
-          <div class="input_wrapper switch_wrapper my-5">
+          <!-- <div class="input_wrapper switch_wrapper my-5">
             <v-switch
               color="green"
               :label="
@@ -98,7 +98,7 @@
               v-model="data.active"
               hide-details
             ></v-switch>
-          </div>
+          </div> -->
           <!-- End:: Deactivate Switch Input -->
 
           <!-- Start:: Submit Button Wrapper -->

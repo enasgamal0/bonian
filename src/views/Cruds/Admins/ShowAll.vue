@@ -144,9 +144,9 @@
         <!-- End:: Item Image -->
 
         <!-- Start:: Item Image -->
-        <template v-slot:[`item.user.id`]="{ item, index }">
+        <template v-slot:[`item.id`]="{ item, index }">
           <div class="table_image_wrapper">
-            <h6 class="text-danger" v-if="!item.user.id">
+            <h6 class="text-danger" v-if="!item.id">
               {{ $t("TABLES.noData") }}
             </h6>
             <p v-else>
@@ -179,8 +179,8 @@
         <!-- End:: Phone -->
 
         <!-- Start:: Activation Status -->
-        <template v-slot:[`item.user.is_active`]="{ item }">
-          <span class="text-success text-h5" v-if="item.user.is_active">
+        <template v-slot:[`item.is_active`]="{ item }">
+          <span class="text-success text-h5" v-if="item?.is_active">
             <i class="far fa-check"></i>
           </span>
           <span class="text-danger text-h5" v-else>
@@ -223,7 +223,7 @@
 
             <a-tooltip
               placement="bottom"
-              v-if="$can('admins edit', 'admins') && item?.user.id !== 1"
+              v-if="$can('admins edit', 'admins') && item?.id !== 1"
             >
               <template slot="title">
                 <span>{{ $t("BUTTONS.edit") }}</span>
@@ -235,7 +235,7 @@
 
             <a-tooltip
               placement="bottom"
-              v-if="$can('admins delete', 'admins') && item.user.id !== 1"
+              v-if="$can('admins delete', 'admins') && item?.id !== 1"
             >
               <template slot="title">
                 <span>{{ $t("BUTTONS.delete") }}</span>
@@ -245,8 +245,8 @@
               </button>
             </a-tooltip>
 
-            <template v-if="$can('admins activate', 'admins') && item.user.id !== 1">
-              <a-tooltip placement="bottom" v-if="!item.user.is_active">
+            <template v-if="$can('admins activate', 'admins') && item?.id !== 1">
+              <a-tooltip placement="bottom" v-if="!item?.is_active">
                 <template slot="title">
                   <span>{{ $t("BUTTONS.activate") }}</span>
                 </template>
@@ -257,7 +257,7 @@
                   <i class="fad fa-check-circle"></i>
                 </button>
               </a-tooltip>
-              <a-tooltip placement="bottom" v-if="item.user.is_active">
+              <a-tooltip placement="bottom" v-if="item?.is_active">
                 <template slot="title">
                   <span>{{ $t("BUTTONS.deactivate") }}</span>
                 </template>
@@ -299,7 +299,7 @@
               >
                 {{
                   $t("TITLES.DeactivateConfirmingMessage", {
-                    name: itemToChangeActivationStatus.user.name,
+                    name: itemToChangeActivationStatus.name,
                   })
                 }}
               </v-card-title>
@@ -341,7 +341,7 @@
               <v-card-title class="text-h5 justify-center" v-if="itemToDelete">
                 {{
                   $t("TITLES.DeleteConfirmingMessage", {
-                    name: itemToDelete.user.name,
+                    name: itemToDelete.name,
                   })
                 }}
               </v-card-title>
@@ -439,7 +439,7 @@ export default {
       tableHeaders: [
         {
           text: this.$t("TABLES.Admins.serialNumber"),
-          value: "user.id",
+          value: "id",
           align: "center",
           width: "80",
           sortable: false,
@@ -452,37 +452,37 @@ export default {
         // },
         {
           text: this.$t("TABLES.Admins.name"),
-          value: "user.name",
+          value: "name",
           align: "center",
           sortable: false,
         },
         {
           text: this.$t("TABLES.Admins.phone"),
-          value: "user.mobile",
+          value: "mobile",
           align: "center",
           sortable: false,
         },
         {
           text: this.$t("TABLES.Admins.email"),
-          value: "user.email",
+          value: "email",
           align: "center",
           sortable: false,
         },
         {
           text: this.$t("PLACEHOLDERS.role"),
-          value: "user.roles[0].name",
+          value: "roles[0].name",
           align: "center",
           sortable: false,
         },
         {
           text: this.$t("TABLES.Admins.joiningDate"),
-          value: "user.created_at",
+          value: "created_at",
           align: "center",
           sortable: false,
         },
         {
           text: this.$t("PLACEHOLDERS.status"),
-          value: "user.is_active",
+          value: "is_active",
           align: "center",
           width: "120",
           sortable: false,
@@ -580,7 +580,7 @@ export default {
           },
         });
         this.loading = false;
-        // console.log("All Data ==>", res.data.data);
+        console.log("All Data ==>", res.data.data.data);
         this.tableRows = res.data.data.data;
         this.paginations.last_page = res.data.data.meta.last_page;
         this.paginations.items_per_page = res.data.data.meta.per_page;
@@ -620,7 +620,7 @@ export default {
       try {
         await this.$axios({
           method: "POST",
-          url: `admins/status/${targetItem.user.id}`,
+          url: `admins/toggle/${targetItem?.id}`,
           data: REQUEST_DATA,
         });
         this.$message.success(this.$t("MESSAGES.changeActivation"));
@@ -637,10 +637,10 @@ export default {
     // ==================== Start:: Crud ====================
     // ===== Start:: End
     editItem(item) {
-      this.$router.push({ path: `/admins/edit/${item.user.id}` });
+      this.$router.push({ path: `/admins/edit/${item?.id}` });
     },
     showItem(item) {
-      this.$router.push({ path: `/admins/show/${item.user.id}` });
+      this.$router.push({ path: `/admins/show/${item?.id}` });
     },
     // ===== End:: End
 
@@ -653,11 +653,11 @@ export default {
       try {
         await this.$axios({
           method: "DELETE",
-          url: `admins/${this.itemToDelete.user.id}`,
+          url: `admins/${this.itemToDelete?.id}`,
         });
         this.dialogDelete = false;
         this.tableRows = this.tableRows.filter((item) => {
-          return item.id != this.itemToDelete.user.id;
+          return item.id != this.itemToDelete?.id;
         });
         this.setTableRows();
         this.$message.success(this.$t("MESSAGES.deletedSuccessfully"));
