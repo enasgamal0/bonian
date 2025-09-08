@@ -155,7 +155,6 @@ export default {
       // Start:: Data Collection To Send
       data: {
         WhatsApp_contact: null,
-        linkedIn_link: null,
         twitter_link: null,
         tiktok_link: null,
         snapchat_link: null,
@@ -189,7 +188,7 @@ export default {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: `settings?key=website-contacts`,
+          url: `settings-general?key=social_contact`,
         });
         // Start:: Set Data
 
@@ -200,17 +199,15 @@ export default {
         if (this.phones.length === 0) {
           this.phones.push({ phone: "" });
         }
-        this.data.WhatsApp_contact = res.data.data.data[0]?.value?.whatsapp[0];
-        this.data.twitter_link = res.data.data.data[0]?.value?.social?.twitter;
-        this.data.facebook_link = res.data.data.data[0]?.value?.social?.facebook;
-        this.data.instagram_link = res.data.data.data[0]?.value?.social?.instagram;
-        this.data.tiktok_link = res.data.data.data[0]?.value?.social?.tiktok;
-        this.data.snapchat_link = res.data.data.data[0]?.value?.social?.snapchat;
-        this.data.tiktok_link = res.data.data.data[0]?.value?.social?.tiktok;
+        this.data.WhatsApp_contact = res.data.data.data[0]?.value?.whatsapp;
+        this.data.twitter_link = res.data.data.data[0]?.value?.twitter;
+        this.data.facebook_link = res.data.data.data[0]?.value?.facebook;
+        this.data.instagram_link = res.data.data.data[0]?.value?.instagram;
+        this.data.tiktok_link = res.data.data.data[0]?.value?.tikTok;
+        this.data.snapchat_link = res.data.data.data[0]?.value?.snapchat;
         this.data.email = res.data.data.data[0]?.value?.email;
-        this.data.android = res.data.data.data[0]?.value?.social?.play_store;
-        this.data.ios = res.data.data.data[0]?.value?.social?.app_store;
-        this.data.linkedIn_link = res.data.data.data[0]?.value?.social?.linkedin;
+        this.data.android = res.data.data.data[0]?.value?.play_store;
+        this.data.ios = res.data.data.data[0]?.value?.app_store;
 
         // End:: Set Data
       } catch (error) {
@@ -225,50 +222,48 @@ export default {
 
       const REQUEST_DATA = new FormData();
       // Start:: Append Request Data
-      REQUEST_DATA.append("key", "website-contacts");
+      REQUEST_DATA.append("key", "social_contact");
       this.phones.forEach((element) => {
         if (element.phone) {
           REQUEST_DATA.append(`value[mobile][]`, element.phone);
         }
       });
       if (this.data.WhatsApp_contact) {
-        REQUEST_DATA.append("value[whatsapp][]", this.data.WhatsApp_contact);
+        REQUEST_DATA.append("value[whatsapp]", this.data.WhatsApp_contact);
       }
       if (this.data.tiktok_link) {
-        REQUEST_DATA.append("value[social][tiktok]", this.data.tiktok_link);
+        REQUEST_DATA.append("value[tikTok]", this.data.tiktok_link);
       }
       if (this.data.facebook_link) {
-        REQUEST_DATA.append("value[social][facebook]", this.data.facebook_link);
+        REQUEST_DATA.append("value[facebook]", this.data.facebook_link);
       }
       if (this.data.snapchat_link) {
-        REQUEST_DATA.append("value[social][snapchat]", this.data.snapchat_link);
+        REQUEST_DATA.append("value[snapchat]", this.data.snapchat_link);
       }
       if (this.data.twitter_link) {
-        REQUEST_DATA.append("value[social][twitter]", this.data.twitter_link);
+        REQUEST_DATA.append("value[twitter]", this.data.twitter_link);
       }
       if (this.data.instagram_link) {
-        REQUEST_DATA.append(
-          "value[social][instagram]",
-          this.data.instagram_link
-        );
+        REQUEST_DATA.append("value[instagram]", this.data.instagram_link);
       }
       if (this.data.android) {
-        REQUEST_DATA.append("value[social][play_store]", this.data.android);
+        REQUEST_DATA.append("value[play_store]", this.data.android);
       }
       if (this.data.ios) {
-        REQUEST_DATA.append("value[social][app_store]", this.data.ios);
+        REQUEST_DATA.append("value[app_store]", this.data.ios);
       }
       if (this.data.email) {
         REQUEST_DATA.append("value[email]", this.data.email);
       }
-      // REQUEST_DATA.append("value[linkedin]", this.data.linkedIn_link);
+
+      REQUEST_DATA.append("value[url]", "https://www.example.com");
 
       // Start:: Append Request Data
 
       try {
         await this.$axios({
           method: "POST",
-          url: `settings?key=website-contacts`,
+          url: `settings?key=social_contact`,
           data: REQUEST_DATA,
         });
         this.isWaitingRequest = false;

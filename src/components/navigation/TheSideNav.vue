@@ -878,6 +878,28 @@
       </div>
       <!-- End:: ads Route -->
 
+      <!-- Start:: splash Route -->
+      <div
+        class="home_route"
+        @click="$emit('fireToggleNavDrawerEmit')"
+        v-if="$can('openingscreens index', 'openingscreens')"
+      >
+        <router-link to="/Splash/all">
+          <span class="route_icon">
+            <img
+              src="@/assets/media/icons/ui_icons/ads.png"
+              alt="icon"
+              width="40"
+              height="40"
+            />
+          </span>
+          <span class="route_text">
+            {{ $t("PLACEHOLDERS.splash") }}
+          </span>
+        </router-link>
+      </div>
+      <!-- End:: splash Route -->
+
       <!-- Start:: blogs Route -->
       <div
         class="home_route"
@@ -1055,7 +1077,7 @@
       <!-- End:: FAQ Route -->
 
       <!-- Start:: app settings Route -->
-      <!-- <div
+      <div
         class="home_route"
         @click="$emit('fireToggleNavDrawerEmit')"
         v-if="$can('settings index', 'settings')"
@@ -1073,7 +1095,7 @@
             {{ $t("SIDENAV.settings.general_app") }}
           </span>
         </router-link>
-      </div> -->
+      </div>
       <!-- End:: app settings Route -->
       <!-- Start:: Side Nav Routes -->
       <div class="side_routes_wrapper" v-if="$can('settings index', 'settings')">
@@ -1352,12 +1374,12 @@ export default {
               route: "/app-content/about-us",
               hasPermission: this.$can("settings create", "settings"),
             },
-            {
-              key: "addresses",
-              title: this.$t("SIDENAV.AppContent.addresses"),
-              route: "/app-content/addresses",
-              hasPermission: this.$can("settings create", "settings"),
-            },
+            // {
+            //   key: "addresses",
+            //   title: this.$t("SIDENAV.AppContent.addresses"),
+            //   route: "/app-content/addresses",
+            //   hasPermission: this.$can("settings create", "settings"),
+            // },
             {
               key: "termsAndConditions",
               title: this.$t("SIDENAV.AppContent.termsAndConditions"),
@@ -1376,36 +1398,36 @@ export default {
               route: "/app-content/delete-account",
               hasPermission: this.$can("settings create", "settings"),
             },
-            {
-              key: "vision",
-              title: this.$t("PLACEHOLDERS.vision"),
-              route: "/app-content/vision",
-              hasPermission: this.$can("settings create", "settings"),
-            },
-            {
-              key: "goals",
-              title: this.$t("PLACEHOLDERS.goals"),
-              route: "/app-content/goals",
-              hasPermission: this.$can("settings create", "settings"),
-            },
-            {
-              key: "message",
-              title: this.$t("PLACEHOLDERS.message"),
-              route: "/app-content/message",
-              hasPermission: this.$can("settings create", "settings"),
-            },
-            {
-              key: "statistics",
-              title: this.$t("PLACEHOLDERS.statistics"),
-              route: "/app-content/statistics",
-              hasPermission: this.$can("settings create", "settings"),
-            },
-            {
-              key: "influencer",
-              title: this.$t("PLACEHOLDERS.influencer"),
-              route: "/app-content/influencer",
-              hasPermission: this.$can("settings create", "settings"),
-            },
+            // {
+            //   key: "vision",
+            //   title: this.$t("PLACEHOLDERS.vision"),
+            //   route: "/app-content/vision",
+            //   hasPermission: this.$can("settings create", "settings"),
+            // },
+            // {
+            //   key: "goals",
+            //   title: this.$t("PLACEHOLDERS.goals"),
+            //   route: "/app-content/goals",
+            //   hasPermission: this.$can("settings create", "settings"),
+            // },
+            // {
+            //   key: "message",
+            //   title: this.$t("PLACEHOLDERS.message"),
+            //   route: "/app-content/message",
+            //   hasPermission: this.$can("settings create", "settings"),
+            // },
+            // {
+            //   key: "statistics",
+            //   title: this.$t("PLACEHOLDERS.statistics"),
+            //   route: "/app-content/statistics",
+            //   hasPermission: this.$can("settings create", "settings"),
+            // },
+            // {
+            //   key: "influencer",
+            //   title: this.$t("PLACEHOLDERS.influencer"),
+            //   route: "/app-content/influencer",
+            //   hasPermission: this.$can("settings create", "settings"),
+            // },
           ],
         },
       ],

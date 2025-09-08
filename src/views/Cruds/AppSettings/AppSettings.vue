@@ -18,48 +18,39 @@
             col="6"
             :placeholder="$t('PLACEHOLDERS.tax')"
             v-model.trim="data.tax"
-            
+            required
           />
 
           <base-input
             type="text"
             col="6"
-            :placeholder="$t('PLACEHOLDERS.ratio_of_start_price')"
-            v-model.trim="data.ratio_of_start_price"
-            
+            :placeholder="$t('PLACEHOLDERS.payment_amount')"
+            v-model.trim="data.payment_amount"
+            required
           />
 
           <base-input
             type="text"
-            col="12"
-            :placeholder="$t('PLACEHOLDERS.incremental_ratio')"
-            v-model.trim="data.incremental_ratio"
-            
-          />
-          <hr class="my-5" style="width: 97%;"/>
-          <h6 class="mb-5 font-weight-bold" style="color: #1b706f;">{{ $t("PLACEHOLDERS.appCommission") }}</h6>
-          <base-input
-            type="number"
             col="6"
-            :placeholder="$t('PLACEHOLDERS.reference_price')"
-            v-model.trim="data.reference_price"
-            
+            :placeholder="$t('PLACEHOLDERS.order_duration_hours')"
+            v-model.trim="data.order_duration_hours"
+            required
           />
 
           <base-input
-            type="number"
+            type="text"
             col="6"
-            :placeholder="$t('PLACEHOLDERS.less_than_reference_price')"
-            v-model.trim="data.less_than_reference_price"
-            
+            :placeholder="$t('PLACEHOLDERS.points_per_join')"
+            v-model.trim="data.points_per_join"
+            required
           />
 
           <base-input
-            type="number"
-            col="12"
-            :placeholder="$t('PLACEHOLDERS.greater_than_reference_price')"
-            v-model.trim="data.greater_than_reference_price"
-            
+            type="text"
+            col="6"
+            :placeholder="$t('PLACEHOLDERS.point_value_per_sar')"
+            v-model.trim="data.point_value_per_sar"
+            required
           />
 
           <div class="btn_wrapper">
@@ -85,27 +76,26 @@ export default {
       isWaitingRequest: false,
       data: {
         tax: null,
-        reference_price: null,
+        payment_amount: null,
         less_than_reference_price: null,
         greater_than_reference_price: null,
         ratio_of_start_price: null,
         incremental_ratio: null,
+        points_per_join: null,
+        point_value_per_sar: null,
       },
     };
   },
   methods: {
     async getDataToEdit() {
       try {
-        let res = await this.$axios.get("settings?key=dashboard_settings");
+        let res = await this.$axios.get("settings-general?key=dashboard_setting");
         const settings = res.data.data.data[0].value;
         this.data.tax = settings.tax;
-        this.data.reference_price = settings.commission.reference_price;
-        this.data.less_than_reference_price =
-          settings.commission.less_than_reference_price;
-        this.data.greater_than_reference_price =
-          settings.commission.greater_than_reference_price;
-        this.data.ratio_of_start_price = settings.ratio_of_start_price;
-        this.data.incremental_ratio = settings.incremental_ratio;
+        this.data.payment_amount = settings.Payment_amount;
+        this.data.order_duration_hours = settings.Request_period_hour;
+        this.data.points_per_join = settings.Points_every_joining;
+        this.data.point_value_per_sar = settings.Points_value_per_riyal;
       } catch (error) {
         console.error(error.response.data.message);
       }
@@ -113,32 +103,21 @@ export default {
     async submitForm() {
       this.isWaitingRequest = true;
       const REQUEST_DATA = new FormData();
-      REQUEST_DATA.append("key", "dashboard_settings");
+      REQUEST_DATA.append("key", "dashboard_setting");
       REQUEST_DATA.append("value[tax]", this.data.tax);
+      REQUEST_DATA.append("value[Payment_amount]", this.data.payment_amount);
       REQUEST_DATA.append(
-        "value[commission][reference_price]",
-        this.data.reference_price
+        "value[Request_period_hour]",
+        this.data.order_duration_hours
       );
       REQUEST_DATA.append(
-        "value[commission][less_than_reference_price]",
-        this.data.less_than_reference_price
+        "value[Points_every_joining]",
+        this.data.points_per_join
       );
       REQUEST_DATA.append(
-        "value[commission][greater_than_reference_price]",
-        this.data.greater_than_reference_price
+        "value[Points_value_per_riyal]",
+        this.data.point_value_per_sar
       );
-      if (this.data.ratio_of_start_price){
-        REQUEST_DATA.append(
-          "value[ratio_of_start_price]",
-          this.data.ratio_of_start_price
-        );
-      }
-      if (this.data.incremental_ratio){
-        REQUEST_DATA.append(
-          "value[incremental_ratio]",
-          this.data.incremental_ratio
-        );
-      }
       try {
         await this.$axios.post("settings", REQUEST_DATA);
         this.isWaitingRequest = false;

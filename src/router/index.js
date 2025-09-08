@@ -116,6 +116,14 @@ import ShowAds from "../views/Cruds/Ads/Show.vue";
 import EditAds from "../views/Cruds/Ads/Edit.vue";
 // ============== End:: Ads Routes
 
+// ============== Start:: Splash Routes
+import SplashHome from "../views/Cruds/Splash/Home.vue";
+import AllSplash from "../views/Cruds/Splash/ShowAll.vue";
+import CreateSplash from "../views/Cruds/Splash/Create.vue";
+import ShowSplash from "../views/Cruds/Splash/Show.vue";
+import EditSplash from "../views/Cruds/Splash/Edit.vue";
+// ============== End:: Splash Routes
+
 // ============== Start:: Products Routes
 import ProductsHome from "../views/Cruds/Products/Home.vue";
 import AllProducts from "../views/Cruds/Products/ShowAll.vue";
@@ -490,18 +498,18 @@ const routes = [
               },
             },
           },
-          {
-            path: "addresses",
-            name: "Addresses",
-            component: Addresses,
-            meta: {
-              middleware: [auth],
-              requiresPermission: {
-                action: "settings create",
-                subject: "settings",
-              },
-            },
-          },
+          // {
+          //   path: "addresses",
+          //   name: "Addresses",
+          //   component: Addresses,
+          //   meta: {
+          //     middleware: [auth],
+          //     requiresPermission: {
+          //       action: "settings create",
+          //       subject: "settings",
+          //     },
+          //   },
+          // },
           {
             path: "terms",
             name: "Terms",
@@ -526,18 +534,18 @@ const routes = [
               },
             },
           },
-          {
-            path: "provider-terms",
-            name: "TermsProvider",
-            component: TermsProvider,
-            meta: {
-              middleware: [auth],
-              requiresPermission: {
-                action: "settings create",
-                subject: "settings",
-              },
-            },
-          },
+          // {
+          //   path: "provider-terms",
+          //   name: "TermsProvider",
+          //   component: TermsProvider,
+          //   meta: {
+          //     middleware: [auth],
+          //     requiresPermission: {
+          //       action: "settings create",
+          //       subject: "settings",
+          //     },
+          //   },
+          // },
           {
             path: "delete-account",
             name: "DeleteAccount",
@@ -550,66 +558,66 @@ const routes = [
               },
             },
           },
-          {
-            path: "vision",
-            name: "Vision",
-            component: Vision,
-            meta: {
-              middleware: [auth],
-              requiresPermission: {
-                action: "settings create",
-                subject: "settings",
-              },
-            },
-          },
-          {
-            path: "message",
-            name: "Message",
-            component: Message,
-            meta: {
-              middleware: [auth],
-              requiresPermission: {
-                action: "settings create",
-                subject: "settings",
-              },
-            },
-          },
-          {
-            path: "goals",
-            name: "Goals",
-            component: Goals,
-            meta: {
-              middleware: [auth],
-              requiresPermission: {
-                action: "settings create",
-                subject: "settings",
-              },
-            },
-          },
-          {
-            path: "statistics",
-            name: "Statistics",
-            component: Statistics,
-            meta: {
-              middleware: [auth],
-              requiresPermission: {
-                action: "settings create",
-                subject: "settings",
-              },
-            },
-          },
-          {
-            path: "influencer",
-            name: "Influencer",
-            component: Influencer,
-            meta: {
-              middleware: [auth],
-              requiresPermission: {
-                action: "settings create",
-                subject: "settings",
-              },
-            },
-          },
+          // {
+          //   path: "vision",
+          //   name: "Vision",
+          //   component: Vision,
+          //   meta: {
+          //     middleware: [auth],
+          //     requiresPermission: {
+          //       action: "settings create",
+          //       subject: "settings",
+          //     },
+          //   },
+          // },
+          // {
+          //   path: "message",
+          //   name: "Message",
+          //   component: Message,
+          //   meta: {
+          //     middleware: [auth],
+          //     requiresPermission: {
+          //       action: "settings create",
+          //       subject: "settings",
+          //     },
+          //   },
+          // },
+          // {
+          //   path: "goals",
+          //   name: "Goals",
+          //   component: Goals,
+          //   meta: {
+          //     middleware: [auth],
+          //     requiresPermission: {
+          //       action: "settings create",
+          //       subject: "settings",
+          //     },
+          //   },
+          // },
+          // {
+          //   path: "statistics",
+          //   name: "Statistics",
+          //   component: Statistics,
+          //   meta: {
+          //     middleware: [auth],
+          //     requiresPermission: {
+          //       action: "settings create",
+          //       subject: "settings",
+          //     },
+          //   },
+          // },
+          // {
+          //   path: "influencer",
+          //   name: "Influencer",
+          //   component: Influencer,
+          //   meta: {
+          //     middleware: [auth],
+          //     requiresPermission: {
+          //       action: "settings create",
+          //       subject: "settings",
+          //     },
+          //   },
+          // },
         ],
       },
       // End:: App Content Routes Config
@@ -2347,6 +2355,69 @@ const routes = [
       },
       // End:: ads Config
 
+      // Start: Splash Config
+      {
+        path: "/splash",
+        name: "splash",
+        component: SplashHome,
+        meta: {
+          middleware: [auth],
+        },
+        children: [
+          {
+            path: "all",
+            name: "AllSplash",
+            component: AllSplash,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "openingscreens index",
+                subject: "openingscreens",
+              },
+            },
+          },
+          {
+            path: "create",
+            name: "CreateSplash",
+            component: CreateSplash,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "openingscreens create",
+                subject: "openingscreens",
+              },
+            },
+          },
+          {
+            path: "edit/:id",
+            name: "EditSplash",
+            component: EditSplash,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "openingscreens edit",
+                subject: "openingscreens",
+              },
+            },
+          },
+          {
+            path: "show/:id",
+            name: "ShowSplash",
+            component: ShowSplash,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "openingscreens show",
+                subject: "openingscreens",
+              },
+            },
+          },
+        ],
+      },
+      // End:: Splash Config
+
       // Start:: All Notifications Route Config
       {
         path: "/all-notifications",
@@ -2865,17 +2936,17 @@ const routes = [
           },
         },
       },
-      // {
-      //   path: "/app_settings",
-      //   component: AppSettings,
-      //   meta: {
-      //     middleware: [auth],
-      //     requiresPermission: {
-      //       action: "settings edit",
-      //       subject: "settings",
-      //     },
-      //   },
-      // },
+      {
+        path: "/app_settings",
+        component: AppSettings,
+        meta: {
+          middleware: [auth],
+          requiresPermission: {
+            action: "settings edit",
+            subject: "settings",
+          },
+        },
+      },
       // End:: App contact Routes Config
     ],
   },

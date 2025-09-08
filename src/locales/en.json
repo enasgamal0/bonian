@@ -1263,6 +1263,16 @@
   },
 
   "PLACEHOLDERS": {
+    "sort": "Sort ",
+    "splash": "App Opening Screens Management",
+    "add_splash": "Add a New Opening Screen",
+    "update_splash": "Edit Opening Screen Data",
+    "show_splash": "Show Opening Screen Data",
+    "vat_percentage": "VAT percentage for payment",
+    "payment_amount": "Payment Amount (SAR)",
+    "order_duration_hours": "Order duration (until expiry) in hours",
+    "points_per_join": "Points Per Join",
+    "point_value_per_sar": "Point Value Per SAR",
     "recommendations": "Recommendations Management",
     "qr_code": "Show QR",
     "serial_number": "Influencer Code",
@@ -2328,6 +2338,7 @@
   },
 
   "VALIDATION": {
+    "sort": "Sort Field is Required",
     "publish_start_date": "Publish Start Date Field is Required",
     "publish_end_date": "Publish End Date Field is Required",
     "empty_day": "Work hours for the previous day have not been scheduled",
