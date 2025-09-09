@@ -2744,62 +2744,62 @@ const routes = [
       // End:: app-rates Routes Config
 
       // Start:: sub Categories Routes Config
-      // {
-      //   path: "/sub-categories",
-      //   name: "CategoriesHome",
-      //   component: SubCategoriesHome,
-      //   meta: {
-      //     middleware: [auth],
-      //   },
-      //   children: [
-      //     {
-      //       path: "all",
-      //       name: "AllSubCategories",
-      //       component: AllSubCategories,
-      //       meta: {
-      //         middleware: [auth],
-      //         requiresPermission: {
-      //           action: "subcategories index",
-      //           subject: "subcategories",
-      //         },
-      //       },
-      //     },
-      //     {
-      //       path: "create",
-      //       name: "CreateSubCategories",
-      //       component: CreateSubCategories,
-      //       meta: {
-      //         middleware: [auth],
-      //         requiresPermission: {
-      //           action: "subcategories index",
-      //           subject: "subcategories",
-      //         },
-      //       },
-      //     },
-      //     {
-      //       path: "edit/:id",
-      //       name: "EditSubCategories",
-      //       component: EditSubCategories,
-      //       props: true,
-      //       meta: {
-      //         middleware: [auth],
-      //       },
-      //     },
-      //     {
-      //       path: "show/:id",
-      //       name: "ShowSubCategories",
-      //       component: ShowSubCategories,
-      //       props: true,
-      //       meta: {
-      //         middleware: [auth],
-      //         requiresPermission: {
-      //           action: "subcategories index",
-      //           subject: "subcategories",
-      //         },
-      //       },
-      //     },
-      //   ],
-      // },
+      {
+        path: "/sub-categories",
+        name: "CategoriesHome",
+        component: SubCategoriesHome,
+        meta: {
+          middleware: [auth],
+        },
+        children: [
+          {
+            path: "all",
+            name: "AllSubCategories",
+            component: AllSubCategories,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "subcategories index",
+                subject: "subcategories",
+              },
+            },
+          },
+          {
+            path: "create",
+            name: "CreateSubCategories",
+            component: CreateSubCategories,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "subcategories index",
+                subject: "subcategories",
+              },
+            },
+          },
+          {
+            path: "edit/:id",
+            name: "EditSubCategories",
+            component: EditSubCategories,
+            props: true,
+            meta: {
+              middleware: [auth],
+            },
+          },
+          {
+            path: "show/:id",
+            name: "ShowSubCategories",
+            component: ShowSubCategories,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "subcategories index",
+                subject: "subcategories",
+              },
+            },
+          },
+        ],
+      },
       // End:: sub Categories Routes Config
 
       // Start:: management Routes Config

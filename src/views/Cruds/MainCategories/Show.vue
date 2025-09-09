@@ -119,10 +119,10 @@ export default {
           url: `categories/${this.$route.params.id}`,
         });
         // Start:: Set Data
-        this.data.image.path = res.data.data.data.image;
-        this.data.nameAr = res.data.data.data.name_ar;
-        this.data.nameEn = res.data.data.data.name_en;
-        this.data.active = res.data.data.data.is_active;
+        this.data.image.path = res.data.data.Category?.image;
+        this.data.nameAr = res.data.data.Category.name_ar;
+        this.data.nameEn = res.data.data.Category.name_en;
+        this.data.active = res.data.data.Category.is_active;
         // End:: Set Data
       } catch (error) {
         console.log(error.response.data.message);

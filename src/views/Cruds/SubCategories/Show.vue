@@ -10,14 +10,16 @@
     <div class="single_step_form_content_wrapper">
       <form @submit.prevent="validateFormInputs">
         <div class="row">
-          <base-image-upload-input
-            col="12"
-            identifier="image"
-            :preSelectedImage="data.image.path"
-            :placeholder="$t('PLACEHOLDERS.section_image')"
-            @selectImage="selectImage"
-            disabled
-          />
+          <!-- Start:: Image -->
+          <div class="preview-container text-center my-3">
+            <img
+              v-if="data.image.path"
+              col="12"
+              :src="data.image.path"
+              :alt="$t('PLACEHOLDERS.section_image')"
+            />
+          </div>
+          <!-- End:: Image -->
 
           <!-- Start:: Ar Name Input -->
           <base-input
@@ -39,10 +41,10 @@
           />
           <!-- End:: En Name Input -->
 
-          <base-select-input
+          <base-input
             col="6"
-            :optionsList="allMainCategories"
-            :placeholder="$t('PLACEHOLDERS.main_section')"
+            type="text"
+            :placeholder="$t('PLACEHOLDERS.mainSection')"
             v-model="main_section"
             disabled
           />
@@ -109,11 +111,11 @@ export default {
           url: `sub-categories/${this.$route.params.id}`,
         });
         // Start:: Set Data
-        this.data.image.path = res.data.data.image;
-        this.data.nameAr = res.data.data.name_ar;
-        this.data.nameEn = res.data.data.name_en;
-        this.main_section = res.data.data.main_category;
-        this.data.active = res.data.data.is_active;
+        this.data.image.path = res.data.data.SubCategory?.image;
+        this.data.nameAr = res.data.data.SubCategory?.name_ar;
+        this.data.nameEn = res.data.data.SubCategory?.name_en;
+        this.main_section = res.data.data.SubCategory?.category?.name;
+        this.data.active = res.data.data.SubCategory?.is_active;
         // End:: Set Data
       } catch (error) {
         console.log(error.response.data.message);

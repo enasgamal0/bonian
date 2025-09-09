@@ -42,7 +42,7 @@
           <base-select-input
             col="6"
             :optionsList="allMainCategories"
-            :placeholder="$t('PLACEHOLDERS.main_section')"
+            :placeholder="$t('PLACEHOLDERS.mainSection')"
             v-model="main_section"
             required
           />
@@ -122,11 +122,11 @@ export default {
         // console.log( "DATA TO EDIT =>", res.data.data.region );
 
         // Start:: Set Data
-        this.data.image.path = res.data.data.image;
-        this.data.nameAr = res.data.data.name_ar;
-        this.data.nameEn = res.data.data.name_en;
-        this.main_section = res.data.data.main_category;
-        this.data.active = res.data.data.is_active;
+        this.data.image.path = res.data.data.SubCategory?.image;
+        this.data.nameAr = res.data.data.SubCategory?.name_ar;
+        this.data.nameEn = res.data.data.SubCategory?.name_en;
+        this.main_section = res.data.data.SubCategory?.category;
+        this.data.active = res.data.data.SubCategory?.is_active;
         // End:: Set Data
       } catch (error) {
         console.log(error.response.data.message);
@@ -144,6 +144,10 @@ export default {
       } else if (!this.data.nameEn) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.nameEn"));
+        return;
+      } else if (!this.main_section) {
+        this.isWaitingRequest = false;
+        this.$message.error(this.$t("VALIDATION.main_section"));
         return;
       } else {
         this.submitForm();
@@ -188,10 +192,9 @@ export default {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: `categories?page=0&limit=0&isActive=1`,
+          url: `categories?page=0&limit=0&is_active=1`,
         });
-        this.allMainCategories = res.data.data;
-        console.log(res.data.data);
+        this.allMainCategories = res.data.data.data;
       } catch (error) {
         this.loading = false;
         console.log(error.response.data.message);

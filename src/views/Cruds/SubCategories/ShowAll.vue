@@ -21,26 +21,26 @@
             <div class="row justify-content-center align-items-center w-100">
               <!-- Start:: Name Input -->
               <base-input
-                col="4"
+                col="5"
                 type="text"
                 :placeholder="$t('PLACEHOLDERS.section_name')"
                 v-model.trim="filterOptions.name"
               />
               <!-- End:: Name Input -->
-
+              <!-- 
               <base-select-input
                 col="4"
                 :optionsList="allMainCategories"
                 :placeholder="$t('PLACEHOLDERS.main_section')"
                 v-model="filterOptions.main_section"
-              />
+              /> -->
 
               <!-- <base-select-input col="4" :optionsList="allSubCategories" :placeholder="$t('PLACEHOLDERS.sub_section')"
                 v-model="data.sub_section" required /> -->
 
               <!-- Start:: Status Input -->
               <base-select-input
-                col="4"
+                col="5"
                 :optionsList="activeStatuses"
                 :placeholder="$t('PLACEHOLDERS.status')"
                 v-model="filterOptions.status"
@@ -286,7 +286,6 @@ export default {
       filterFormIsActive: false,
       filterOptions: {
         name: null,
-        main_section: null,
         status: null,
       },
       // End:: Filter Data
@@ -308,8 +307,8 @@ export default {
           align: "center",
         },
         {
-          text: this.$t("PLACEHOLDERS.main_section"),
-          value: "main_category.name",
+          text: this.$t("PLACEHOLDERS.mainSection"),
+          value: "category.name",
           sortable: false,
           align: "center",
         },
@@ -379,7 +378,6 @@ export default {
     },
     async resetFilter() {
       this.filterOptions.name = null;
-      this.filterOptions.main_section = null;
       this.filterOptions.status = null;
       if (this.$route.query.page !== "1") {
         await this.$router.push({
@@ -413,15 +411,14 @@ export default {
           params: {
             page: this.paginations.current_page,
             name: this.filterOptions.name,
-            categoryId: this.filterOptions.main_section?.id,
-            isActive: this.filterOptions.status?.value,
+            is_active: this.filterOptions.status?.value,
           },
         });
         this.loading = false;
         // console.log("All Data ==>", res.data.data);
-        this.tableRows = res.data.data;
-        this.paginations.last_page = res.data.meta.last_page;
-        this.paginations.items_per_page = res.data.meta.per_page;
+        this.tableRows = res.data.data.data;
+        this.paginations.last_page = res.data.data.meta.last_page;
+        this.paginations.items_per_page = res.data.data.meta.per_page;
       } catch (error) {
         this.loading = false;
         console.log(error.response.data.message);
@@ -468,7 +465,7 @@ export default {
       try {
         let response = await this.$axios({
           method: "POST",
-          url: `sub-categories/activation/${item.id}`,
+          url: `sub-categories/activate/${item.id}`,
         });
         this.setTableRows();
         this.$message.success(response.data.message);
@@ -483,10 +480,9 @@ export default {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: `categories?page=0&limit=0&isActive=1`,
+          url: `categories?page=0&limit=0&is_active=1`,
         });
-        this.allMainCategories = res.data.data;
-        console.log(res.data.data);
+        this.allMainCategories = res.data.data.data;
       } catch (error) {
         this.loading = false;
         console.log(error.response.data.message);

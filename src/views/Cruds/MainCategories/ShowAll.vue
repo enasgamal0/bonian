@@ -402,7 +402,7 @@ export default {
           params: {
             page: this.paginations.current_page,
             name: this.filterOptions.name,
-            isActive: this.filterOptions.status?.value,
+            is_active: this.filterOptions.status?.value,
           },
         });
         this.loading = false;
@@ -456,7 +456,7 @@ export default {
       try {
         let response = await this.$axios({
           method: "POST",
-          url: `categories/activation/${item.id}`,
+          url: `categories/activate/${item.id}`,
         });
         this.setTableRows();
         this.$message.success(response.data.message);

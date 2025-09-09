@@ -330,7 +330,7 @@
       <!-- End:: main_sections Route -->
 
       <!-- Start:: sub_sections Route -->
-      <!-- <div
+      <div
         class="home_route"
         @click="$emit('fireToggleNavDrawerEmit')"
         v-if="$can('subcategories index', 'subcategories')"
@@ -348,7 +348,7 @@
             {{ $t("PLACEHOLDERS.sub_sections") }}
           </span>
         </router-link>
-      </div> -->
+      </div>
       <!-- End:: sub_sections Route -->
 
       <!-- Start:: acceptedproviders Route -->

@@ -355,7 +355,7 @@ export default {
         {
           id: 2,
           name: this.$t("STATUS.notReplied"),
-          value: "unanswered",
+          value: "not_answered",
         },
       ];
     },
@@ -398,13 +398,6 @@ export default {
           sortable: false,
         },
         {
-          text: this.$t("TABLES.Clients.code"),
-          value: "country_code",
-          align: "center",
-          width: "140",
-          sortable: false,
-        },
-        {
           text: this.$t("TABLES.ContactMessages.phone"),
           value: "mobile",
           align: "center",
@@ -440,7 +433,7 @@ export default {
         },
         {
           text: this.$t("TABLES.ContactMessages.type"),
-          value: "_type",
+          value: "type",
           align: "center",
           width: "80",
           sortable: false,
@@ -583,12 +576,13 @@ export default {
       // REQUEST_DATA.append("_method", 'PUT');
       const REQUEST_DATA = {
         reply: this.messageReplay,
+        _method: "PUT",
       };
 
       try {
         await this.$axios({
           method: "POST",
-          url: `contacts/reply/${this.itemToSendReplay.id}`,
+          url: `contacts/${this.itemToSendReplay.id}`,
           data: REQUEST_DATA,
         });
         this.$message.success(this.$t("MESSAGES.sentSuccessfully"));

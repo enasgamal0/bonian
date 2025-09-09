@@ -41,7 +41,7 @@
           <base-select-input
             col="6"
             :optionsList="allMainCategories"
-            :placeholder="$t('PLACEHOLDERS.main_section')"
+            :placeholder="$t('PLACEHOLDERS.mainSection')"
             v-model="main_section"
             required
           />
@@ -121,6 +121,10 @@ export default {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.nameEn"));
         return;
+      } else if (!this.main_section) {
+        this.isWaitingRequest = false;
+        this.$message.error(this.$t("VALIDATION.main_section"));
+        return;
       } else {
         this.submitForm();
         return;
@@ -163,9 +167,9 @@ export default {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: `categories?page=0&limit=0&isActive=1`,
+          url: `categories?page=0&limit=0&is_active=1`,
         });
-        this.allMainCategories = res.data.data;
+        this.allMainCategories = res.data.data.data;
         console.log(res.data.data);
       } catch (error) {
         this.loading = false;
