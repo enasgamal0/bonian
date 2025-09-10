@@ -3035,12 +3035,12 @@ span.reset_btn {
 }
 .show_all_content_wrapper .v-data-table .v-data-table__wrapper table tbody tr td .actions button.btn_activate svg,
 .show_all_content_wrapper .v-data-table .v-data-table__wrapper table tbody tr td .actions button.btn_activate i {
-  font-size: 24px;
+  font-size: 20px;
   color: var(--mid_green_clr);
 }
 .show_all_content_wrapper .v-data-table .v-data-table__wrapper table tbody tr td .actions button.btn_deactivate svg,
 .show_all_content_wrapper .v-data-table .v-data-table__wrapper table tbody tr td .actions button.btn_deactivate i {
-  font-size: 18px;
+  font-size: 20px;
   color: var(--mid_red_clr);
 }
 .show_all_content_wrapper .v-data-table .v-data-table__wrapper table tbody tr td .actions button.icon_btn_delete::before {

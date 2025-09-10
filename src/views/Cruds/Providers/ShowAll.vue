@@ -69,7 +69,7 @@
       <!--  =========== Start:: Table Title =========== -->
       <div class="table_title_wrapper">
         <div class="title_text_wrapper">
-          <h5>{{ $t("SIDENAV.Clients.title") }}</h5>
+          <h5>{{ $t("PLACEHOLDERS.control_admins") }}</h5>
           <button
             v-if="!filterFormIsActive"
             class="filter_toggler"
@@ -77,24 +77,6 @@
           >
             <i class="fal fa-search"></i>
           </button>
-        </div>
-
-        <div class="title_route_wrapper">
-          <div class="excel" @click="downloadExcel">
-            {{ $t("BUTTONS.downloadExcel") }}
-          </div>
-
-          <!-- <base-button
-            class="mt-0 pdf_btn"
-            styleType="solid_btn"
-            :btnText="$t('BUTTONS.downloadPdf')"
-            @fireClick="downloadPdf"
-            :disabled="pdfDownloadBtnIsLoading"
-          >
-            <template v-slot:btn_icon>
-              <i class="fal fa-file-pdf"></i>
-            </template>
-          </base-button> -->
         </div>
       </div>
       <!--  =========== End:: Table Title =========== -->
@@ -146,14 +128,6 @@
         <template v-slot:[`item.actions`]="{ item }">
           <div class="actions">
             <!--  v-if="permissions.show" -->
-            <a-tooltip placement="bottom">
-              <template slot="title">
-                <span>{{ $t("BUTTONS.show") }}</span>
-              </template>
-              <button class="btn_show" @click="showItem(item)">
-                <i class="fal fa-eye"></i>
-              </button>
-            </a-tooltip>
             <a-tooltip placement="bottom" v-if="!item?.is_active">
               <template slot="title">
                 <span>{{ $t("BUTTONS.activate") }}</span>
@@ -174,6 +148,25 @@
                 @click="selectDeactivateItem(item)"
               >
                 <i class="fad fa-times-circle"></i>
+              </button>
+            </a-tooltip>
+            <a-tooltip placement="bottom">
+              <template slot="title">
+                <span>{{ $t("BUTTONS.show") }}</span>
+              </template>
+              <button class="btn_show" @click="showItem(item)">
+                <i class="fal fa-eye"></i>
+              </button>
+            </a-tooltip>
+            <a-tooltip
+              placement="bottom"
+              v-if="$can('admins edit', 'admins') && item?.id !== 1"
+            >
+              <template slot="title">
+                <span>{{ $t("BUTTONS.edit") }}</span>
+              </template>
+              <button class="btn_edit" @click="editItem(item)">
+                <i class="fal fa-edit"></i>
               </button>
             </a-tooltip>
             <!-- <a-tooltip
@@ -262,32 +255,6 @@
             </v-card>
           </v-dialog>
           <!-- End:: Delete Modal -->
-          <!-- Start:: pdf Modal -->
-          <!-- <v-dialog v-model="dialogPdf">
-            <v-card>
-              <button class="ex-btn-s" @click="clickedDownload"> {{ $t("PLACEHOLDERS.export_pdf") }}</button>
-
-              <v-card-actions>
-                <v-btn class="modal_cancel_btn" @click="dialogPdf = false">{{ $t("BUTTONS.cancel") }}</v-btn>
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog> -->
-          <!-- End:: pdf Modal -->
-
-          <!-- Start:: excel Modal -->
-          <!-- <v-dialog v-model="dialogExcel">
-            <v-card>
-              <a class="ex-btn-s" :href="excel" download>
-                {{ $t("PLACEHOLDERS.export_excel") }}
-              </a>
-              <v-card-actions>
-                <v-btn class="modal_cancel_btn" @click="dialogExcel = false">{{ $t("BUTTONS.cancel") }}</v-btn>
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog> -->
-          <!-- End:: excel Modal -->
         </template>
         <!-- ======================== End:: Dialogs ======================== -->
       </v-data-table>
@@ -340,70 +307,14 @@
       </div>
     </template> -->
     <!-- End:: Pagination -->
-
-    <!-- Start:: Generate PDF Template Content -->
-    <vue-html2pdf
-      :show-layout="false"
-      :float-layout="true"
-      :enable-download="true"
-      :preview-modal="true"
-      :filename="$t('PLACEHOLDERS.financialpack')"
-      :pdf-quality="2"
-      pdf-format="a4"
-      :manual-pagination="false"
-      :paginate-elements-by-height="1400"
-      pdf-content-width="100%"
-      @progress="bdfDownloadBtnIsLoading = true"
-      @hasGenerated="$message.success($t('MESSAGES.generatedSuccessfully'))"
-      ref="html2Pdf"
-    >
-      <section slot="pdf-content">
-        <div class="pdf_file_content">
-          <h3 class="file_title">{{ $t("PLACEHOLDERS.financialpack") }}</h3>
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th
-                    v-for="(header, index) in tableHeaders"
-                    :key="header.value"
-                  >
-                    <span v-if="index !== 5">{{ header.text }}</span>
-                  </th>
-                </tr>
-              </thead>
-              <!-- <tbody>
-                <tr v-for="row in tableRows" :key="row.id">
-                  <td>{{ row.id ? row.id : "-" }}</td>
-                  <td>{{ row.package_name ? row.package_name : "-" }}</td>
-                  <td>{{ row.perioud ? row.perioud : "-" }}</td>
-                  <td>
-                    {{ row.sub_total ? row.sub_total : "-" }}
-                  </td>
-                  <td>{{ row.total ? row.total : "-" }}</td>
-                  <td>{{ row.tax ? row.tax : "-" }}</td>
-                </tr>
-              </tbody> -->
-            </template>
-          </v-simple-table>
-        </div>
-      </section>
-    </vue-html2pdf>
-    <!-- End:: Generate PDF Template Content -->
   </div>
 </template>
 
 <script>
-import VueHtml2pdf from "vue-html2pdf";
 import { mapGetters } from "vuex";
 
 export default {
   name: "AllFinancialReports",
-
-  components: {
-    VueHtml2pdf,
-  },
-
   computed: {
     ...mapGetters({
       getAppLocale: "AppLangModule/getAppLocale",
@@ -436,8 +347,6 @@ export default {
       // Start:: Loading Data
       loading: false,
       isWaitingRequest: false,
-      pdfDownloadBtnIsLoading: false,
-      excelDownloadBtnIsLoading: false,
       // End:: Loading Data
 
       // Start:: Filter Data
@@ -515,10 +424,6 @@ export default {
       deactivateReason: null,
       dialogDescription: false,
       selectedDescriptionTextToShow: "",
-      dialogPdf: false,
-      itemToPdf: null,
-      dialogExcel: false,
-      itemToExcel: null,
       dialogDelete: false,
       itemToDelete: null,
       // End:: Dialogs Control Data
@@ -528,8 +433,6 @@ export default {
       // Start:: Page Permissions
       totalInvestedMoney: null,
       total_tax: null,
-      pdf: null,
-      excel_report: null,
       totalProfitWithTax: null,
     };
   },
@@ -642,26 +545,18 @@ export default {
       }
     },
 
-    // Start:: Handling Download Files
-    async downloadPdf() {
-      await this.$refs.html2Pdf.generatePdf();
-      this.pdfDownloadBtnIsLoading = false;
-    },
-
-    async downloadExcel() {
-      window.open(
-        "https://backend.bonian.moltaqadev.com/dashboard-api/v1/export-users",
-        "_blank"
-      );
-    },
-    // End:: Handling Download Files
-
     // ==================== Start:: Crud ====================
     // ===== Start:: Show
     showItem(item) {
-      this.$router.push({ path: `/clients/show/${item.id}` });
+      this.$router.push({ path: `/providers/show/${item.id}` });
     },
     // ===== End:: Show
+
+    // ===== Start:: Edit
+    editItem(item) {
+      this.$router.push({ path: `/providers/edit/${item.id}` });
+    },
+    // ===== End:: Edit
 
     // ===== Start:: Delete
     selectDeleteItem(item) {
@@ -737,13 +632,5 @@ tbody,
 tr,
 td {
   text-align: center !important;
-}
-
-.excel {
-  background: darkgreen;
-  padding: 7px 10px;
-  border-radius: 12px;
-  color: #fff;
-  cursor: pointer;
 }
 </style>

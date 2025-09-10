@@ -2,7 +2,7 @@
   <div class="crud_form_wrapper">
     <!-- Start:: Title -->
     <div class="form_title_wrapper">
-      <h4>{{ $t("TITLES.editClient") }}</h4>
+      <h4>{{ $t("TITLES.editProvider") }}</h4>
     </div>
     <div class="col-12 text-end">
       <v-btn @click="$router.go(-1)" style="color: #1b706f">
@@ -18,7 +18,7 @@
           <!-- Start:: Image Upload Input -->
           <base-image-upload-input
             col="12"
-            identifier="client_image"
+            identifier="provider_image"
             :placeholder="$t('PLACEHOLDERS.personalImage')"
             @selectImage="selectImage"
             :preSelectedImage="data.image.path"
@@ -27,115 +27,114 @@
 
           <!-- Start:: Name Input -->
           <base-input
-            col="12"
+            col="6"
             type="text"
+            :placeholder="$t('PLACEHOLDERS.providerName')"
+            v-model.trim="data.name"
+            required
+          />
+          <!-- End:: Name Input -->
+
+          <!-- Start:: Email Input -->
+          <base-input
+            col="6"
+            type="email"
             :placeholder="$t('PLACEHOLDERS.email')"
             v-model.trim="data.email"
             required
           />
-          <!-- End:: Name Input -->
+          <!-- End:: Email Input -->
+
+          <!-- Start:: Phone Input -->
           <base-phone-input
             col="12"
             required
             dir="ltr"
-            v-model="data.phone"
+            v-model="data.mobile"
             @dialCode="dialCode"
             @isoCode="isoCode"
             :placeholder="$t('PLACEHOLDERS.phone')"
             :defaultCountry="data.dial_code"
             :key="key"
           />
-          <!-- Start:: WhatsApp Checkbox -->
-          <div class="col-12">
-            <input
-              type="checkbox"
-              id="whatsappCheckbox"
-              class="whatsappCheckbox"
-              v-model="isWhatsappSame"
-            />
-            <label
-              style="font-size: 16px; color: #1b706f"
-              for="whatsappCheckbox"
-              class="mx-3"
-              >{{ $t("PLACEHOLDERS.whatsappCheckbox") }}</label
-            >
-          </div>
-          <!-- End:: WhatsApp Checkbox -->
-
-          <!-- Start:: WhatsApp Input -->
-          <base-phone-input
-            v-if="!isWhatsappSame"
-            col="12"
-            dir="ltr"
-            v-model="data.whatsapp"
-            @dialCode="dialCodeWhatsapp"
-            @isoCode="isoCodeWhatsapp"
-            :placeholder="$t('PLACEHOLDERS.whatsapp')"
-            :defaultCountry="data.dial_code_whatsapp"
-            :key="key"
-          />
-          <!-- End:: WhatsApp Input -->
-          <base-input
-            col="6"
-            type="text"
-            :placeholder="$t('PLACEHOLDERS.client_name')"
-            v-model.trim="data.client_name"
-            required
-          />
-          <!-- <base-input
-            col="4"
-            type="text"
-            :placeholder="$t('PLACEHOLDERS.user_name')"
-            v-model.trim="data.user_name"
-            required
-          /> -->
-          <base-input
-            col="6"
-            type="text"
-            :placeholder="$t('PLACEHOLDERS.company_name')"
-            v-model.trim="data.company_name"
-            required
-          />
-          <base-select-input
-            col="6"
-            :optionsList="countries"
-            :placeholder="$t('PLACEHOLDERS.country')"
-            v-model.trim="data.country"
-            required
-          />
-          <!-- <base-select-input
-            col="6"
-            :optionsList="nationalities"
-            :placeholder="$t('PLACEHOLDERS.natonalty')"
-            v-model.trim="data.natonalty"
-            required
-          /> -->
-          <base-select-input
-            col="6"
-            :optionsList="country_sections"
-            :placeholder="$t('PLACEHOLDERS.country_section')"
-            v-model.trim="data.country_section"
-            required
-          />
-          <!-- Start:: Phone Input -->
-          <base-input
-            ref="phoneInput"
-            col="12"
-            type="text"
-            :placeholder="$t('PLACEHOLDERS.address')"
-            v-model.trim="data.address"
-            required
-          />
           <!-- End:: Phone Input -->
-          <!-- Start:: Email Input -->
-          <!-- End:: Email Input -->
+
+          <!-- Start:: Referral Code Input -->
+          <base-input
+            col="6"
+            type="text"
+            :placeholder="$t('PLACEHOLDERS.referralCode')"
+            v-model.trim="data.referral_code"
+          />
+          <!-- End:: Referral Code Input -->
+
+          <!-- Start:: Commercial Registration Input -->
+          <base-input
+            col="6"
+            type="text"
+            :placeholder="$t('PLACEHOLDERS.commercialRegistration')"
+            v-model.trim="data.commercial_registration_number"
+            required
+          />
+          <!-- End:: Commercial Registration Input -->
+
+          <!-- Start:: Category Select -->
+          <base-select-input
+            col="6"
+            :optionsList="categories"
+            :placeholder="$t('PLACEHOLDERS.category')"
+            v-model="data.category"
+            @input="onCategoryChange"
+            required
+          />
+          <!-- End:: Category Select -->
+
+          <!-- Start:: Sub Categories Multi Select -->
+          <base-multi-select-input
+            col="6"
+            :optionsList="subCategories"
+            :placeholder="$t('PLACEHOLDERS.subCategories')"
+            v-model="data.sub_categories"
+            required
+          />
+          <!-- End:: Sub Categories Multi Select -->
+
+          <!-- Start:: City Select -->
+          <base-select-input
+            col="6"
+            :optionsList="cities"
+            :placeholder="$t('PLACEHOLDERS.city')"
+            v-model="data.city"
+            @input="onCityChange"
+            required
+          />
+          <!-- End:: City Select -->
+
+          <!-- Start:: District Select -->
+          <base-select-input
+            col="6"
+            :optionsList="districts"
+            :placeholder="$t('PLACEHOLDERS.district')"
+            v-model="data.district"
+            required
+          />
+          <!-- End:: District Select -->
+
+          <!-- Start:: Description Textarea -->
+          <base-textarea-input
+            col="12"
+            :placeholder="$t('PLACEHOLDERS.description')"
+            v-model.trim="data.description"
+            rows="4"
+          />
+          <!-- End:: Description Textarea -->
+
           <!-- Start:: Password Input -->
           <base-input
             col="6"
             type="password"
             :placeholder="$t('PLACEHOLDERS.password')"
             v-model.trim="data.password"
-            required
           />
           <!-- End:: Password Input -->
 
@@ -144,72 +143,22 @@
             col="6"
             type="password"
             :placeholder="$t('PLACEHOLDERS.confirmPassword')"
-            v-model.trim="data.passwordConfirmation"
-            required
+            v-model.trim="data.password_confirmation"
           />
-          <!-- End:: Deactivate Switch Input -->
-          <hr v-if="data.fields?.length > 0" style="width: 97%" class="my-5" />
-          <label
-            v-if="data.fields?.length > 0"
-            class="font-weight-bold"
-            style="font-size: 16px; color: #1b706f"
-            >{{ $t("PLACEHOLDERS.social_media_accounts") }}</label
-          >
-          <div class="row justify-content-center">
-            <div
-              class="col-12"
-              v-for="(item, index) in data.fields"
-              :key="'l' + index"
-            >
-              <!-- <label
-                style="font-size: 16px; color: #1b706f"
-                class="font-weight-bold mb-4"
-                >{{ $t("PLACEHOLDERS.acount_index") }} #{{ index + 1 }}</label
-              > -->
-              <div class="row">
-                <base-select-input
-                  col="4"
-                  :optionsList="getAvailableSocialTypes(index)"
-                  :placeholder="$t('PLACEHOLDERS.platform')"
-                  v-model.trim="item.socialType"
-                />
-                <base-input
-                  col="4"
-                  type="text"
-                  :placeholder="$t('PLACEHOLDERS.account_name')"
-                  v-model.trim="item.account_name"
-                />
-                <div class="item d-flex flex-wrap align-items-center col-4">
-                  <div class="all_actions" v-if="data.fields?.length > 1">
-                    <span
-                      class="add_another text-2xl cursor-pointer"
-                      @click="removeRow(index, item.account_id)"
-                    >
-                      <i class="fas fa-minus-circle"></i>
-                    </span>
-                  </div>
-                  <div class="col-l2">
-                    <div
-                      class="add_another text-2xl cursor-pointer mx-2"
-                      @click="addRow"
-                    >
-                      <i class="fas fa-plus-circle"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <!-- End:: Confirm Password Input -->
 
-              <!-- <hr class="my-5" /> -->
-            </div>
-            <!-- <div class="input_wrapper switch_wrapper my-5">
+          <!-- Start:: Active Switch -->
+          <div class="input_wrapper switch_wrapper my-5">
             <v-switch
               color="green"
-              :label="$t('SIDENAV.Clients.is_vip')"
-              v-model="data.is_vip"
+              :label="$t('PLACEHOLDERS.isActive')"
+              v-model="data.is_active"
               hide-details
             ></v-switch>
-          </div> -->
           </div>
+          <!-- End:: Active Switch -->
+
+          <!-- Start:: Submit Button Wrapper -->
           <div class="btn_wrapper">
             <base-button
               class="mt-2"
@@ -230,8 +179,9 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import BasePhoneInput from "@/components/formInputs/BasePhoneInput.vue";
+
 export default {
-  name: "EditClients",
+  name: "EditProvider",
   components: {
     BasePhoneInput,
   },
@@ -241,361 +191,248 @@ export default {
       isWaitingRequest: false,
       // End:: Loader Control Data
 
-      isWhatsappSame: false,
-
       // Start:: Data Collection To Send
       data: {
         image: {
           path: null,
           file: null,
         },
+        name: null,
         email: null,
-        is_vip: false,
-        client_name: null,
-        company_name: null,
-        country: null,
-        country_section: null,
-        address: null,
-        natonalty: null,
+        mobile: null,
+        referral_code: null,
+        description: null,
+        commercial_registration_number: null,
+        category: null,
+        sub_categories: [],
+        city: null,
+        district: null,
         password: null,
-        passwordConfirmation: null,
-        phone: null,
-        // user_name: null,
-        areas: [],
-        active: true,
-        fields: [
-          {
-            socialType: null,
-            account_name: null,
-          },
-        ],
-        iban: null,
+        password_confirmation: null,
+        is_active: true,
         dial_code: null,
-        dial_code_whatsapp: null,
+        iso_code: null,
       },
-      allBanks: [],
-      // nationalities: [],
-      countries: [],
-      country_sections: [],
+      categories: [],
+      subCategories: [],
+      cities: [],
+      districts: [],
       key: "",
       // End:: Data Collection To Send
     };
   },
-  computed: {
-    socialTypes() {
-      return [
-        {
-          id: 1,
-          name: this.$t("PLACEHOLDERS.x"),
-          value: "x",
-        },
-        {
-          id: 2,
-          name: this.$t("PLACEHOLDERS.facebook"),
-          value: "facebook",
-        },
-        {
-          id: 3,
-          name: this.$t("PLACEHOLDERS.tiktok"),
-          value: "tiktok",
-        },
-        {
-          id: 4,
-          name: this.$t("PLACEHOLDERS.snapchat"),
-          value: "snapchat",
-        },
-        {
-          id: 5,
-          name: this.$t("PLACEHOLDERS.youtube"),
-          value: "youtube",
-        },
-        {
-          id: 6,
-          name: this.$t("PLACEHOLDERS.instagram"),
-          value: "instagram",
-        },
-      ];
-    },
-  },
   methods: {
-    getAvailableSocialTypes(currentIndex) {
-      const selectedValues = this.data.fields
-        .map((item, index) => index !== currentIndex && item.socialType?.value)
-        .filter(Boolean);
-
-      return this.socialTypes.filter(
-        (type) => !selectedValues.includes(type.value)
-      );
-    },
-    async getCountries() {
-      // this.loading = true;
+    // Start:: API Methods
+    async getCategories() {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: `/countries?page=0&limit=0&is_active=1&ignorePermissionCheck=1`,
+          url: `/categories?page=0&limit=0&is_active=1&ignorePermissionCheck=1`,
         });
-
-        this.countries = res.data.data.data;
+        this.categories = res.data.data.data;
       } catch (error) {
-        this.loading = false;
-        console.log(error.response.data.message);
+        console.log(error.response?.data?.message);
       }
     },
-    // async geNatonalities() {
-    //   // this.loading = true;
-    //   try {
-    //     let res = await this.$axios({
-    //       method: "GET",
-    //       url: `nationalities?is_active=1&page=0&limit=0`,
-    //     });
 
-    //     this.nationalities = res.data.data.data;
-    //   } catch (error) {
-    //     this.loading = false;
-    //     console.log(error.response.data.message);
-    //   }
-    // },
-    async getCountry_sections() {
-      // this.loading = true;
+    async getSubCategories(categoryId = null) {
+      try {
+        const url = categoryId 
+          ? `/sub-categories?category_id=${categoryId}&page=0&limit=0&is_active=1&ignorePermissionCheck=1`
+          : `/sub-categories?page=0&limit=0&is_active=1&ignorePermissionCheck=1`;
+        
+        let res = await this.$axios({
+          method: "GET",
+          url: url,
+        });
+        this.subCategories = res.data.data.data;
+      } catch (error) {
+        console.log(error.response?.data?.message);
+      }
+    },
+
+    async getCities() {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: `/sections?page=0&limit=0&is_active=1&ignorePermissionCheck=1`,
+          url: "/cities?page=0&limit=0&is_active=1&ignorePermissionCheck=1",
         });
-
-        this.country_sections = res.data.data.data;
+        this.cities = res.data.data.data;
       } catch (error) {
-        this.loading = false;
-        console.log(error.response.data.message);
+        console.log(error.response?.data?.message);
       }
     },
-    addRow() {
-      this.data.fields.push({
-        socialType: null,
-        account_name: null,
-      });
+
+    async getDistricts(cityId = null) {
+      try {
+        const url = cityId 
+          ? `/districts?city_id=${cityId}&page=0&limit=0&is_active=1&ignorePermissionCheck=1`
+          : `/districts?page=0&limit=0&is_active=1&ignorePermissionCheck=1`;
+        
+        let res = await this.$axios({
+          method: "GET",
+          url: url,
+        });
+        this.districts = res.data.data.data;
+      } catch (error) {
+        console.log(error.response?.data?.message);
+      }
     },
 
-    async removeRow(index, id) {
-      if (id) {
-        try {
-          await this.$axios({
-            method: "DELETE",
-            url: `clients/${this.$route.params.id}/account/${id}`,
-          });
-          this.$message.success(this.$t("MESSAGES.deletedSuccessfully"));
-        } catch (error) {
-          this.$message.error(error.response?.data?.message);
-          return;
+    // Start:: Show Provider Data
+    async showProvider() {
+      try {
+        let res = await this.$axios({
+          method: "GET",
+          url: `providers/${this.$route.params?.id}`,
+        });
+        
+        const provider = res.data.data.Provider;
+        this.data.name = provider.name;
+        this.data.email = provider.email;
+        this.data.mobile = provider.mobile;
+        this.data.referral_code = provider.referral_code;
+        this.data.description = provider.description;
+        this.data.commercial_registration_number = provider.commercial_registration_number;
+        this.data.is_active = provider.is_active;
+        this.data.image.path = provider.image;
+        
+        // Set category and load subcategories
+        this.data.category = provider.category_id;
+        if (provider.category_id) {
+          await this.getSubCategories(provider.category_id);
         }
-      }
-      this.data.fields.splice(index, 1);
-      if (this.data.fields.length === 0) {
-        this.addRow();
+        this.data.sub_categories = provider.sub_category_ids || [];
+        
+        // Set city and load districts
+        this.data.city = provider.city_id;
+        if (provider.city_id) {
+          await this.getDistricts(provider.city_id);
+        }
+        this.data.district = provider.district_id;
+        
+        // Set phone related data
+        this.data.dial_code = provider.country_code;
+        this.data.iso_code = provider.iso_code;
+        this.key = +provider.country_code || "";
+        
+      } catch (error) {
+        console.log(error?.response?.data?.message);
       }
     },
+    // End:: Show Provider Data
+
+    // Start:: Event Handlers
+    onCategoryChange(selectedCategory) {
+      this.data.sub_categories = [];
+      if (selectedCategory?.id) {
+        this.getSubCategories(selectedCategory.id);
+      }
+    },
+
+    onCityChange(selectedCity) {
+      this.data.district = null;
+      if (selectedCity?.id) {
+        this.getDistricts(selectedCity.id);
+      }
+    },
+
     // Start:: Select Upload Image
     selectImage(selectedImage) {
       this.data.image = selectedImage;
     },
     // End:: Select Upload Image
+
     dialCode(dialCode) {
-      console.log(dialCode);
       this.data.dial_code = dialCode;
     },
-    isoCode(iosCode) {
-      this.data.iso_code = iosCode;
+
+    isoCode(isoCode) {
+      this.data.iso_code = isoCode;
     },
-    isoCodeWhatsapp(iosCode) {
-      this.data.whatsapp_iso_code = iosCode;
-    },
-    dialCodeWhatsapp(dialCode) {
-      this.data.dial_code_whatsapp = dialCode;
-    },
+
     // Start:: validate Form Inputs
     validateFormInputs() {
       this.isWaitingRequest = true;
       this.submitForm();
     },
     // End:: validate Form Inputs
-    async getCities() {
-      try {
-        let res = await this.$axios({
-          method: "GET",
-          url: "cities?page=0&limit=0&isActive=1&ignorePermissionCheck=1",
-        });
-        console.log("All Data ==>", res.data.data.data);
-        this.allCities = res.data.data.data;
-      } catch (error) {
-        this.loading = false;
-        console.log(error.response.data.message);
-      }
-    },
-    async getBanks() {
-      try {
-        let res = await this.$axios({
-          method: "GET",
-          url: "banks?page=0&limit=0&isActive=1",
-        });
-        console.log("All Data ==>", res.data.data.data);
-        this.allBanks = res.data.data.data;
-      } catch (error) {
-        this.loading = false;
-        console.log(error.response.data.message);
-      }
-    },
-    // start show data
-    async showClient() {
-      try {
-        let res = await this.$axios({
-          method: "GET",
-          url: `clients/${this.$route.params?.id}`,
-        });
-        this.data.client_name = res.data.data.Client.name;
-        this.data.image.path = res.data.data.Client.image;
-        this.data.email = res.data.data.Client.email;
-        this.data.is_vip = res.data.data.Client.is_vip;
-        this.data.phone = res.data.data.Client.mobile;
-        this.data.whatsapp_iso_code = res.data.data.Client.whatsapp_iso_code;
-        this.data.iso_code = res.data.data.Client.iso_code;
-        this.key = +res.data.data.Client.country_code;
-        // this.data.user_name = res.data.data.Client.user_name;
-        this.data.country = res.data.data.Client.country_id;
-        this.data.country_section = res.data.data.Client.section_id;
-        // this.data.natonalty = res.data.data.Client.nationality_id;
-        this.data.company_name = res.data.data.Client.company_name;
-        this.data.address = res.data.data.Client.address;
-        // this.data.fields = res.data.data.Client.social_media_accounts?.map(
-        //   (ele, index) => ({
-        //     id: ele.id,
-        //     socialType: {
-        //       id: index + 1,
-        //       name: this.$t(`PLACEHOLDERS.${ele.platform}`),
-        //       value: ele.platform,
-        //     },
-        //     account_name: ele.account_name,
-        //   })
-        // );
-        this.data.fields = res.data.data.Client.social_media_accounts?.map((acc) => ({
-            socialType:
-              this.socialTypes?.find((s) => s.value === acc.platform) || null,
-            account_id: acc.id,
-            account_name: acc.account_name,
-          })),
-        console.log("resss", res.data.data.Client.is_whatsapp_same)
-        if (this.data.fields.length === 0) {
-          this.data.fields.push({
-            socialType: null,
-            account_name: null,
-          });
-        }
-        this.isWhatsappSame = res.data.data.Client.is_whatsapp_same;
-        this.data.dial_code_whatsapp = res.data.data.Client.whatsapp_country_code;
-        this.data.whatsapp = res.data.data.Client.whatsapp_number;
-      } catch (error) {
-        this.loading = false;
-        console.log(error?.response?.data?.message);
-      }
-    },
-    // end show data
+
     // Start:: Submit Form
     async submitForm() {
       const REQUEST_DATA = new FormData();
+      
+      // Append image if selected
       if (this.data.image.file) {
         REQUEST_DATA.append("avatar", this.data.image.file);
       }
-      if (this.data.client_name) {
-        REQUEST_DATA.append("name", this.data.client_name);
+      
+      // Append basic fields
+      if (this.data.name) {
+        REQUEST_DATA.append("name", this.data.name);
       }
       if (this.data.email) {
         REQUEST_DATA.append("email", this.data.email);
       }
-      REQUEST_DATA.append("is_vip", this.data.is_vip ? 1 : 0)
-      if (this.data.dial_code) {
-        REQUEST_DATA.append("country_code", this.data.dial_code);
+      if (this.data.mobile) {
+        REQUEST_DATA.append("mobile", this.data.mobile);
       }
-      if (this.data.phone) {
-        REQUEST_DATA.append("mobile", this.data.phone);
+      if (this.data.referral_code) {
+        REQUEST_DATA.append("referral_code", this.data.referral_code);
       }
-      // if (this.data.user_name) {
-      //   REQUEST_DATA.append("user_name", this.data.user_name);
-      // }
-      if (this.data.country) {
-        REQUEST_DATA.append("country_id", this.data.country?.id);
+      if (this.data.description) {
+        REQUEST_DATA.append("description", this.data.description);
       }
-      if (this.data.country_section) {
-        REQUEST_DATA.append("section_id", this.data.country_section?.id);
+      if (this.data.commercial_registration_number) {
+        REQUEST_DATA.append("commercial_registration_number", this.data.commercial_registration_number);
       }
-      // if (this.data.natonalty) {
-      //   REQUEST_DATA.append("nationality_id", this.data.natonalty?.id);
-      // }
-      if (this.data.company_name) {
-        REQUEST_DATA.append("company_name", this.data.company_name);
+      if (this.data.category?.id) {
+        REQUEST_DATA.append("category_id", this.data.category.id);
       }
-      if (this.data.address) {
-        REQUEST_DATA.append("address", this.data.address);
+      if (this.data.city?.id) {
+        REQUEST_DATA.append("city_id", this.data.city.id);
+      }
+      if (this.data.district?.id) {
+        REQUEST_DATA.append("district_id", this.data.district.id);
       }
       if (this.data.password) {
         REQUEST_DATA.append("password", this.data.password);
       }
-      if (this.data.passwordConfirmation) {
-        REQUEST_DATA.append(
-          "password_confirmation",
-          this.data.passwordConfirmation
-        );
+      if (this.data.password_confirmation) {
+        REQUEST_DATA.append("password_confirmation", this.data.password_confirmation);
+      }
+      if (this.data.dial_code) {
+        REQUEST_DATA.append("country_code", this.data.dial_code);
       }
       if (this.data.iso_code) {
         REQUEST_DATA.append("iso_code", this.data.iso_code);
       }
-      if (this.data.whatsapp_iso_code) {
-        REQUEST_DATA.append("whatsapp_iso_code", this.data.whatsapp_iso_code);
-      }
-      REQUEST_DATA.append("is_whatsapp_same", this.isWhatsappSame ? "1" : "0");
-
-      if (!this.isWhatsappSame) {
-        if (this.data.dial_code_whatsapp) {
-          REQUEST_DATA.append(
-            "whatsapp_country_code",
-            this.data.dial_code_whatsapp
-          );
-        }
-        if (this.data.whatsapp) {
-          REQUEST_DATA.append("whatsapp_number", this.data.whatsapp);
-        }
-      }
-      if (Array.isArray(this.data.fields)) {
-        this.data.fields.forEach((ele, index) => {
-          if (ele.socialType?.value) {
-            REQUEST_DATA.append(
-              `social_media[${index}][platform]`,
-              ele.socialType.value
-            );
-          }
-          if (ele.account_id) {
-            REQUEST_DATA.append(`social_media[${index}][id]`, ele.account_id);
-          }
-          if (ele.account_name) {
-            REQUEST_DATA.append(
-              `social_media[${index}][account_name]`,
-              ele.account_name
-            );
-          }
+      
+      // Append sub categories array
+      if (Array.isArray(this.data.sub_categories)) {
+        this.data.sub_categories.forEach((subCat, index) => {
+          REQUEST_DATA.append(`sub_category_ids[${index}]`, subCat.id);
         });
       }
+      
+      // Append active status
+      REQUEST_DATA.append("is_active", this.data.is_active ? "1" : "0");
+      
+      // Add method for PUT request
       REQUEST_DATA.append("_method", "put");
 
       try {
         await this.$axios({
           method: "POST",
-          url: `clients/${this.$route.params.id}`,
+          url: `providers/${this.$route.params.id}`,
           data: REQUEST_DATA,
         });
         this.isWaitingRequest = false;
         this.$message.success(this.$t("MESSAGES.editedSuccessfully"));
-        this.$router.push({ path: "/clients/all" });
+        this.$router.push({ path: "/providers/all" });
       } catch (error) {
         this.isWaitingRequest = false;
-        this.$message.error(error.response.data.message);
+        this.$message.error(error.response?.data?.message || "An error occurred");
       }
     },
     // End:: Submit Form
@@ -603,13 +440,34 @@ export default {
 
   async created() {
     // Start:: Fire Methods
-    // await this.getCities();
-    // await this.getBanks();
-    await this.showClient();
-    // this.geNatonalities();
-    this.getCountries();
-    this.getCountry_sections();
-    // End:: Fire Methods;
+    await this.getCategories();
+    await this.getCities();
+    await this.showProvider();
+    // End:: Fire Methods
   },
 };
 </script>
+
+<style scoped>
+.crud_form_wrapper {
+  padding: 20px;
+}
+
+.form_title_wrapper h4 {
+  color: #1b706f;
+  margin-bottom: 20px;
+}
+
+.btn_wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.switch_wrapper {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+}
+</style>
