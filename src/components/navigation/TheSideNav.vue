@@ -226,7 +226,7 @@
       <div
         class="home_route"
         @click="$emit('fireToggleNavDrawerEmit')"
-        v-if="$can('clients index', 'clients')"
+        v-if="$can('users index', 'users')"
       >
         <router-link to="/Clients/all">
           <span class="route_icon">
@@ -244,46 +244,27 @@
       </div>
       <!-- End:: Clients Route -->
 
-      <!-- Start:: sideNavbarList_providers Route -->
-      <div class="side_routes_wrapper" v-if="$can('influencers index', 'influencers')">
-        <a-menu
-          style="width: 100%"
-          mode="vertical"
-          :open-keys="openKeys"
-          @openChange="onOpenChange"
-        >
-          <a-sub-menu
-            v-for="item in sideNavbarList_providers"
-            :key="item.key"
-            :data-type="!item.children ? 'single_route' : ''"
-            style="border: none"
-          >
-            <template v-if="item.children">
-              <span slot="title">
-                <img :src="item.icon" alt="icon" width="35" height="35" />
-                <span> {{ item.title }} </span>
-              </span>
-
-              <a-menu-item
-                v-for="childItem in item.children"
-                :key="childItem.key"
-              >
-                <button
-                  v-if="childItem.hasPermission"
-                  class="text-start w-100"
-                  @click="$emit('fireToggleNavDrawerEmit')"
-                >
-                  <router-link :to="childItem.route">
-                    <i class="fad fa-circle"></i>
-                    {{ childItem.title }}
-                  </router-link>
-                </button>
-              </a-menu-item>
-            </template>
-          </a-sub-menu>
-        </a-menu>
+      <!-- Start:: Clients Route -->
+      <div
+        class="home_route"
+        @click="$emit('fireToggleNavDrawerEmit')"
+        v-if="$can('providers index', 'providers')"
+      >
+        <router-link to="/providers/all">
+          <span class="route_icon">
+            <img
+              src="@/assets/media/icons/ui_icons/clients.svg"
+              alt="icon"
+              width="40"
+              height="40"
+            />
+          </span>
+          <span class="route_text">
+            {{ $t("PLACEHOLDERS.control_admins") }}
+          </span>
+        </router-link>
       </div>
-      <!-- Start:: sideNavbarList_providers Route -->
+      <!-- End:: Clients Route -->
 
       <!-- Start:: Customers Route -->
       <div
@@ -1033,7 +1014,7 @@
       <!-- Start:: rates Route -->
 
       <!-- Start:: notifications Route -->
-      <div
+      <!-- <div
         class="home_route"
         @click="$emit('fireToggleNavDrawerEmit')"
         v-if="$can('notifications index', 'notifications')"
@@ -1051,7 +1032,7 @@
             {{ $t("SIDENAV.notifications.title") }}
           </span>
         </router-link>
-      </div>
+      </div> -->
       <!-- End:: notifications Route -->
 
       <!-- Start:: FAQ Route -->

@@ -1367,7 +1367,7 @@
     "feature_desc_en": "Feature Description (EN)",
     "advertisement": "Advertisement",
     "customer_name": "Customer Name",
-    "client_name": "Customer Name",
+    "client_name": "Client Name",
     "client_name_ar": "Customer Name (AR)",
     "client_name_en": "Customer Name (EN)",
     "client_opinion": "Customer Opinion",
@@ -1902,7 +1902,7 @@
     "Radio_Button": "Radio Button",
     "drop_down": "DropDown List",
 
-    "control_admins": "Control admins",
+    "control_admins": "Providers Management",
     "influencers_management": "Influencers Management",
     "influencer_name": "Influencer Name",
     "admins": "Service admins",

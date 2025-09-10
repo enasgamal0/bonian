@@ -313,10 +313,18 @@ import ShowAllNotifications from "../views/Cruds/Notifications/ShowAllNotificati
 // ================== Start:: Clients Routes
 import ClientsHome from "../views/Cruds/Clients/Home.vue";
 import AllClients from "../views/Cruds/Clients/ShowAll.vue";
-import CreateClients from "../views/Cruds/Clients/Create.vue";
-import EditClients from "../views/Cruds/Clients/Edit.vue";
+// import CreateClients from "../views/Cruds/Clients/Create.vue";
+// import EditClients from "../views/Cruds/Clients/Edit.vue";
 import ShowClients from "../views/Cruds/Clients/Show.vue";
 // ================= End:: Clients Routes
+
+// ================== Start:: Providers Routes
+import ProvidersHome from "../views/Cruds/Providers/Home.vue";
+import AllProviders from "../views/Cruds/Providers/ShowAll.vue";
+import CreateProviders from "../views/Cruds/Providers/Create.vue";
+import EditProviders from "../views/Cruds/Providers/Edit.vue";
+import ShowProviders from "../views/Cruds/Providers/Show.vue";
+// ================= End:: Providers Routes
 
 // ================== Start:: Customers Routes
 import CustomersHome from "../views/Cruds/Customers/Home.vue";
@@ -2495,36 +2503,36 @@ const routes = [
             meta: {
               middleware: [auth],
               requiresPermission: {
-                action: "clients index",
-                subject: "clients",
+                action: "users index",
+                subject: "users",
               },
             },
           },
-          {
-            path: "create",
-            name: "CreateClients",
-            component: CreateClients,
-            meta: {
-              middleware: [auth],
-              requiresPermission: {
-                action: "clients create",
-                subject: "clients",
-              },
-            },
-          },
-          {
-            path: "edit/:id",
-            name: "EditClients",
-            component: EditClients,
-            props: true,
-            meta: {
-              middleware: [auth],
-              requiresPermission: {
-                action: "clients edit",
-                subject: "clients",
-              },
-            },
-          },
+          // {
+          //   path: "create",
+          //   name: "CreateClients",
+          //   component: CreateClients,
+          //   meta: {
+          //     middleware: [auth],
+          //     requiresPermission: {
+          //       action: "users create",
+          //       subject: "users",
+          //     },
+          //   },
+          // },
+          // {
+          //   path: "edit/:id",
+          //   name: "EditClients",
+          //   component: EditClients,
+          //   props: true,
+          //   meta: {
+          //     middleware: [auth],
+          //     requiresPermission: {
+          //       action: "users edit",
+          //       subject: "users",
+          //     },
+          //   },
+          // },
           {
             path: "show/:id",
             name: "ShowClients",
@@ -2533,14 +2541,77 @@ const routes = [
             meta: {
               middleware: [auth],
               requiresPermission: {
-                action: "clients show",
-                subject: "clients",
+                action: "users show",
+                subject: "users",
               },
             },
           },
         ],
       },
       // End:: Clients Routes Config
+
+      // Start:: Providers Routes Config
+      {
+        path: "/Providers",
+        name: "ProvidersHome",
+        component: ProvidersHome,
+        meta: {
+          middleware: [auth],
+        },
+        children: [
+          {
+            path: "all",
+            name: "AllProviders",
+            component: AllProviders,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "providers index",
+                subject: "providers",
+              },
+            },
+          },
+          {
+            path: "create",
+            name: "CreateProviders",
+            component: CreateProviders,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "providers create",
+                subject: "providers",
+              },
+            },
+          },
+          {
+            path: "edit/:id",
+            name: "EditProviders",
+            component: EditProviders,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "providers edit",
+                subject: "providers",
+              },
+            },
+          },
+          {
+            path: "show/:id",
+            name: "ShowProviders",
+            component: ShowProviders,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "providers show",
+                subject: "providers",
+              },
+            },
+          },
+        ],
+      },
+      // End:: Providers Routes Config
 
       // Start:: Order requests config
       // {

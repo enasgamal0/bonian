@@ -1658,7 +1658,7 @@
     "deactivateReason": "سبب إلغاء التفعيل",
     "orderReason": "السبب",
     "blockReason": "سبب الحظر",
-    "joiningDate": "تاريخ الإنضمام",
+    "joiningDate": "تاريخ الانضمام",
     "deactivate": "إلغاء التفعيل",
     "active": "مفعل",
     "notActive": "معطل",
@@ -2245,7 +2245,7 @@
 
     "manage_user_join_requests": "إدارة طلبات انضمام المستخدمين",
     "manage_all_users": "إدارة جميع العملاء",
-    "manage_users": "إدارة العملاء/الشركات",
+    "manage_users": "إدارة العملاء",
 
     "how_to_delete_account": "كيفية حذف حسابك",
     "riyal": "ريال",

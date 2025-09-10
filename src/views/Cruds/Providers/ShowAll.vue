@@ -20,22 +20,29 @@
           <form @submit.prevent="submitFilterForm">
             <div class="row justify-content-center align-items-center w-100">
               <base-input
-                col="4"
+                col="3"
                 type="text"
-                :placeholder="$t('SIDENAV.Clients.name')"
+                :placeholder="$t('PLACEHOLDERS.name')"
                 v-model.trim="filterOptions.name"
               />
 
               <base-input
-                col="4"
+                col="3"
                 type="text"
                 :placeholder="$t('PLACEHOLDERS.phone')"
                 v-model.trim="filterOptions.mobile"
               />
 
+              <base-input
+                col="3"
+                type="text"
+                :placeholder="$t('PLACEHOLDERS.email')"
+                v-model.trim="filterOptions.email"
+              />
+
               <base-select-input
                 :optionsList="activeStatuses"
-                col="4"
+                col="3"
                 :placeholder="$t('PLACEHOLDERS.status')"
                 v-model="filterOptions.status"
               />
@@ -169,7 +176,7 @@
                 <i class="fad fa-times-circle"></i>
               </button>
             </a-tooltip>
-            <a-tooltip
+            <!-- <a-tooltip
               placement="bottom"
               v-if="$can('users delete', 'users') && item?.id !== 1"
             >
@@ -179,7 +186,7 @@
               <button class="btn_delete" @click="selectDeleteItem(item)">
                 <i class="fal fa-trash-alt"></i>
               </button>
-            </a-tooltip>
+            </a-tooltip> -->
           </div>
         </template>
         <!-- End:: Actions -->
@@ -465,6 +472,12 @@ export default {
           align: "center",
         },
         {
+          text: this.$t("PLACEHOLDERS.email"),
+          value: "email",
+          sortable: false,
+          align: "center",
+        },
+        {
           text: this.$t("PLACEHOLDERS.joiningDate"),
           value: "created_at",
           sortable: false,
@@ -544,6 +557,7 @@ export default {
     async resetFilter() {
       this.filterOptions.name = null;
       this.filterOptions.mobile = null;
+      this.filterOptions.email = null;
       this.filterOptions.status = null;
       // if (this.$route.query.page !== "1") {
       // await this.$router.push({
@@ -573,11 +587,12 @@ export default {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: "users",
+          url: "providers",
           params: {
             // page: this.paginations.current_page,
             name: this.filterOptions.name,
             mobile: this.filterOptions.mobile,
+            email: this.filterOptions.email,
             is_active: this.filterOptions.status?.value,
           },
         });
@@ -614,7 +629,7 @@ export default {
       try {
         await this.$axios({
           method: "POST",
-          url: `users/activate/${targetItem?.id}`,
+          url: `providers/activate/${targetItem?.id}`,
           data: REQUEST_DATA,
         });
         this.$message.success(this.$t("MESSAGES.changeActivation"));
@@ -657,7 +672,7 @@ export default {
       try {
         await this.$axios({
           method: "DELETE",
-          url: `admins/${this.itemToDelete?.id}`,
+          url: `providers/${this.itemToDelete?.id}`,
         });
         this.dialogDelete = false;
         this.tableRows = this.tableRows.filter((item) => {
