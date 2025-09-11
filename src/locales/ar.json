@@ -1002,6 +1002,7 @@
   },
 
   "TITLES": {
+    "showProvider": "عرض بيانات مقدم الخدمة",
     "addRecommendation": "إضافة توصية جديدة",
     "editRecommendation": "تعديل بيانات توصية",
     "showRecommendation": "عرض بيانات توصية",
@@ -1264,6 +1265,12 @@
   },
 
   "PLACEHOLDERS": {
+    "prev_imgs": "صور الأعمال السابقة",
+    "commercial_register_img": "صورة السجل التجاري",
+    "sub_categories": "الأقسام الفرعية",
+    "referral_code": "كود الإحالة",
+    "referral_code_status": "حالة كود الإحالة (اضغط للتغيير)",
+    "referral_points": "رصيد نقاط الإحالة",
     "sort": "الترتيب",
     "splash": "الشاشات الافتتاحية بالتطبيق",
     "add_splash": "إضافة شاشة افتتاحية جديدة",
@@ -1909,7 +1916,7 @@
     "admin_image": "صورة مقدم الخدمة",
     "company_name": "اسم الشركة",
     "License_number": "رقم الترخيص",
-    "commercial_register": "السجل التجاري",
+    "commercial_register": "رقم السجل التجاري",
     "Tax_registration": "السجل الضريبي",
     "Company_logo": "شعار الشركة",
 

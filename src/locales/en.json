@@ -1001,6 +1001,7 @@
   },
 
   "TITLES": {
+    "showProvider": "Show Provider Data",
     "addRecommendation": "Add a New Recommendation",
     "editRecommendation": "Edit Recommendation Data",
     "showRecommendation": "Show Recommendation Data",
@@ -1263,6 +1264,12 @@
   },
 
   "PLACEHOLDERS": {
+    "prev_imgs": "Previous Work Images",
+    "commercial_register_img": "Commercial Register Image",
+    "sub_categories": "Subcategories",
+    "referral_code": "Referral Code",
+    "referral_code_status": "Referral Code Status (Click to Toggle)",
+    "referral_points": "Referral Points Balance",
     "sort": "Sort ",
     "splash": "App Opening Screens Management",
     "add_splash": "Add a New Opening Screen",
@@ -1912,7 +1919,7 @@
     "admin_image": "Service admin image",
     "company_name": "Company name",
     "License_number": "License number",
-    "commercial_register": "Commercial register",
+    "commercial_register": "Commercial register number",
     "Tax_registration": "Tax registration",
     "Company_logo": "Company logo",
     "WhatsApp_contact": "WhatsApp contact",

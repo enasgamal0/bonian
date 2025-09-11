@@ -158,7 +158,7 @@
                 <i class="fal fa-eye"></i>
               </button>
             </a-tooltip>
-            <a-tooltip
+            <!-- <a-tooltip
               placement="bottom"
               v-if="$can('admins edit', 'admins') && item?.id !== 1"
             >
@@ -168,7 +168,7 @@
               <button class="btn_edit" @click="editItem(item)">
                 <i class="fal fa-edit"></i>
               </button>
-            </a-tooltip>
+            </a-tooltip> -->
             <!-- <a-tooltip
               placement="bottom"
               v-if="$can('users delete', 'users') && item?.id !== 1"

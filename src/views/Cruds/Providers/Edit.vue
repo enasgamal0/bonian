@@ -29,7 +29,7 @@
           <base-input
             col="6"
             type="text"
-            :placeholder="$t('PLACEHOLDERS.providerName')"
+            :placeholder="$t('PLACEHOLDERS.name')"
             v-model.trim="data.name"
             required
           />
@@ -38,7 +38,7 @@
           <!-- Start:: Email Input -->
           <base-input
             col="6"
-            type="email"
+            type="text"
             :placeholder="$t('PLACEHOLDERS.email')"
             v-model.trim="data.email"
             required
@@ -46,7 +46,7 @@
           <!-- End:: Email Input -->
 
           <!-- Start:: Phone Input -->
-          <base-phone-input
+          <!-- <base-phone-input
             col="12"
             required
             dir="ltr"
@@ -56,6 +56,13 @@
             :placeholder="$t('PLACEHOLDERS.phone')"
             :defaultCountry="data.dial_code"
             :key="key"
+          /> -->
+          <base-input
+            col="6"
+            type="text"
+            :placeholder="$t('PLACEHOLDERS.phone')"
+            v-model.trim="data.mobile"
+            required
           />
           <!-- End:: Phone Input -->
 
@@ -63,7 +70,7 @@
           <base-input
             col="6"
             type="text"
-            :placeholder="$t('PLACEHOLDERS.referralCode')"
+            :placeholder="$t('PLACEHOLDERS.referral_code')"
             v-model.trim="data.referral_code"
           />
           <!-- End:: Referral Code Input -->
@@ -72,7 +79,7 @@
           <base-input
             col="6"
             type="text"
-            :placeholder="$t('PLACEHOLDERS.commercialRegistration')"
+            :placeholder="$t('PLACEHOLDERS.commercial_register')"
             v-model.trim="data.commercial_registration_number"
             required
           />
@@ -129,29 +136,11 @@
           />
           <!-- End:: Description Textarea -->
 
-          <!-- Start:: Password Input -->
-          <base-input
-            col="6"
-            type="password"
-            :placeholder="$t('PLACEHOLDERS.password')"
-            v-model.trim="data.password"
-          />
-          <!-- End:: Password Input -->
-
-          <!-- Start:: Confirm Password Input -->
-          <base-input
-            col="6"
-            type="password"
-            :placeholder="$t('PLACEHOLDERS.confirmPassword')"
-            v-model.trim="data.password_confirmation"
-          />
-          <!-- End:: Confirm Password Input -->
-
           <!-- Start:: Active Switch -->
           <div class="input_wrapper switch_wrapper my-5">
             <v-switch
               color="green"
-              :label="$t('PLACEHOLDERS.isActive')"
+              :label="$t('PLACEHOLDERS.referral_code')"
               v-model="data.is_active"
               hide-details
             ></v-switch>
@@ -207,8 +196,6 @@ export default {
         sub_categories: [],
         city: null,
         district: null,
-        password: null,
-        password_confirmation: null,
         is_active: true,
         dial_code: null,
         iso_code: null,
@@ -394,12 +381,6 @@ export default {
       }
       if (this.data.district?.id) {
         REQUEST_DATA.append("district_id", this.data.district.id);
-      }
-      if (this.data.password) {
-        REQUEST_DATA.append("password", this.data.password);
-      }
-      if (this.data.password_confirmation) {
-        REQUEST_DATA.append("password_confirmation", this.data.password_confirmation);
       }
       if (this.data.dial_code) {
         REQUEST_DATA.append("country_code", this.data.dial_code);

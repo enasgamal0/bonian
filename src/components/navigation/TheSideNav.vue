@@ -231,7 +231,7 @@
         <router-link to="/Clients/all">
           <span class="route_icon">
             <img
-              src="@/assets/media/icons/ui_icons/clients.svg"
+              src="@/assets/media/icons/ui_icons/users.svg"
               alt="icon"
               width="40"
               height="40"
@@ -253,7 +253,7 @@
         <router-link to="/providers/all">
           <span class="route_icon">
             <img
-              src="@/assets/media/icons/ui_icons/clients.svg"
+              src="@/assets/media/icons/ui_icons/users_red.svg"
               alt="icon"
               width="40"
               height="40"
@@ -267,7 +267,7 @@
       <!-- End:: Clients Route -->
 
       <!-- Start:: Customers Route -->
-      <div
+      <!-- <div
         class="home_route"
         @click="$emit('fireToggleNavDrawerEmit')"
         v-if="$can('customers index', 'customers')"
@@ -285,7 +285,7 @@
             {{ $t("SIDENAV.Customers.title") }}
           </span>
         </router-link>
-      </div>
+      </div> -->
       <!-- End:: Customers Route -->
 
       <!-- Start:: main_sections Route -->
@@ -297,7 +297,7 @@
         <router-link to="/main-categories/all">
           <span class="route_icon">
             <img
-              src="@/assets/media/icons/ui_icons/folder.png"
+              src="@/assets/media/icons/ui_icons/categories_less_radius.svg"
               alt="icon"
               width="40"
               height="40"
@@ -319,7 +319,7 @@
         <router-link to="/sub-categories/all">
           <span class="route_icon">
             <img
-              src="@/assets/media/icons/ui_icons/folder.png"
+              src="@/assets/media/icons/ui_icons/subcategories_less_radius.svg"
               alt="icon"
               width="40"
               height="40"
@@ -846,7 +846,7 @@
         <router-link to="/Ads/all">
           <span class="route_icon">
             <img
-              src="@/assets/media/icons/ui_icons/ads.png"
+              src="@/assets/media/icons/ui_icons/image.svg"
               alt="icon"
               width="40"
               height="40"
@@ -868,7 +868,7 @@
         <router-link to="/Splash/all">
           <span class="route_icon">
             <img
-              src="@/assets/media/icons/ui_icons/ads.png"
+              src="@/assets/media/icons/ui_icons/star.svg"
               alt="icon"
               width="40"
               height="40"
@@ -1248,7 +1248,7 @@ export default {
         {
           key: "dashboard",
           title: this.$t("SIDENAV.control_admins"),
-          icon: require("@/assets/media/icons/ui_icons/panel.png"),
+          icon: require("@/assets/media/icons/ui_icons/roles.svg"),
           hasPermission: this.$can("roles index", "roles"),
           children: [
             {
@@ -1273,7 +1273,7 @@ export default {
         {
           key: "dashboard_places",
           title: this.$t("PLACEHOLDERS.places"),
-          icon: require("@/assets/media/icons/ui_icons/country.png"),
+          icon: require("@/assets/media/icons/ui_icons/addresses.svg"),
           hasPermission:
           this.$can("countries index", "countries") ||
             this.$can("areas index", "areas") ||
