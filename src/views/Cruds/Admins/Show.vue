@@ -2,7 +2,7 @@
   <div class="crud_form_wrapper single_show_content_wrapper">
     <!-- Start:: Title -->
     <div class="form_title_wrapper">
-      <h4>{{ $t("TITLES.showClient", { name: data.name }) }}</h4>
+      <h4>{{ $t("TITLES.showAdmin", { name: data.name }) }}</h4>
     </div>
     <div class="col-12 text-end">
       <v-btn @click="$router.go(-1)" style="color: #1b706f">
