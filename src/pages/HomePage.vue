@@ -11,7 +11,7 @@
       <!--  =========== End:: Table Title =========== -->
 
       <!--  =========== Start:: Data Table =========== -->
-      <div class="statics mt-4">
+      <div class="statics mt-4" v-if="statics && statics?.length">
         <div class="row">
           <div
             class="col-lg-6 col-md-6 col-12"
@@ -47,6 +47,7 @@
         </div>
       </div>
       <!--  =========== End:: Data Table =========== -->
+      <coming-soon v-else/>
     </main>
     <!-- End:: Main Section -->
   </div>
