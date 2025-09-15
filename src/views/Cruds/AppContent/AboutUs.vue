@@ -81,8 +81,8 @@ export default {
           url: `settings-general?key=about_us`,
         });
         // Start:: Set Data
-        this.data.contentAr = res.data.data.data[0].value?.ar;
-        this.data.contentEn = res.data.data.data[0].value?.en;
+        this.data.contentAr = res.data.data.data[0].value?.text?.ar;
+        this.data.contentEn = res.data.data.data[0].value?.text?.en;
         // End:: Set Data
       } catch (error) {
         console.log(error.response.data.message);
@@ -118,8 +118,10 @@ export default {
       const REQUEST_DATA = new FormData();
       // Start:: Append Request Data
       REQUEST_DATA.append("key", "about_us");
-      REQUEST_DATA.append("value[ar]", this.data.contentAr);
-      REQUEST_DATA.append("value[en]", this.data.contentEn);
+      REQUEST_DATA.append("value[text][ar]", this.data.contentAr);
+      REQUEST_DATA.append("value[text][en]", this.data.contentEn);
+      REQUEST_DATA.append("value[title][ar]", "عن التطبيق");
+      REQUEST_DATA.append("value[title][en]", "About us");
       // REQUEST_DATA.append("_method", "PUT");
 
       try {
