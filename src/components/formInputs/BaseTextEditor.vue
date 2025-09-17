@@ -6,10 +6,13 @@
         <span class="text-danger" v-if="required">*</span>
       </label>
       <vue-editor 
+        :class="disabled ? 'my-editor' : ''"
         ref="quillEditor"
         :editorToolbar="customToolbar"
         @input="updateValue($event)" 
         :value="value"
+        :disabled="disabled"
+        :readonly="readonly"
       />
     </div>
   </div>
@@ -100,3 +103,8 @@ export default {
   },
 };
 </script>
+<style>
+.my-editor .ql-toolbar {
+  display: none !important;
+}
+</style>

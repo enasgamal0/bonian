@@ -1002,6 +1002,7 @@
   },
 
   "TITLES": {
+    "showAdmin": "عرض بيانات مدير",
     "showProvider": "عرض بيانات مقدم الخدمة",
     "addRecommendation": "إضافة توصية جديدة",
     "editRecommendation": "تعديل بيانات توصية",
@@ -1265,6 +1266,7 @@
   },
 
   "PLACEHOLDERS": {
+    "is_verified": "التوثيق",
     "prev_imgs": "صور الأعمال السابقة",
     "commercial_register_img": "صورة السجل التجاري",
     "sub_categories": "الأقسام الفرعية",

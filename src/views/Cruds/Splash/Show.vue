@@ -43,7 +43,7 @@
           /> -->
 
           <base-input
-            col="6"
+            col="12"
             type="text"
             :placeholder="$t('PLACEHOLDERS.sort')"
             v-model.trim="data.sort"
@@ -51,22 +51,22 @@
           />
 
           <!-- Start:: Name Input -->
-          <base-input
-            col="12"
-            type="text"
-            :placeholder="$t('PLACEHOLDERS.nameAr')"
+          <base-text-editor
+            col="6"
+            :placeholder="$t('PLACEHOLDERS.contentAr')"
             v-model.trim="data.nameAr"
             disabled
+            readonly
           />
           <!-- End:: Name Input -->
 
           <!-- Start:: Name Input -->
-          <base-input
-            col="12"
-            type="text"
-            :placeholder="$t('PLACEHOLDERS.nameEn')"
+          <base-text-editor
+            col="6"
+            :placeholder="$t('PLACEHOLDERS.contentEn')"
             v-model.trim="data.nameEn"
             disabled
+            readonly
           />
           <!-- End:: Name Input -->
 

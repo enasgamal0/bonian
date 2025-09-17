@@ -26,7 +26,7 @@
           />
 
           <base-select-input
-            col="6"
+            col="12"
             :optionsList="[
               { id: 1, value: 1, name: '1' },
               { id: 2, value: 2, name: '2' },
@@ -38,20 +38,18 @@
           />
 
           <!-- Start:: Name Input -->
-          <base-input
-            col="12"
-            type="text"
-            :placeholder="$t('PLACEHOLDERS.nameAr')"
+          <base-text-editor
+            col="6"
+            :placeholder="$t('PLACEHOLDERS.contentAr')"
             v-model.trim="data.nameAr"
             required
           />
           <!-- End:: Name Input -->
 
           <!-- Start:: Name Input -->
-          <base-input
-            col="12"
-            type="text"
-            :placeholder="$t('PLACEHOLDERS.nameEn')"
+          <base-text-editor
+            col="6"
+            :placeholder="$t('PLACEHOLDERS.contentEn')"
             v-model.trim="data.nameEn"
             required
           />

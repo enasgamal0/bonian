@@ -124,6 +124,17 @@
         </template>
         <!-- End:: Activation Status -->
 
+        <!-- Start:: Verification Status -->
+        <template v-slot:[`item.is_verified`]="{ item }">
+          <span class="text-success text-h5" v-if="item?.is_verified">
+            <i class="far fa-check"></i>
+          </span>
+          <span class="text-danger text-h5" v-else>
+            <i class="far fa-times"></i>
+          </span>
+        </template>
+        <!-- End:: Verification Status -->
+
         <!-- Start:: Actions -->
         <template v-slot:[`item.actions`]="{ item }">
           <div class="actions">
@@ -389,6 +400,12 @@ export default {
         {
           text: this.$t("PLACEHOLDERS.joiningDate"),
           value: "created_at",
+          sortable: false,
+          align: "center",
+        },
+        {
+          text: this.$t("PLACEHOLDERS.is_verified"),
+          value: "is_verified",
           sortable: false,
           align: "center",
         },

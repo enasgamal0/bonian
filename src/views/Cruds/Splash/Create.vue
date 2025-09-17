@@ -29,17 +29,20 @@
           <!-- <BaseImageUploadInput @file-selected="handleFileSelected" @file-removed="handleFileRemoved" /> -->
 
           <base-select-input
-            col="6"
-            :optionsList="[{ id: 1, value: 1, name: '1' }, { id: 2, value: 2, name: '2' }, { id: 3, value: 3, name: '3' }]"
+            col="12"
+            :optionsList="[
+              { id: 1, value: 1, name: '1' },
+              { id: 2, value: 2, name: '2' },
+              { id: 3, value: 3, name: '3' },
+            ]"
             :placeholder="$t('PLACEHOLDERS.sort')"
             v-model="data.sort"
             required
           />
 
           <!-- Start:: Name Input -->
-          <base-input
-            col="12"
-            type="text"
+          <base-text-editor
+            col="6"
             :placeholder="$t('PLACEHOLDERS.contentAr')"
             v-model.trim="data.nameAr"
             required
@@ -47,9 +50,8 @@
           <!-- End:: Name Input -->
 
           <!-- Start:: Name Input -->
-          <base-input
-            col="12"
-            type="text"
+          <base-text-editor
+            col="6"
             :placeholder="$t('PLACEHOLDERS.contentEn')"
             v-model.trim="data.nameEn"
             required
@@ -179,7 +181,7 @@ export default {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.sort"));
         return;
-      }  else {
+      } else {
         this.submitForm();
         return;
       }

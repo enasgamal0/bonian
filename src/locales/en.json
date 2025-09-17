@@ -1001,6 +1001,7 @@
   },
 
   "TITLES": {
+    "showAdmin": "Show Admin Data",
     "showProvider": "Show Provider Data",
     "addRecommendation": "Add a New Recommendation",
     "editRecommendation": "Edit Recommendation Data",
@@ -1264,6 +1265,7 @@
   },
 
   "PLACEHOLDERS": {
+    "is_verified": "Verification",
     "prev_imgs": "Previous Work Images",
     "commercial_register_img": "Commercial Register Image",
     "sub_categories": "Subcategories",

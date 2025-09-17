@@ -108,15 +108,15 @@
 
         <!-- Start:: Title -->
         <template v-slot:[`item.name_ar`]="{ item }">
-          <p v-if="item.name_ar?.length > 20">{{ item.name_ar?.slice(0, 20) + '...' }}</p>
-          <p v-else>{{ item.name_ar }}</p>
+          <p v-if="item.name_ar?.length > 20" v-html="item.name_ar?.slice(0, 20) + '...' "></p>
+          <p v-else v-html="item.name_ar"></p>
         </template>
         <!-- End:: Title -->
 
         <!-- Start:: Title -->
         <template v-slot:[`item.name_en`]="{ item }">
-          <p v-if="item.name_en?.length > 20">{{ item.name_en?.slice(0, 20) + '...' }}</p>
-          <p v-else>{{ item.name_en }}</p>
+          <p v-if="item.name_en?.length > 20" v-html="item.name_en?.slice(0, 20) + '...' "></p>
+          <p v-else v-html="item.name_en"></p>
         </template>
         <!-- End:: Title -->
 
