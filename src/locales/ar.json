@@ -1051,6 +1051,7 @@
     "dashboardWelcome": "مرحبا بك في لوحة تحكم لمسة مُتقنة",
     "searchBy": "بحث بواسطة",
     "DeleteConfirmingMessage": "هل أنت متأكد؟ سيتم حذف ({name})",
+    "DeleteConfirmingMessageSplash": "هل أنت متأكد؟ سيتم حذف هذه الشاشة الافتتاحية",
     "WorkingHoursMessage": "مواعيد العمل لـ({name})",
     "DeleteDate": "لن تكون قادرا على استرداد البيانات مرة أخرى",
     "DeactivateConfirmingMessage": "هل أنت متأكد؟ سيتم إلغاء تفعيل ({name})",

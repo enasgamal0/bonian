@@ -108,15 +108,13 @@
 
         <!-- Start:: Title -->
         <template v-slot:[`item.name_ar`]="{ item }">
-          <p v-if="item.name_ar?.length > 20" v-html="item.name_ar?.slice(0, 20) + '...' "></p>
-          <p v-else v-html="item.name_ar"></p>
+          <p v-html="stripHtmlAndTruncate(item?.name_ar)"></p>
         </template>
         <!-- End:: Title -->
 
         <!-- Start:: Title -->
         <template v-slot:[`item.name_en`]="{ item }">
-          <p v-if="item.name_en?.length > 20" v-html="item.name_en?.slice(0, 20) + '...' "></p>
-          <p v-else v-html="item.name_en"></p>
+          <p v-html="stripHtmlAndTruncate(item?.name_en)"></p>
         </template>
         <!-- End:: Title -->
 
@@ -259,7 +257,7 @@
             <v-card>
               <v-card-title class="text-h5 justify-center" v-if="itemToDelete">
                 {{
-                  $t("TITLES.DeleteConfirmingMessage", {
+                  $t("TITLES.DeleteConfirmingMessageSplash", {
                     name: itemToDelete.name,
                   })
                 }}
@@ -423,6 +421,19 @@ export default {
   },
 
   methods: {
+    stripHtmlAndTruncate(text, maxLength = 30) {
+      if (!text) return "";
+
+      let strippedText = text.replace(/<[^>]*>/gm, " ");
+      strippedText = strippedText.replace(/[\r\n]+/g, " ");
+      strippedText = strippedText.replace(/\s+/g, " ").trim();
+      if (strippedText.length > maxLength) {
+        return strippedText.slice(0, maxLength) + "...";
+      }
+
+      return strippedText;
+    },
+
     // Start:: Handel Filter
     async submitFilterForm() {
       if (this.$route.query.page !== "1") {
@@ -460,7 +471,7 @@ export default {
           url: "opening-screens",
           params: {
             page: this.paginations.current_page,
-            'is_active': this.filterOptions.status?.value,
+            is_active: this.filterOptions.status?.value,
           },
         });
         this.loading = false;
@@ -508,9 +519,20 @@ export default {
     showImageModal(item) {
       this.dialogImage = true;
       this.selectedItemImage = item.image;
-      const videoExtensions = ["mp4", "mov", "avi", "wmv", "flv", "mkv", "webm", "m4v"];
+      const videoExtensions = [
+        "mp4",
+        "mov",
+        "avi",
+        "wmv",
+        "flv",
+        "mkv",
+        "webm",
+        "m4v",
+      ];
       const fileExtension = item.image.split(".").pop().toLowerCase();
-      this.selectedItemType = videoExtensions.includes(fileExtension) ? "video" : "image";
+      this.selectedItemType = videoExtensions.includes(fileExtension)
+        ? "video"
+        : "image";
     },
 
     // ===== Start:: Delete

@@ -1050,6 +1050,7 @@
     "dashboardWelcome": "Welcome To Saramh Admin Dashboard",
     "searchBy": "Search By",
     "DeleteConfirmingMessage": "Are You Sure? ({name}) Will Be Deleted",
+    "DeleteConfirmingMessageSplash": "Are You Sure? This Opening Screen Will Be Deleted",
     "WorkingHoursMessage": "Working Hours for ({name})",
     "DeleteDate": "You will not be able to retrieve data again",
     "DeactivateConfirmingMessage": "Are You Sure? ({name}) Will Be Deactivated",
