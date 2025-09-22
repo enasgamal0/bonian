@@ -2349,6 +2349,11 @@
   },
 
   "VALIDATION": {
+    "maxChars": "{field} must not exceed {max} characters",
+    "maxCharsAr": "Arabic content must not exceed 300 characters.",
+    "maxCharsEn": "English content must not exceed 300 characters.",
+    "characters": "characters",
+    "limitReached": "Limit Reached",
     "main_section": "Main Category Field is Required",
     "sort": "Sort Field is Required",
     "publish_start_date": "Publish Start Date Field is Required",

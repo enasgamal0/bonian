@@ -165,26 +165,56 @@ export default {
     validateFormInputs() {
       this.isWaitingRequest = true;
 
-      if (!this.data.nameAr) {
+      const stripHTML = (html) => {
+        const div = document.createElement("div");
+        div.innerHTML = html;
+        return div.textContent || div.innerText || "";
+      };
+
+      const nameArText = stripHTML(this.data.nameAr || "");
+      const nameEnText = stripHTML(this.data.nameEn || "");
+
+      if (!nameArText) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.contentAr"));
         return;
-      } else if (!this.data.nameEn) {
+      } else if (nameArText.length > 300) {
+        this.isWaitingRequest = false;
+        this.$message.error(
+          this.$t("VALIDATION.maxChars")
+            .replace("{field}", this.$t("PLACEHOLDERS.contentAr"))
+            .replace("{max}", 300)
+        );
+        return;
+      }
+
+      if (!nameEnText) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.contentEn"));
         return;
-      } else if (!this.data.image.file) {
+      } else if (nameEnText.length > 300) {
+        this.isWaitingRequest = false;
+        this.$message.error(
+          this.$t("VALIDATION.maxChars")
+            .replace("{field}", this.$t("PLACEHOLDERS.contentEn"))
+            .replace("{max}", 300)
+        );
+        return;
+      }
+
+      if (!this.data.image.file) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.image"));
         return;
-      } else if (!this.data.sort) {
+      }
+
+      if (!this.data.sort) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.sort"));
         return;
-      } else {
-        this.submitForm();
-        return;
       }
+
+      this.submitForm();
     },
     // End:: validate Form Inputs
 

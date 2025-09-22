@@ -861,7 +861,7 @@ form {
                   border: none;
                   border-radius: 8px;
                   // background-color: var(--soft_main_theme_clr);
-                  background-color: white;
+                  background-color: var(--theme_main_bg_clr);
                   .ql-picker-item {
                     color: var(--theme_text_clr);
                     &:hover {

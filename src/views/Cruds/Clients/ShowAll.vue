@@ -232,7 +232,7 @@
             </v-card>
           </v-dialog>
           <!-- End:: Deactivate Modal -->
-           <!-- Start:: Delete Modal -->
+          <!-- Start:: Delete Modal -->
           <v-dialog v-model="dialogDelete">
             <v-card>
               <v-card-title class="text-h5 justify-center" v-if="itemToDelete">
@@ -634,11 +634,54 @@ export default {
     },
 
     async downloadExcel() {
-      window.open(
-        "https://backend.bonian.moltaqadev.com/dashboard-api/v1/export-users",
-        "_blank"
-      );
-    },
+  this.excelDownloadBtnIsLoading = true;
+  try {
+    const query = new URLSearchParams();
+
+    // Add filters if present
+    if (this.filterOptions.name)
+      query.append("name", this.filterOptions.name);
+    if (this.filterOptions.mobile)
+      query.append("mobile", this.filterOptions.mobile);
+    if (this.filterOptions.status?.value !== undefined) {
+      query.append("status", this.filterOptions.status.value);
+    }
+
+    const url = `https://backend.bonian.moltaqadev.com/dashboard-api/v1/export-users?${query.toString()}`;
+
+    const response = await this.$axios.get(url, {
+      responseType: "blob",
+      headers: {
+        'Accept-Language': this.getAppLocale,
+      },
+    });
+    console.log(this.getAppLocale);
+
+    // Create a downloadable link from the blob
+    const blob = new Blob([response.data], { type: response.headers['content-type'] });
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    // Extract filename from Content-Disposition header if available
+    const disposition = response.headers["content-disposition"];
+    let fileName = "export.xlsx";
+    if (disposition && disposition.includes("filename=")) {
+      fileName = disposition.split("filename=")[1].replace(/"/g, "");
+    }
+
+    link.href = downloadUrl;
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(downloadUrl); // clean up
+  } catch (error) {
+    this.$message.error(this.$t("MESSAGES.downloadFailed"));
+    console.error("Download Excel failed:", error);
+  } finally {
+    this.excelDownloadBtnIsLoading = false;
+  }
+},
     // End:: Handling Download Files
 
     // ==================== Start:: Crud ====================
