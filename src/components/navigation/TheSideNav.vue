@@ -562,7 +562,7 @@
 
       <!-- Start:: places Route -->
       <div class="side_routes_wrapper" v-if="
-          $can('countries index', 'countries') || $can('areas index', 'areas') || $can('cities index', 'cities')
+          $can('countries index', 'countries') || $can('areas index', 'areas') || $can('cities index', 'cities') || $can('districts index', 'districts')
           ">
         <a-menu
           style="width: 100%"
