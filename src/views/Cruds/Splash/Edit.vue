@@ -176,12 +176,12 @@ export default {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.contentAr"));
         return;
-      } else if (nameArText.length > 300) {
+      } else if (nameArText.length > 250) {
         this.isWaitingRequest = false;
         this.$message.error(
           this.$t("VALIDATION.maxChars")
             .replace("{field}", this.$t("PLACEHOLDERS.contentAr"))
-            .replace("{max}", 300)
+            .replace("{max}", 250)
         );
         return;
       }
@@ -190,12 +190,12 @@ export default {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.contentEn"));
         return;
-      } else if (nameEnText.length > 300) {
+      } else if (nameEnText.length > 250) {
         this.isWaitingRequest = false;
         this.$message.error(
           this.$t("VALIDATION.maxChars")
             .replace("{field}", this.$t("PLACEHOLDERS.contentEn"))
-            .replace("{max}", 300)
+            .replace("{max}", 250)
         );
         return;
       }
