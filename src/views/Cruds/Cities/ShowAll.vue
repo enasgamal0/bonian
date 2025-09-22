@@ -476,7 +476,7 @@ export default {
         this.$message.success(this.$t("MESSAGES.deletedSuccessfully"));
       } catch (error) {
         this.dialogDelete = false;
-        this.$message.error(error.response.data.message);
+        this.$message.error(error.response.data?.errors?.message);
       }
     },
     // ===== End:: Delete
