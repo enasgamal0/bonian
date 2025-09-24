@@ -116,26 +116,32 @@
           />
           <!-- End:: Commercial Registration Input -->
 
-          <!-- Start:: Category Select -->
-          <base-input
-            col="6"
-            type="text"
-            :placeholder="$t('PLACEHOLDERS.mainSection')"
-            v-model.trim="data.category"
-            disabled
-          />
-          <!-- End:: Category Select -->
+          <!-- Start:: Categories With Sub Categories -->
+          <div
+            class="row no-padding"
+            v-for="(category, index) in structuredCategories"
+            :key="category.id"
+          >
+            <!-- Category Name -->
+            <base-input
+              col="6"
+              type="text"
+              :placeholder="$t('PLACEHOLDERS.mainSection') + ' #' +  (Number(index)+1)"
+              :value="category.name"
+              disabled
+            />
 
-          <!-- Start:: Sub Categories Multi Select -->
-          <base-select-input
-            col="6"
-            :optionsList="[]"
-            :placeholder="$t('PLACEHOLDERS.sub_categories')"
-            v-model.trim="data.sub_categories"
-            multiple
-            disabled
-          />
-          <!-- End:: Sub Categories Multi Select -->
+            <!-- Sub Categories -->
+            <base-select-input
+              col="6"
+              :optionsList="[]"
+              :placeholder="$t('PLACEHOLDERS.sub_categories') + ' #' +  (Number(index)+1)"
+              v-model.trim="category.sub_categories"
+              disabled
+              multiple
+            />
+          </div>
+          <!-- End:: Categories With Sub Categories -->
 
           <!-- Start:: City Select -->
           <base-input
@@ -406,6 +412,33 @@ export default {
     await this.showProvider();
     // End:: Fire Methods
   },
+
+  computed: {
+    structuredCategories() {
+      console.log(this.data.sub_categories);
+      if (!this.data.sub_categories || this.data.sub_categories.length === 0) {
+        return [];
+      }
+
+      const map = {};
+
+      this.data?.sub_categories?.forEach((subCat) => {
+        if (!map[subCat?.category_id]) {
+          const category = this.categories?.find(
+            (cat) => cat.id === subCat?.category_id
+          );
+          map[subCat?.category_id] = {
+            id: subCat?.category_id,
+            name: subCat?.category_name,
+            sub_categories: [],
+          };
+        }
+        map[subCat?.category_id].sub_categories.push(subCat);
+      });
+
+      return Object.values(map);
+    },
+  },
 };
 </script>
 
@@ -430,5 +463,12 @@ export default {
   display: flex;
   align-items: center;
   padding: 10px 0;
+}
+
+.no-padding {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 </style>
