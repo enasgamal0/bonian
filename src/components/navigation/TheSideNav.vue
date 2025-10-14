@@ -332,6 +332,26 @@
       </div>
       <!-- End:: sub_sections Route -->
 
+      <div
+        class="home_route"
+        @click="$emit('fireToggleNavDrawerEmit')"
+        v-if="$can('subcategoryquestions index', 'subcategoryquestions')"
+      >
+        <router-link to="/sub-categories-questions/all">
+          <span class="route_icon">
+            <img
+              src="@/assets/media/icons/ui_icons/subcategories_less_radius.svg"
+              alt="icon"
+              width="40"
+              height="40"
+            />
+          </span>
+          <span class="route_text">
+            {{ $t("PLACEHOLDERS.sub_categories_questions") }}
+          </span>
+        </router-link>
+      </div>
+
       <!-- Start:: acceptedproviders Route -->
       <!-- <div
         class="home_route"

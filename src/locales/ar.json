@@ -1143,6 +1143,7 @@
   },
 
   "BUTTONS": {
+    "addOption": "إضافة اختيار جديد",
     "social": "عرض الحسابات",
     "copy_prev": "إضافة كالسابق",
     "post": "نشر",
@@ -1267,6 +1268,20 @@
   },
 
   "PLACEHOLDERS": {
+    "are_you_sure": "هل أنت متأكد من حذف هذا السؤال؟",
+    "sub_categories_questions": "إدارة اسئلة الخدمات الفرعية",
+    "sub_categories_questions_create": "إضافة سؤال جديد",
+    "sub_categories_questions_edit": "تعديل بيانات سؤال",
+    "sub_categories_questions_show": "عرض بيانات سؤال",
+    "question_content": "نص السؤال",
+    "question_type": "نوع السؤال",
+    "sub_category_name": "اسم القسم الفرعي",
+    "questionText": "نص السؤال",
+    "questionType": "نوع السؤال",
+    "choices": "الاختيارات",
+    "option": "اختيار",
+    "writtenQuestion": "سؤال كتابي",
+    "multipleChoice": "سؤال اختيار متعدد",
     "is_verified": "التوثيق",
     "prev_imgs": "صور الأعمال السابقة",
     "commercial_register_img": "صورة السجل التجاري",

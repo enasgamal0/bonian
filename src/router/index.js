@@ -355,6 +355,15 @@ import CreateSubCategories from "../views/Cruds/SubCategories/Create.vue";
 import EditSubCategories from "../views/Cruds/SubCategories/Edit.vue";
 import ShowSubCategories from "../views/Cruds/SubCategories/Show.vue";
 // ============== End:: SubCategories Routes
+
+// ============== Start:: SubCategoriesQuestions Routes
+import SubCategoriesQuestionsHome from "../views/Cruds/SubCategoriesQuestions/Home.vue";
+import AllSubCategoriesQuestions from "../views/Cruds/SubCategoriesQuestions/ShowAll.vue";
+import CreateSubCategoriesQuestions from "../views/Cruds/SubCategoriesQuestions/Create.vue";
+import EditSubCategoriesQuestions from "../views/Cruds/SubCategoriesQuestions/Edit.vue";
+import ShowSubCategoriesQuestions from "../views/Cruds/SubCategoriesQuestions/Show.vue";
+// ============== End:: SubCategoriesQuestions Routes
+
 // ============== Start:: Coupons Routes
 import CouponsHome from "../views/Cruds/Coupons/Home.vue";
 import AllCoupons from "../views/Cruds/Coupons/ShowAll.vue";
@@ -2872,6 +2881,71 @@ const routes = [
         ],
       },
       // End:: sub Categories Routes Config
+
+      // Start:: sub Categories Questions Routes Config
+      {
+        path: "/sub-categories-questions",
+        name: "SubCategoriesQuestionsHome",
+        component: SubCategoriesQuestionsHome,
+        meta: {
+          middleware: [auth],
+        },
+        children: [
+          {
+            path: "all",
+            name: "AllSubCategoriesQuestions",
+            component: AllSubCategoriesQuestions,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "subcategoryquestions index",
+                subject: "subcategoryquestions",
+              },
+            },
+          },
+          {
+            path: "create",
+            name: "CreateSubCategoriesQuestions",
+            component: CreateSubCategoriesQuestions,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "subcategoryquestions create",
+                subject: "subcategoryquestions",
+              },
+            },
+          },
+          {
+            path: "edit/:id",
+            name: "EditSubCategoriesQuestions",
+            component: EditSubCategoriesQuestions,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "subcategoryquestions edit",
+                subject: "subcategoryquestions",
+              },
+            },
+          },
+          {
+            path: "show/:id",
+            name: "ShowSubCategoriesQuestions",
+            component: ShowSubCategoriesQuestions,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "subcategoryquestions show",
+                subject: "subcategoryquestions",
+              },
+            },
+          },
+        ],
+      },
+      // End:: sub Categories Questions Routes Config
+
+      
 
       // Start:: management Routes Config
       // {

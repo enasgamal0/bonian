@@ -1144,6 +1144,7 @@
   },
 
   "BUTTONS": {
+    "addOption": "Add a New Option",
     "social": "Show Social Media",
     "copy_prev": "Add as Previous",
     "post": "Post",
@@ -1266,6 +1267,20 @@
   },
 
   "PLACEHOLDERS": {
+    "are_you_sure": "Are you sure you want to delete this question?",
+    "sub_categories_questions": "Subcategories Questions",
+    "sub_categories_questions_create": "Create a new Question",
+    "sub_categories_questions_edit": "Edit Question Data",
+    "sub_categories_questions_show": "Show Question Data",
+    "question_content": "Question Content",
+    "question_type": "Question Type",
+    "sub_category_name": "Subcategory Name",
+    "questionText": "Question Content",
+    "questionType": "Question Type",
+    "choices": "Options",
+    "option": "Option",
+    "writtenQuestion": "Written Question",
+    "multipleChoice": "Multiple Choice Question",
     "is_verified": "Verification",
     "prev_imgs": "Previous Work Images",
     "commercial_register_img": "Commercial Register Image",
