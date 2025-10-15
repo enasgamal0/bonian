@@ -4,6 +4,11 @@
     <div class="form_title_wrapper">
       <h4>{{ $t("PLACEHOLDERS.sub_categories_questions_create") }}</h4>
     </div>
+    <div class="col-12 text-end">
+      <v-btn @click="$router.go(-1)" style="color: #1b706f">
+        <i class="fas fa-backward"></i>
+      </v-btn>
+    </div>
     <!-- End:: Title -->
 
     <!-- Start:: Single Step Form Content -->
@@ -54,25 +59,25 @@
           <!-- End:: Question Type Select -->
 
           <!-- Start:: Multiple Choice Options (shown only if type is mcq) -->
-          <div v-if="data.type && data.type.id === 'mcq'" class="col-12">
+          <div v-if="data?.type && data.type?.id === 'mcq'" class="col-12">
             <div class="options_wrapper mb-4">
               <label class="form-label">{{ $t('PLACEHOLDERS.choices') }}</label>
               
-              <div v-for="(option, index) in data.options" :key="index" class="option_item d-flex gap-2 mb-2">
+              <div v-for="(option, index) in data?.options" :key="index" class="option_item d-flex gap-2 mb-2">
                 <base-input
                   col="10"
                   type="text"
                   :placeholder="$t('PLACEHOLDERS.option') + ' ' + (index + 1)"
-                  v-model.trim="data.options[index]"
+                  v-model.trim="data?.options[index]"
                   required
                 />
                 <button 
                   type="button" 
-                  class="btn btn-danger btn-sm"
+                  style="border-radius: 50%; width: 25px; height: 25px; display: flex; align-items: center; justify-content: center; border: 1px solid red; color: red;"
                   @click="removeOption(index)"
-                  v-if="data.options.length > 2"
+                  v-if="data?.options.length > 2"
                 >
-                  <i class="mdi mdi-delete"></i>
+                 -
                 </button>
               </div>
 
@@ -92,7 +97,7 @@
             <v-switch
               color="green"
               :label="
-                data.is_active
+                data?.is_active
                   ? $t('PLACEHOLDERS.active')
                   : $t('PLACEHOLDERS.notActive')
               "
@@ -172,14 +177,14 @@ export default {
 
     // Start:: Add Option
     addOption() {
-      this.data.options.push('');
+      this.data?.options.push('');
     },
     // End:: Add Option
 
     // Start:: Remove Option
     removeOption(index) {
-      if (this.data.options.length > 2) {
-        this.data.options.splice(index, 1);
+      if (this.data?.options.length > 2) {
+        this.data?.options.splice(index, 1);
       }
     },
     // End:: Remove Option
@@ -188,31 +193,31 @@ export default {
     validateFormInputs() {
       this.isWaitingRequest = true;
 
-      // if (!this.main_section) {
-      //   this.isWaitingRequest = false;
-      //   this.$message.error(this.$t("VALIDATION.main_section"));
-      //   return;
-      // } else if (!this.sub_section) {
-      //   this.isWaitingRequest = false;
-      //   this.$message.error(this.$t("VALIDATION.sub_section"));
-      //   return;
-      // } else if (!this.data.question) {
-      //   this.isWaitingRequest = false;
-      //   this.$message.error(this.$t("VALIDATION.question"));
-      //   return;
-      // } else if (!this.data.type) {
-      //   this.isWaitingRequest = false;
-      //   this.$message.error(this.$t("VALIDATION.questionType"));
-      //   return;
-      // } else if (this.data.type.id === 'mcq') {
-      //   // Validate options for multiple choice
-      //   const filledOptions = this.data.options.filter(opt => opt.trim() !== '');
-      //   if (filledOptions.length < 2) {
-      //     this.isWaitingRequest = false;
-      //     this.$message.error(this.$t("VALIDATION.minTwoOptions"));
-      //     return;
-      //   }
-      // }
+      if (!this.main_section) {
+        this.isWaitingRequest = false;
+        this.$message.error(this.$t("VALIDATION.main_section"));
+        return;
+      } else if (!this.sub_section) {
+        this.isWaitingRequest = false;
+        this.$message.error(this.$t("VALIDATION.sub_section"));
+        return;
+      } else if (!this.data.question) {
+        this.isWaitingRequest = false;
+        this.$message.error(this.$t("VALIDATION.question"));
+        return;
+      } else if (!this.data.type) {
+        this.isWaitingRequest = false;
+        this.$message.error(this.$t("VALIDATION.questionType"));
+        return;
+      } else if (this.data.type.id === 'mcq') {
+        // Validate options for multiple choice
+        const filledOptions = this.data.options.filter(opt => opt.trim() !== '');
+        if (filledOptions.length < 2) {
+          this.isWaitingRequest = false;
+          this.$message.error(this.$t("VALIDATION.minTwoOptions"));
+          return;
+        }
+      }
       
       this.submitForm();
       return;
@@ -224,14 +229,22 @@ export default {
       const REQUEST_DATA = new FormData();
 
       // Start:: Append Request Data
-      REQUEST_DATA.append("sub_category_id", this.sub_section.id);
-      REQUEST_DATA.append("type", this.data.type.id);
-      REQUEST_DATA.append("question", this.data.question);
-      REQUEST_DATA.append("is_active", +this.data.is_active);
+      if (this.sub_section?.id) {
+        REQUEST_DATA.append("sub_category_id", this.sub_section?.id);
+      }
+      if (this.data?.type?.id) {
+        REQUEST_DATA.append("type", this.data?.type?.id);
+      }
+      if (this.data?.question) {
+        REQUEST_DATA.append("question", this.data?.question);
+      }
+      if (this.data?.is_active) {
+        REQUEST_DATA.append("is_active", +this.data?.is_active);
+      }
 
       // Append options if question type is mcq
-      if (this.data.type?.id === 'mcq') {
-        const filledOptions = this.data.options.filter(opt => opt.trim() !== '');
+      if (this.data?.type?.id === 'mcq') {
+        const filledOptions = this.data?.options.filter(opt => opt.trim() !== '');
         filledOptions.forEach((option, index) => {
           REQUEST_DATA.append(`options[${index}]`, option);
         });
@@ -262,7 +275,7 @@ export default {
           method: "GET",
           url: `categories?page=0&limit=0&is_active=1`,
         });
-        this.allMainCategories = res.data.data.data;
+        this.allMainCategories = res.data.data?.data;
         this.loading = false;
       } catch (error) {
         this.loading = false;
@@ -279,7 +292,7 @@ export default {
           method: "GET",
           url: `sub-categories?page=0&limit=0&is_active=1&category_id=${categoryId}`,
         });
-        this.allSubCategories = res.data.data.data;
+        this.allSubCategories = res.data.data?.data;
         this.loading = false;
       } catch (error) {
         this.loading = false;

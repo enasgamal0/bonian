@@ -2,65 +2,110 @@
   <div class="crud_form_wrapper">
     <!-- Start:: Title -->
     <div class="form_title_wrapper">
-      <h4>{{ $t("PLACEHOLDERS.edit_sub_section") }}</h4>
+      <h4>{{ $t("PLACEHOLDERS.sub_categories_questions_edit") }}</h4>
+    </div>
+    <div class="col-12 text-end">
+      <v-btn @click="$router.go(-1)" style="color: #1b706f">
+        <i class="fas fa-backward"></i>
+      </v-btn>
     </div>
     <!-- End:: Title -->
 
     <!-- Start:: Single Step Form Content -->
-    <div class="single_step_form_content_wrapper">
+    <div class="single_step_form_content_wrapper" v-if="!loading">
       <form @submit.prevent="validateFormInputs">
         <div class="row">
-          <base-image-upload-input
-            col="12"
-            identifier="image"
-            :preSelectedImage="data.image.path"
-            :placeholder="$t('PLACEHOLDERS.section_image')"
-            @selectImage="selectImage"
-            required
-          />
-
-          <!-- Start:: Ar Name Input -->
-          <base-input
-            col="6"
-            type="text"
-            :placeholder="$t('PLACEHOLDERS.nameAr')"
-            v-model.trim="data.nameAr"
-            required
-          />
-          <!-- End:: Ar Name Input -->
-
-          <!-- Start:: En Name Input -->
-          <base-input
-            col="6"
-            type="text"
-            :placeholder="$t('PLACEHOLDERS.nameEn')"
-            v-model.trim="data.nameEn"
-            required
-          />
-          <!-- End:: En Name Input -->
-
+          
+          <!-- Start:: Main Section Select -->
           <base-select-input
             col="6"
             :optionsList="allMainCategories"
             :placeholder="$t('PLACEHOLDERS.mainSection')"
             v-model="main_section"
+            @input="onMainCategoryChange"
             required
           />
+          <!-- End:: Main Section Select -->
 
-          <!-- Start:: Deactivate Switch Input -->
-          <!-- <div class="input_wrapper switch_wrapper my-5">
+          <!-- Start:: Sub Section Select -->
+          <base-select-input
+            col="6"
+            :optionsList="allSubCategories"
+            :placeholder="$t('PLACEHOLDERS.sub_section')"
+            v-model="sub_section"
+            :disabled="!main_section"
+            required
+          />
+          <!-- End:: Sub Section Select -->
+
+          <!-- Start:: Question Text Input -->
+          <base-input
+            col="12"
+            type="textarea"
+            :placeholder="$t('PLACEHOLDERS.questionText')"
+            v-model.trim="data.question"
+            required
+          />
+          <!-- End:: Question Text Input -->
+
+          <!-- Start:: Question Type Select -->
+          <base-select-input
+            col="6"
+            :optionsList="questionTypes"
+            :placeholder="$t('PLACEHOLDERS.questionType')"
+            v-model="data.type"
+            required
+          />
+          <!-- End:: Question Type Select -->
+
+          <!-- Start:: Multiple Choice Options (shown only if type is mcq) -->
+          <div v-if="data?.type && data.type?.id === 'mcq'" class="col-12">
+            <div class="options_wrapper mb-4">
+              <label class="form-label">{{ $t('PLACEHOLDERS.choices') }}</label>
+              
+              <div v-for="(option, index) in data?.options" :key="index" class="option_item d-flex gap-2 mb-2">
+                <base-input
+                  col="10"
+                  type="text"
+                  :placeholder="$t('PLACEHOLDERS.option') + ' ' + (index + 1)"
+                  v-model.trim="data?.options[index]"
+                  required
+                />
+                <button 
+                  type="button" 
+                  style="border-radius: 50%; width: 25px; height: 25px; display: flex; align-items: center; justify-content: center; border: 1px solid red; color: red;"
+                  @click="removeOption(index)"
+                  v-if="data?.options.length > 2"
+                >
+                 -
+                </button>
+              </div>
+
+              <button 
+                type="button" 
+                class="btn btn-secondary btn-sm mt-2"
+                @click="addOption"
+              >
+                <i class="mdi mdi-plus"></i> {{ $t('BUTTONS.addOption') }}
+              </button>
+            </div>
+          </div>
+          <!-- End:: Multiple Choice Options -->
+
+          <!-- Start:: Active Switch Input -->
+          <div class="input_wrapper switch_wrapper my-5">
             <v-switch
               color="green"
               :label="
-                data.active
+                data?.is_active
                   ? $t('PLACEHOLDERS.active')
                   : $t('PLACEHOLDERS.notActive')
               "
-              v-model="data.active"
+              v-model="data.is_active"
               hide-details
             ></v-switch>
-          </div> -->
-          <!-- End:: Deactivate Switch Input -->
+          </div>
+          <!-- End:: Active Switch Input -->
 
           <!-- Start:: Submit Button Wrapper -->
           <div class="btn_wrapper">
@@ -76,83 +121,120 @@
         </div>
       </form>
     </div>
+
+    <!-- Start:: Loading Spinner -->
+    <div v-else class="text-center py-5">
+      <v-progress-circular
+        indeterminate
+        color="primary"
+        size="64"
+      ></v-progress-circular>
+    </div>
+    <!-- End:: Loading Spinner -->
     <!-- END:: Single Step Form Content -->
   </div>
 </template>
 
 <script>
 export default {
-  name: "CreateArea",
+  name: "EditQuestion",
 
   data() {
     return {
       // Start:: Loader Control Data
       isWaitingRequest: false,
+      loading: false,
       // End:: Loader Control Data
+
+      // Start:: Question ID
+      questionId: null,
+      // End:: Question ID
 
       // Start:: Data Collection To Send
       data: {
-        image: {
-          path: null,
-          file: null,
-        },
-
-        nameAr: null,
-        nameEn: null,
-        active: true,
+        question: null,
+        type: null,
+        is_active: true,
+        options: ['', ''], // Default two empty options for multiple choice
       },
+      main_section: null,
+      sub_section: null,
       allMainCategories: [],
-      main_section: "",
+      allSubCategories: [],
       // End:: Data Collection To Send
+
+      // Start:: Question Types
+      questionTypes: [
+        {
+          id: 'written_question',
+          name: this.$t('PLACEHOLDERS.writtenQuestion') || 'سؤال مقالي (نصي)',
+        },
+        {
+          id: 'mcq',
+          name: this.$t('PLACEHOLDERS.multipleChoice') || 'اختيار من متعدد',
+        },
+      ],
+      // End:: Question Types
     };
   },
 
   methods: {
-    selectImage(selectedImage) {
-      this.data.image = selectedImage;
-    },
-
-    // Start:: Get Data To Edit
-    async getDataToEdit() {
-      try {
-        let res = await this.$axios({
-          method: "GET",
-          url: `sub-categories/${this.$route.params.id}`,
-        });
-        // console.log( "DATA TO EDIT =>", res.data.data.region );
-
-        // Start:: Set Data
-        this.data.image.path = res.data.data.SubCategory?.image;
-        this.data.nameAr = res.data.data.SubCategory?.name_ar;
-        this.data.nameEn = res.data.data.SubCategory?.name_en;
-        this.main_section = res.data.data.SubCategory?.category;
-        this.data.active = res.data.data.SubCategory?.is_active;
-        // End:: Set Data
-      } catch (error) {
-        console.log(error.response.data.message);
+    // Start:: Handle Main Category Change
+    async onMainCategoryChange() {
+      this.sub_section = null;
+      this.allSubCategories = [];
+      if (this.main_section) {
+        await this.getSubCategories(this.main_section.id);
       }
     },
-    // End:: Get Data To Edit
+    // End:: Handle Main Category Change
+
+    // Start:: Add Option
+    addOption() {
+      this.data?.options.push('');
+    },
+    // End:: Add Option
+
+    // Start:: Remove Option
+    removeOption(index) {
+      if (this.data?.options.length > 2) {
+        this.data?.options.splice(index, 1);
+      }
+    },
+    // End:: Remove Option
+
     // Start:: validate Form Inputs
     validateFormInputs() {
       this.isWaitingRequest = true;
 
-      if (!this.data.nameAr) {
-        this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.nameAr"));
-        return;
-      } else if (!this.data.nameEn) {
-        this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.nameEn"));
-        return;
-      } else if (!this.main_section) {
+      if (!this.main_section) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.main_section"));
         return;
-      } else {
-        this.submitForm();
+      } else if (!this.sub_section) {
+        this.isWaitingRequest = false;
+        this.$message.error(this.$t("VALIDATION.sub_section"));
         return;
+      } else if (!this.data.question) {
+        this.isWaitingRequest = false;
+        this.$message.error(this.$t("VALIDATION.question"));
+        return;
+      } else if (!this.data.type) {
+        this.isWaitingRequest = false;
+        this.$message.error(this.$t("VALIDATION.questionType"));
+        return;
+      } else if (this.data.type.id === 'mcq') {
+        // Validate options for multiple choice
+        const filledOptions = this.data.options.filter(opt => opt.trim() !== '');
+        if (filledOptions.length < 2) {
+          this.isWaitingRequest = false;
+          this.$message.error(this.$t("VALIDATION.minTwoOptions"));
+          return;
+        }
       }
+      
+      this.submitForm();
+      return;
     },
     // End:: validate Form Inputs
 
@@ -160,26 +242,38 @@ export default {
     async submitForm() {
       const REQUEST_DATA = new FormData();
 
-      if (this.data.image.file) {
-        REQUEST_DATA.append("image", this.data.image.file);
-      }
       // Start:: Append Request Data
-      REQUEST_DATA.append("name[ar]", this.data.nameAr);
-      REQUEST_DATA.append("name[en]", this.data.nameEn);
-      REQUEST_DATA.append("category_id", this.main_section.id);
-      // REQUEST_DATA.append("is_active", +this.data.active);
       REQUEST_DATA.append("_method", "PUT");
-      // Start:: Append Request Data
+      
+      if (this.sub_section?.id) {
+        REQUEST_DATA.append("sub_category_id", this.sub_section?.id);
+      }
+      if (this.data?.type?.id) {
+        REQUEST_DATA.append("type", this.data?.type?.id);
+      }
+      if (this.data?.question) {
+        REQUEST_DATA.append("question", this.data?.question);
+      }
+      REQUEST_DATA.append("is_active", this.data?.is_active ? 1 : 0);
+
+      // Append options if question type is mcq
+      if (this.data?.type?.id === 'mcq') {
+        const filledOptions = this.data?.options.filter(opt => opt.trim() !== '');
+        filledOptions.forEach((option, index) => {
+          REQUEST_DATA.append(`options[${index}]`, option);
+        });
+      }
+      // End:: Append Request Data
 
       try {
         await this.$axios({
           method: "POST",
-          url: `sub-categories/${this.$route.params.id}`,
+          url: `sub-categorys-questions/${this.questionId}`,
           data: REQUEST_DATA,
         });
         this.isWaitingRequest = false;
-        this.$message.success(this.$t("MESSAGES.editedSuccessfully"));
-        this.$router.push({ path: "/sub-categories/all" });
+        this.$message.success(this.$t("MESSAGES.updatedSuccessfully"));
+        this.$router.push({ path: "/sub-categories-questions/all" });
       } catch (error) {
         this.isWaitingRequest = false;
         this.$message.error(error.response.data.message);
@@ -187,26 +281,117 @@ export default {
     },
     // End:: Submit Form
 
-    async getSections() {
+    // Start:: Get Question Details
+    async getQuestionDetails() {
       this.loading = true;
+      try {
+        let res = await this.$axios({
+          method: "GET",
+          url: `sub-categorys-questions/${this.questionId}`,
+        });
+        
+        const questionData = res.data.data?.SubCategoryQuestion;
+        
+        // Set question data
+        this.data.question = questionData.question;
+        this.data.is_active = questionData.is_active;
+        
+        // Set question type
+        const typeId = questionData.type;
+        this.data.type = this.questionTypes.find(t => t.id === typeId);
+        
+        // Set options if MCQ
+        if (typeId === 'mcq' && questionData.options) {
+          this.data.options = questionData.options;
+        }
+        
+        // Set sub category
+        const subCategory = questionData.sub_category_id;
+        this.sub_section = {
+          id: subCategory.id,
+          name: subCategory.name
+        };
+        
+        // Get main category ID from sub category and load categories
+        await this.getMainCategories();
+        
+        // Find and set main category based on sub category
+        // Note: You might need to adjust this based on your API structure
+        // If your sub_category_id object includes category_id, use it
+        if (subCategory.category_id) {
+          this.main_section = this.allMainCategories.find(
+            cat => cat.id === subCategory.category_id
+          );
+          await this.getSubCategories(subCategory.category_id);
+        }
+        
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+        this.$message.error(error.response?.data?.message || this.$t("MESSAGES.errorLoadingData"));
+        console.log(error.response?.data?.message);
+      }
+    },
+    // End:: Get Question Details
+
+    // Start:: Get Main Categories
+    async getMainCategories() {
       try {
         let res = await this.$axios({
           method: "GET",
           url: `categories?page=0&limit=0&is_active=1`,
         });
-        this.allMainCategories = res.data.data.data;
+        this.allMainCategories = res.data.data?.data;
       } catch (error) {
-        this.loading = false;
-        console.log(error.response.data.message);
+        console.log(error.response?.data?.message);
       }
     },
+    // End:: Get Main Categories
+
+    // Start:: Get Sub Categories
+    async getSubCategories(categoryId) {
+      try {
+        let res = await this.$axios({
+          method: "GET",
+          url: `sub-categories?page=0&limit=0&is_active=1&category_id=${categoryId}`,
+        });
+        this.allSubCategories = res.data.data?.data;
+      } catch (error) {
+        console.log(error.response?.data?.message);
+      }
+    },
+    // End:: Get Sub Categories
   },
 
   async created() {
-    // Start:: Fire Methods
-    this.getDataToEdit();
-    this.getSections();
-    // End:: Fire Methods
+    // Get question ID from route params
+    this.questionId = this.$route.params.id;
+    
+    if (!this.questionId) {
+      this.$message.error(this.$t("MESSAGES.invalidQuestionId"));
+      this.$router.push({ path: "/sub-categories-questions/all" });
+      return;
+    }
+    
+    await this.getQuestionDetails();
   },
 };
 </script>
+
+<style scoped>
+.options_wrapper {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.option_item {
+  align-items: center;
+}
+
+.form-label {
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: block;
+}
+</style>

@@ -2368,8 +2368,12 @@
   },
 
   "VALIDATION": {
-    "maxChars": "{field} لا يمكن أن يتعدى {max} حرف",
+    "question": "حقل السؤال مطلوب",
     "main_section": "حقل القسم الرئيسي مطلوب",
+    "sub_section": "حقل القسم الفرعي مطلوب",
+    "questionType": "حقل نوع السؤال مطلوب",
+    "minTwoOptions": "يجب إضافة على الأقل 2 خيارات",
+    "maxChars": "{field} لا يمكن أن يتعدى {max} حرف",
     "sort": "حقل الترتيب مطلوب",
     "publish_start_date": "حقل تاريخ بداية النشر مطلوب",
     "publish_end_date": "حقل تاريخ نهاية النشر مطلوب",
