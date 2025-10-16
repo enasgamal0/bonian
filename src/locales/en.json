@@ -1001,6 +1001,7 @@
   },
 
   "TITLES": {
+    "DeleteRate": "Are you sure you want to delete this rate?",
     "showAdmin": "Show Admin Data",
     "showProvider": "Show Provider Data",
     "addRecommendation": "Add a New Recommendation",
@@ -1267,6 +1268,8 @@
   },
 
   "PLACEHOLDERS": {
+    "referral_codes_management": "Referral Codes Management",
+    "showRate": "Show Rate",
     "are_you_sure": "Are you sure you want to delete this question?",
     "sub_categories_questions": "Subcategories Questions",
     "sub_categories_questions_create": "Create a new Question",
@@ -1636,6 +1639,8 @@
     "imagesefed": "Images",
     "videoSub": "Videos",
     "date": "Date",
+    "data_from": "Date (From)",
+    "data_to": "Date (To)",
     "name": "Name",
     "nameAr": "Arabic Name",
     "nameEn": "English Name",

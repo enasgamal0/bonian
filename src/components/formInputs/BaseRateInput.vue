@@ -1,13 +1,13 @@
 <template>
   <div class="my-5" :class="col ? `col-lg-${col}` : ''">
     <div class="input_wrapper top_label">
-      <label class="form-label">
+      <label class="form-label" v-if="placeholder">
         {{ placeholder }}
         <span class="text-danger" v-if="required">*</span>
       </label>
 
       <v-rating
-        dir="ltr"
+        :dir="getAppLocale == 'ar' ? 'rtl' : 'ltr'"
         class="text-center w-100"
         :background-color="backgroundColor"
         :color="color"
@@ -21,12 +21,15 @@
         @click="$emit('fireClick')"
         @input="updateValue($event)"
         :disabled="disabled"
+        :readonly="readonly"
       />
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "BaseRateInput",
 
@@ -91,6 +94,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    readonly: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
     // ====== End:: General Inputs Props ====== //
 
     // ====== Start:: Textarea Input Props ====== //
@@ -106,6 +114,12 @@ export default {
     updateValue(e) {
       this.$emit("input", e);
     },
+  },
+
+  computed: {
+    ...mapGetters({
+      getAppLocale: "AppLangModule/getAppLocale",
+    }),
   },
 };
 </script>

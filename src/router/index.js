@@ -49,7 +49,14 @@ import AllFinancialPack from "../views/Cruds/FinancialPack/ShowAll.vue";
 // ============== Start:: AppRates Routes
 import AppRatesHome from "../views/Cruds/AppRates/Home.vue";
 import AllAppRates from "../views/Cruds/AppRates/ShowAll.vue";
+import ShowAppRates from "../views/Cruds/AppRates/Show.vue";
 // ============== End:: AppRates Routes
+
+// ============== Start:: ReferralCodes Routes
+import ReferralCodesHome from "../views/Cruds/ReferralCodes/Home.vue";
+import AllReferralCodes from "../views/Cruds/ReferralCodes/ShowAll.vue";
+import ShowReferralCodes from "../views/Cruds/ReferralCodes/Show.vue";
+// ============== End:: ReferralCodes Routes
 
 // ============== Start:: StoreRates Routes
 import StoreRatesHome from "../views/Cruds/StoreRates/Home.vue";
@@ -2774,29 +2781,67 @@ const routes = [
       // End:: Categories Routes Config
 
       // Start:: app-rates Routes Config
-      // {
-      //   path: "/app-rate",
-      //   name: "AppRatesHome",
-      //   component: AppRatesHome,
-      //   meta: {
-      //     middleware: [auth],
-      //   },
-      //   children: [
-      //     {
-      //       path: "all",
-      //       name: "AllAppRates",
-      //       component: AllAppRates,
-      //       meta: {
-      //         middleware: [auth],
-      //         requiresPermission: {
-      //           action: "rates index",
-      //           subject: "rates",
-      //         },
-      //       },
-      //     },
-      //   ],
-      // },
+      {
+        path: "/app-rate",
+        name: "AppRatesHome",
+        component: AppRatesHome,
+        meta: {
+          middleware: [auth],
+        },
+        children: [
+          {
+            path: "all",
+            name: "AllAppRates",
+            component: AllAppRates,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "rates index",
+                subject: "rates",
+              },
+            },
+          },
+          {
+            path: "show/:id",
+            name: "ShowAppRates",
+            component: ShowAppRates,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "rates show",
+                subject: "rates",
+              },
+            },
+          },
+        ],
+      },
       // End:: app-rates Routes Config
+
+      // Start:: referral-providers-codes Routes Config
+      {
+        path: "/referral-providers-codes",
+        name: "ReferralProvidersCodesHome",
+        component: ReferralCodesHome,
+        meta: {
+          middleware: [auth],
+        },
+        children: [
+          {
+            path: "all",
+            name: "AllReferralProvidersCodes",
+            component: AllReferralCodes,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "referralprovidercodes index",
+                subject: "referralprovidercodes",
+              },
+            },
+          },
+        ],
+      },
+      // End:: referral-providers-codes Routes Config
 
       // Start:: app-rates Routes Config
       // {

@@ -1033,6 +1033,54 @@
       </div> -->
       <!-- Start:: rates Route -->
 
+      <!-- Start:: rates Route -->
+       <div
+        class="home_route"
+        @click="$emit('fireToggleNavDrawerEmit')"
+        v-if="
+          $can('rates index', 'rates')
+        "
+      >
+        <router-link to="/app-rate/all">
+          <span class="route_icon">
+            <img
+              src="@/assets/media/icons/ui_icons/star.svg"
+              alt="icon"
+              width="40"
+              height="40"
+            />
+          </span>
+          <span class="route_text">
+            {{ $t("PLACEHOLDERS.rates") }}
+          </span>
+        </router-link>
+      </div>
+      <!-- Start:: rates Route -->
+
+      <!-- Start:: Referral Codes Route -->
+       <div
+        class="home_route"
+        @click="$emit('fireToggleNavDrawerEmit')"
+        v-if="
+          $can('referralprovidercodes index', 'referralprovidercodes')
+        "
+      >
+        <router-link to="/referral-providers-codes/all">
+          <span class="route_icon">
+            <img
+              src="@/assets/media/icons/ui_icons/hs_code.svg"
+              alt="icon"
+              width="40"
+              height="40"
+            />
+          </span>
+          <span class="route_text">
+            {{ $t("PLACEHOLDERS.referral_codes_management") }}
+          </span>
+        </router-link>
+      </div>
+      <!-- End:: Referral Codes Route -->
+
       <!-- Start:: notifications Route -->
       <!-- <div
         class="home_route"

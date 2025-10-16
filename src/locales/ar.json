@@ -1002,6 +1002,7 @@
   },
 
   "TITLES": {
+    "DeleteRate": "هل أنت متأكد من حذف هذا التقييم؟",
     "showAdmin": "عرض بيانات مدير",
     "showProvider": "عرض بيانات مقدم الخدمة",
     "addRecommendation": "إضافة توصية جديدة",
@@ -1268,6 +1269,8 @@
   },
 
   "PLACEHOLDERS": {
+    "referral_codes_management": "إدارة أكواد الإحالة",
+    "showRate": "عرض التقييم",
     "are_you_sure": "هل أنت متأكد من حذف هذا السؤال؟",
     "sub_categories_questions": "إدارة اسئلة الخدمات الفرعية",
     "sub_categories_questions_create": "إضافة سؤال جديد",
@@ -1634,6 +1637,8 @@
     "videoSub": "الفيديوهات",
     "messageType": "نوع الرسالة",
     "date": "التاريخ",
+    "data_from": "التاريخ (من)",
+    "data_to": "التاريخ (إلى)",
     "name": "الاسم",
     "email": "البريد الإلكتروني",
     "mobileNumber": "رقم الجوال",

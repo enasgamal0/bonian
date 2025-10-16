@@ -30,44 +30,42 @@
 
               <!-- Start:: Status Input -->
               <base-input
-                col="4"
+                col="5"
                 type="text"
                 :placeholder="$t('PLACEHOLDERS.client-name')"
                 v-model="filterOptions.client_name"
               />
               <!-- End:: Status Input -->
 
-              <!-- Start:: Status Input -->
-              <base-select-input
-                col="4"
-                :optionsList="activeStatuses"
-                :placeholder="$t('PLACEHOLDERS.status')"
-                v-model="filterOptions.status"
-              />
-              <!-- End:: Status Input -->
-
               <!-- Start:: Rate Input -->
-              <base-rate-input
-                col="4"
+              <!-- Make it a select list with options from 1 to 5 -->
+              <base-select-input
+                col="5"
                 :placeholder="$t('PLACEHOLDERS.rating_stars')"
                 v-model="filterOptions.rate"
-                size="22"
+                :optionsList="[
+                  { id: 1, value: 1, name: '1' },
+                  { id: 2, value: 2, name: '2' },
+                  { id: 3, value: 3, name: '3' },
+                  { id: 4, value: 4, name: '4' },
+                  { id: 5, value: 5, name: '5' },
+                ]"
               />
               <!-- End:: Rate Input -->
 
               <base-picker-input
-                col="4"
+                col="5"
                 type="date"
-                :placeholder="$t('PLACEHOLDERS.startDate')"
+                :placeholder="$t('PLACEHOLDERS.data_from')"
                 v-model.trim="filterOptions.from_date"
               />
               <!-- End:: Start Date Input -->
 
               <!-- Start:: End Date Input -->
               <base-picker-input
-                col="4"
+                col="5"
                 type="date"
-                :placeholder="$t('PLACEHOLDERS.endDate')"
+                :placeholder="$t('PLACEHOLDERS.data_to')"
                 v-model.trim="filterOptions.to_date"
               />
             </div>
@@ -135,9 +133,7 @@
 
         <!-- Start:: Rate Comment Btns -->
         <template v-slot:[`item.comment`]="{ item }">
-          <h6 class="text-danger" v-if="!item.comment">
-            {{ $t("TABLES.noData") }}
-          </h6>
+          <h6 v-if="!item.comment">-</h6>
 
           <div class="actions" v-else>
             <button class="btn_show" @click="showCommentModal(item.comment)">
@@ -154,61 +150,42 @@
           <h6 v-else>{{ item.name }}</h6>
         </template>
 
-        <!-- Start:: status Type -->
-        <template v-slot:[`item.status`]="{ item }">
-          <h6 class="text-danger" v-if="!item.status">
-            {{ $t("TABLES.noData") }}
-          </h6>
-          <v-chip v-else color="blue-grey darken-3" text-color="white" small>
-            {{ item.status }}
-          </v-chip>
-        </template>
-        <!-- End:: status Type -->
+        <!-- Start:: Rate -->
+        <template v-slot:[`item.rate`]="{ item }">
+  <h6 v-if="!item.rate">-</h6>
+  <base-rate-input
+    v-else
+    :value="item.rate"
+    :readonly="true"
+    :size="24"
+  />
+</template>
 
-        <!-- Start:: Activation -->
-        <!-- Start:: Activation Status -->
-        <template v-slot:[`item.is_active`]="{ item }">
-          <span class="text-success text-h5" v-if="item.is_active">
-            <i class="far fa-check"></i>
-          </span>
-          <span class="text-danger text-h5" v-else>
-            <i class="far fa-times"></i>
-          </span>
-        </template>
-        <!-- End:: Activation Status -->
 
         <!-- Start:: Actions -->
         <template v-slot:[`item.actions`]="{ item }">
-          <div class="actions" v-if="$can('rates changestatus', 'rates')">
-            <a-tooltip
-              placement="bottom"
-              v-if="item.status_enum == 'new' || item.status_enum == 'unpublished'"
-            >
+          <div class="actions">
+            <a-tooltip placement="bottom" v-if="$can('rates show', 'rates')">
               <template slot="title">
-                <span>{{ $t("BUTTONS.share") }}</span>
+                <span>{{ $t("BUTTONS.show") }}</span>
               </template>
-              <button
-                class="btn_activate"
-                @click="confirmAccept(item), 'published'"
-              >
-                <i class="fas fa-share"></i>
+              <button class="btn_show" @click="showItem(item)">
+                <i class="fal fa-eye"></i>
               </button>
             </a-tooltip>
+
             <a-tooltip
               placement="bottom"
-              v-if="item.status_enum == 'new' || item.status_enum == 'published'"
+              v-if="$can('rates activate', 'rates') || $can('rates delete', 'rates')"
             >
               <template slot="title">
-                <span>{{ $t("BUTTONS.block") }}</span>
+                <span>{{ $t("BUTTONS.delete") }}</span>
               </template>
-              <button class="btn_deactivate" @click="confirmChangeStatus(item)">
-                <i class="fas fa-ban"></i>
+              <button class="btn_delete" @click="selectDeleteItem(item)">
+                <i class="fal fa-trash-alt"></i>
               </button>
             </a-tooltip>
           </div>
-          <template v-else>
-            <i class="fal fa-lock-alt fs-5 blue-grey--text text--darken-1"></i>
-          </template>
         </template>
         <!-- End:: Actions -->
 
@@ -260,6 +237,27 @@
             </v-card>
           </v-dialog>
           <!-- End:: Update Modal -->
+           <!-- Start:: Delete Modal -->
+          <v-dialog v-model="dialogDelete">
+            <v-card>
+              <v-card-title class="text-h5 justify-center" v-if="itemToDelete">
+                {{
+                  $t("TITLES.DeleteRate")
+                }}
+              </v-card-title>
+              <v-card-actions>
+                <v-btn class="modal_confirm_btn" @click="confirmDeleteItem">{{
+                  $t("BUTTONS.yes")
+                }}</v-btn>
+
+                <v-btn class="modal_cancel_btn" @click="dialogDelete = false">{{
+                  $t("BUTTONS.cancel")
+                }}</v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <!-- End:: Delete Modal -->
         </template>
         <!-- ======================== End:: Dialogs ======================== -->
       </v-data-table>
@@ -300,26 +298,6 @@ export default {
     ...mapGetters({
       getAppLocale: "AppLangModule/getAppLocale",
     }),
-
-    activeStatuses() {
-      return [
-        {
-          id: 1,
-          name: this.$t("STATUS.published"),
-          value: "published",
-        },
-        {
-          id: 2,
-          name: this.$t("STATUS.notPublished"),
-          value: "unpublished",
-        },
-        {
-          id: null,
-          name: this.$t("STATUS.new"),
-          value: "new",
-        },
-      ];
-    },
   },
 
   data() {
@@ -334,7 +312,6 @@ export default {
       filterOptions: {
         orderNum: "",
         client_name: "",
-        status: "",
         rate: "",
         from_date: "",
         to_date: "",
@@ -365,19 +342,13 @@ export default {
         },
         {
           text: this.$t("TABLES.Rates.comment"),
-          value: "comment",
+          value: "message",
           align: "center",
           sortable: false,
         },
         {
-          text: this.$t("PLACEHOLDERS.add_at"),
+          text: this.$t("PLACEHOLDERS.created_at"),
           value: "created_at",
-          align: "center",
-          sortable: false,
-        },
-        {
-          text: this.$t("TABLES.Rates.publishStatus"),
-          value: "status",
           align: "center",
           sortable: false,
         },
@@ -386,11 +357,15 @@ export default {
           value: "actions",
           sortable: false,
           align: "center",
-          width: "80",
         },
       ],
       tableRows: [],
       // End:: Table Data
+
+      // Start:: Delete Data
+      dialogDelete: false,
+      itemToDelete: null,
+      // End:: Delete Data
 
       // Start:: Dialogs Control Data
       dialogComment: false,
@@ -422,6 +397,29 @@ export default {
   },
 
   methods: {
+    showItem(item) {
+      this.$router.push({ path: `/app-rate/show/${item?.id}` });
+    },
+    // ===== Start:: Delete
+    selectDeleteItem(item) {
+      this.dialogDelete = true;
+      this.itemToDelete = item;
+    },
+    async confirmDeleteItem() {
+      try {
+        await this.$axios({
+          method: "DELETE",
+          url: `rates/${this.itemToDelete.id}`,
+        });
+        this.dialogDelete = false;
+        this.setTableRows();
+        this.$message.success(this.$t("MESSAGES.deletedSuccessfully"));
+      } catch (error) {
+        this.dialogDelete = false;
+        this.$message.error(error.response.data.message);
+      }
+    },
+    // ===== End:: Delete
     // Start:: Handel Filter
     async submitFilterForm() {
       if (this.$route.query.page !== "1") {
@@ -431,7 +429,6 @@ export default {
     },
     async resetFilter() {
       this.filterOptions.client_name = null;
-      this.filterOptions.status = null;
       this.filterOptions.rate = null;
       this.filterOptions.from_date = null;
       this.filterOptions.to_date = null;
@@ -460,29 +457,28 @@ export default {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: "app-rates",
+          url: "rates",
 
           params: {
             page: this.paginations.current_page,
             // number_order: this.filterOptions.orderNum,
             name: this.filterOptions.client_name,
-            review: this.filterOptions.rate,
-            from: this.filterOptions.from_date,
-            to: this.filterOptions.to_date,
-            status: this.filterOptions.status?.value,
+            rate: this.filterOptions.rate?.value,
+            'created_at[0]': this.filterOptions.from_date,
+            'created_at[1]': this.filterOptions.to_date,
           },
         });
         this.loading = false;
-        res.data.data.forEach((item, index) => {
+        res.data.data?.data?.forEach((item, index) => {
           item.serialNumber =
             (this.paginations.current_page - 1) *
               this.paginations.items_per_page +
             index +
             1;
         });
-        this.tableRows = res.data.data;
-        this.paginations.last_page = res.data.meta.last_page;
-        this.paginations.items_per_page = res.data.meta.per_page;
+        this.tableRows = res.data.data?.data;
+        this.paginations.last_page = res.data?.data?.meta.last_page;
+        this.paginations.items_per_page = res.data?.data?.meta.per_page;
       } catch (error) {
         this.loading = false;
         console.log(error.response.data.message);
@@ -516,7 +512,9 @@ export default {
     //   }
     // },
     // End:: Change Activation Status
-    showItem(item) {},
+    showItem(item) {
+      this.$router.push({ path: `/app-rate/show/${item?.id}` });
+    },
     // ===== Start:: balance
     selectAcceptItem(item) {
       console.log("item", item);
