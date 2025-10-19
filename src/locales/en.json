@@ -560,7 +560,8 @@
       "details_units": "Unit Details",
       "terms": "Booking and Cancellation Terms",
       "data_provider": "Host Information",
-      "date_register": "Host Registration Date"
+      "date_register": "Host Registration Date",
+      "show": "Show Order Data"
     },
     "orders-provider": {
       "title": "الطلبات",
@@ -624,7 +625,28 @@
     }
   },
 
+  "FIELDS": {
+    "price": "Price",
+    "duration": "Duration",
+    "days": "Days",
+    "status": "Status",
+    "attachments": "Attachments",
+    "description": "Description",
+    "user_info": "User Info",
+    "city": "City",
+    "district": "District",
+    "offers": "Offers",
+    "provider_name": "Provider Name"
+  },
+
   "TABLES": {
+    "serial_number": "Order Number",
+    "service_name": "Service Name",
+    "user_name": "User Name",
+    "created_at": "Created At",
+    "status": "Status",
+    "offers_count": "Offers Count",
+    "actions": "Actions",
     "loadingData": "Loading Data",
     "noData": "No Data",
     "Addresses": {
@@ -922,6 +944,7 @@
   },
 
   "STATUS": {
+    "received_offers": "Offers Received",
     "blocked": "Block",
     "no_response": "No Response",
     "used": "Used",
@@ -1001,6 +1024,9 @@
   },
 
   "TITLES": {
+    "orders_and_quotations": "Orders & Quotations Management",
+    "order_details": "Order Details",
+    "offer_details": "Offer Details",
     "DeleteRate": "Are you sure you want to delete this rate?",
     "showAdmin": "Show Admin Data",
     "showProvider": "Show Provider Data",
@@ -1145,6 +1171,8 @@
   },
 
   "BUTTONS": {
+    "showDetails": "Show Details",
+    "reset": "Reset",
     "addOption": "Add a New Option",
     "social": "Show Social Media",
     "copy_prev": "Add as Previous",
@@ -1268,6 +1296,21 @@
   },
 
   "PLACEHOLDERS": {
+    "serialNumber": "Serial Number",
+    "subCategory": "Subcategory",
+    "note": "Note",
+    "attachments": "Attachments",
+    "offers": "Offers",
+    "noOffers": "No offers yet",
+    "provider": "Provider",
+    "countDays": "Days Count",
+    "quantity": "Quantity",
+    "file": "File",
+    "order_number": "Order Number",
+    "sub_service_name": "Sub Service Name",
+    "from_date": "From Date",
+    "to_date": "To Date",
+    "orders_and_quotations_management": "Orders and Quotations Management",
     "referral_codes_management": "Referral Codes Management",
     "showRate": "Show Rate",
     "are_you_sure": "Are you sure you want to delete this question?",

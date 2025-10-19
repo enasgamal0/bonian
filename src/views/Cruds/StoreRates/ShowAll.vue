@@ -328,6 +328,9 @@ export default {
 
   data() {
     return {
+      dialogUpdate: false,
+      itemToUpdate: null,
+      reason: "",
       // Start:: Loading Data
       loading: false,
       isWaitingRequest: false,

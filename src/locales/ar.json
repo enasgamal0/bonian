@@ -576,7 +576,8 @@
       "details_units": "تفاصيل الوحدة",
       "terms": "شروط الحجز والإلغاء",
       "data_provider": "بيانات المضيف",
-      "date_register": "تاريخ تسجيل المضيف في النظام"
+      "date_register": "تاريخ تسجيل المضيف في النظام",
+      "show": "عرض بيانات الطلب"
     },
     "orders-provider": {
       "title": "الطلبات",
@@ -634,7 +635,28 @@
     }
   },
 
+  "FIELDS": {
+    "price": "السعر",
+    "duration": "مدة التنفيذ",
+    "days": "يوم",
+    "status": "الحالة",
+    "attachments": "الملفات المرفقة",
+    "description": "الوصف",
+    "user_info": "معلومات المستخدم",
+    "city": "المدينة",
+    "district": "المنطقة",
+    "offers": "عروض الأسعار",
+    "provider_name": "مقدم الخدمة"
+  },
+
   "TABLES": {
+    "serial_number": "رقم الطلب",
+    "service_name": "اسم الخدمة",
+    "user_name": "اسم المستخدم",
+    "created_at": "تاريخ الإنشاء",
+    "status": "الحالة",
+    "offers_count": "عدد العروض",
+    "actions": "الإجراءات",
     "loadingData": "جاري تحميل البيانات",
     "noData": "لا يوجد بيانات",
     "Addresses": {
@@ -918,6 +940,7 @@
   },
 
   "STATUS": {
+    "received_offers": "تم استلام العروض",
     "blocked": "بلوك",
     "no_response": "لا يوجد رد",
     "used": "مستعمل",
@@ -1002,6 +1025,9 @@
   },
 
   "TITLES": {
+    "orders_and_quotations": "إدارة الطلبات وعروض الأسعار",
+    "order_details": "تفاصيل الطلب",
+    "offer_details": "تفاصيل عرض السعر",
     "DeleteRate": "هل أنت متأكد من حذف هذا التقييم؟",
     "showAdmin": "عرض بيانات مدير",
     "showProvider": "عرض بيانات مقدم الخدمة",
@@ -1144,6 +1170,8 @@
   },
 
   "BUTTONS": {
+    "showDetails": "عرض التفاصيل",
+    "reset": "إعادة تعيين",
     "addOption": "إضافة اختيار جديد",
     "social": "عرض الحسابات",
     "copy_prev": "إضافة كالسابق",
@@ -1269,6 +1297,21 @@
   },
 
   "PLACEHOLDERS": {
+    "serialNumber": "رقم التسلسل",
+    "subCategory": "الفئة الفرعية",
+    "note": "ملاحظات",
+    "attachments": "المرفقات",
+    "offers": "العروض",
+    "noOffers": "لا توجد عروض بعد",
+    "provider": "المزود",
+    "countDays": "عدد الأيام",
+    "quantity": "الكمية",
+    "file": "ملف",
+    "order_number": "رقم الطلب",
+    "sub_service_name": "اسم الخدمة الفرعية",
+    "from_date": "التاريخ (من)",
+    "to_date": "التاريخ (إلى)",
+    "orders_and_quotations_management": "إدارة الطلبات وعروض الأسعار",
     "referral_codes_management": "إدارة أكواد الإحالة",
     "showRate": "عرض التقييم",
     "are_you_sure": "هل أنت متأكد من حذف هذا السؤال؟",

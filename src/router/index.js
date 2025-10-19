@@ -58,6 +58,12 @@ import AllReferralCodes from "../views/Cruds/ReferralCodes/ShowAll.vue";
 import ShowReferralCodes from "../views/Cruds/ReferralCodes/Show.vue";
 // ============== End:: ReferralCodes Routes
 
+// ============== Start:: OrdersAndQuotations Routes
+import OrdersAndQuotationsHome from "../views/Cruds/OrdersAndQuotations/Home.vue";
+import AllOrdersAndQuotations from "../views/Cruds/OrdersAndQuotations/ShowAll.vue";
+import ShowOrdersAndQuotations from "../views/Cruds/OrdersAndQuotations/Show.vue";
+// ============== End:: OrdersAndQuotations Routes
+
 // ============== Start:: StoreRates Routes
 import StoreRatesHome from "../views/Cruds/StoreRates/Home.vue";
 import AllStoreRates from "../views/Cruds/StoreRates/ShowAll.vue";
@@ -2842,6 +2848,44 @@ const routes = [
         ],
       },
       // End:: referral-providers-codes Routes Config
+
+      // Start:: orders-and-quotations Routes Config
+      {
+        path: "/orders-and-quotations",
+        name: "OrdersAndQuotationsHome",
+        component: OrdersAndQuotationsHome,
+        meta: {
+          middleware: [auth],
+        },
+        children: [
+          {
+            path: "all",
+            name: "AllOrdersAndQuotations",
+            component: AllOrdersAndQuotations,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "orders index",
+                subject: "orders",
+              },
+            },
+          },
+          {
+            path: "show/:id",
+            name: "ShowOrdersAndQuotations",
+            component: ShowOrdersAndQuotations,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "orders show",
+                subject: "orders",
+              },
+            },
+          },
+        ],
+      },
+      // End:: orders-and-quotations Routes Config
 
       // Start:: app-rates Routes Config
       // {

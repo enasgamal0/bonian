@@ -20,22 +20,41 @@
         <div class="filter_form_wrapper">
           <form @submit.prevent="submitFilterForm">
             <div class="row justify-content-center align-items-center w-100">
-              <!-- Start:: Name Input -->
               <base-input
-                col="6"
+                col="5"
                 type="text"
-                :placeholder="$t('PLACEHOLDERS.name')"
-                v-model.trim="filterOptions.name"
+                :placeholder="$t('PLACEHOLDERS.order_number')"
+                v-model.trim="filterOptions.serial_number"
               />
-              <!-- End:: Name Input -->
+
+              <base-select-input
+                col="5"
+                :optionsList="subCategories"
+                :placeholder="$t('PLACEHOLDERS.sub_service_name')"
+                v-model.trim="filterOptions.sub_category"
+              />
+
+              <base-input
+                col="5"
+                type="date"
+                :placeholder="$t('PLACEHOLDERS.from_date')"
+                v-model="filterOptions.from_date"
+              />
+
+              <base-input
+                col="5"
+                type="date"
+                :placeholder="$t('PLACEHOLDERS.to_date')"
+                v-model="filterOptions.to_date"
+              />
 
               <!-- Start:: Status Input -->
-              <base-select-input
-                col="6"
+              <!-- <base-select-input
+                col="4"
                 :optionsList="activeStatuses"
                 :placeholder="$t('PLACEHOLDERS.status')"
                 v-model="filterOptions.is_active"
-              />
+              /> -->
               <!-- End:: Status Input -->
             </div>
 
@@ -60,7 +79,7 @@
       <!--  =========== Start:: Table Title =========== -->
       <div class="table_title_wrapper">
         <div class="title_text_wrapper">
-          <h5>{{ $t("PLACEHOLDERS.referral_codes_management") }}</h5>
+          <h5>{{ $t("PLACEHOLDERS.orders_and_quotations_management") }}</h5>
           <button
             v-if="!filterFormIsActive"
             class="filter_toggler"
@@ -108,7 +127,7 @@
             class="activation"
             dir="ltr"
             style="z-index: 1"
-            v-if="$can('banks activate', 'banks')"
+            v-if="$can('orders activate', 'orders')"
           >
             <v-switch
               class="mt-2"
@@ -124,37 +143,9 @@
         <!-- Start:: Actions -->
         <template v-slot:[`item.actions`]="{ item }">
           <div class="actions">
-            <a-tooltip placement="bottom" v-if="$can('banks delete', 'banks')">
-              <template slot="title">
-                <span>{{ $t("BUTTONS.delete") }}</span>
-              </template>
-              <button class="btn_delete" @click="selectDeleteItem(item)">
-                <i class="fal fa-trash-alt"></i>
-              </button>
-            </a-tooltip>
-            <a-tooltip placement="bottom" v-if="$can('banks edit', 'banks')">
-              <template slot="title">
-                <span>{{ $t("BUTTONS.edit") }}</span>
-              </template>
-
-              <button class="btn_edit" @click="editItem(item)">
-                <i class="fal fa-edit"></i>
-              </button>
-            </a-tooltip>
-            <a-tooltip placement="bottom" v-if="$can('banks show', 'banks')">
-              <template slot="title">
-                <span>{{ $t("BUTTONS.show") }}</span>
-              </template>
-              <button class="btn_show" @click="showItem(item)">
-                <i class="fal fa-eye"></i>
-              </button>
-            </a-tooltip>
-
-            <template v-else>
-              <i
-                class="fal fa-lock-alt fs-5 blue-grey--text text--darken-1"
-              ></i>
-            </template>
+            <button class="btn_show" @click="showItem(item)">
+              <i class="fal fa-eye"></i>
+            </button>
           </div>
         </template>
         <!-- End:: Actions -->
@@ -179,6 +170,25 @@
             @toggleModal="dialogDescription = !dialogDescription"
           />
           <!-- End:: Description Modal -->
+
+          <v-dialog v-model="dialogOfferDetails" max-width="800px">
+            <v-card>
+              <v-card-title>{{ selectedOffer?.provider_name }}</v-card-title>
+              <v-card-text>
+                <div v-for="p in selectedOffer?.offerProducts" :key="p.id">
+                  <p>{{ p?.name }} - {{ p?.quantity }} × {{ p?.price }}</p>
+                </div>
+                <div v-for="a in selectedOffer?.attachments" :key="a.id">
+                  <a :href="a?.attachment" target="_blank">{{ a?.attachment }}</a>
+                </div>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn color="primary" @click="dialogOfferDetails = false">{{
+                  $t("BUTTONS.close")
+                }}</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
 
           <!-- Start:: Delete Modal -->
           <v-dialog v-model="dialogDelete">
@@ -237,7 +247,7 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: "AllBanks",
+  name: "AllOrders",
 
   computed: {
     ...mapGetters({
@@ -262,6 +272,9 @@ export default {
 
   data() {
     return {
+      subCategories: [],
+      dialogOfferDetails: false,
+      selectedOffer: null,
       // Start:: Loading Data
       loading: false,
       isWaitingRequest: false,
@@ -274,6 +287,8 @@ export default {
         is_active: null,
         from_date: null,
         to_date: null,
+        serial_number: null,
+        sub_category: null,
       },
       // End:: Filter Data
 
@@ -281,36 +296,49 @@ export default {
       searchValue: "",
       tableHeaders: [
         {
-          text: this.$t("TABLES.Admins.serialNumber"),
-          value: "id",
+          text: this.$t("TABLES.serial_number"),
+          value: "serial_number",
           align: "center",
           sortable: false,
         },
         {
-          text: this.$t("PLACEHOLDERS.name"),
-          value: "name",
-          sortable: false,
+          text: this.$t("TABLES.service_name"),
+          value: "sub_category",
           align: "center",
+          sortable: false,
         },
         {
-          text: this.$t("PLACEHOLDERS.status"),
-          value: "is_active",
-          sortable: false,
+          text: this.$t("TABLES.user_name"),
+          value: "user",
           align: "center",
+          sortable: false,
         },
         {
-          text: this.$t("PLACEHOLDERS.created_at"),
+          text: this.$t("TABLES.created_at"),
           value: "created_at",
-          sortable: false,
           align: "center",
+          sortable: false,
         },
         {
-          text: this.$t("TABLES.Admins.actions"),
-          value: "actions",
-          sortable: false,
+          text: this.$t("TABLES.status"),
+          value: "status_trans",
           align: "center",
+          sortable: false,
+        },
+        {
+          text: this.$t("TABLES.offers_count"),
+          value: "offers_count",
+          align: "center",
+          sortable: false,
+        },
+        {
+          text: this.$t("TABLES.actions"),
+          value: "actions",
+          align: "center",
+          sortable: false,
         },
       ],
+
       tableRows: [],
       // End:: Table Data
 
@@ -349,7 +377,10 @@ export default {
     // Start:: Handel Filter
     async submitFilterForm() {
       if (this.$route.query.page !== "1") {
-        await this.$router.push({ path: "/banks/all", query: { page: 1 } });
+        await this.$router.push({
+          path: "/orders-and-quotations/all",
+          query: { page: 1 },
+        });
       }
       this.setTableRows();
     },
@@ -358,9 +389,14 @@ export default {
       this.filterOptions.is_active = null;
       this.filterOptions.from_date = null;
       this.filterOptions.to_date = null;
+      this.filterOptions.serial_number = null;
+      this.filterOptions.sub_category = null;
 
       if (this.$route.query.page !== "1") {
-        await this.$router.push({ path: "/banks/all", query: { page: 1 } });
+        await this.$router.push({
+          path: "/orders-and-quotations/all",
+          query: { page: 1 },
+        });
       }
       this.setTableRows();
     },
@@ -375,30 +411,45 @@ export default {
         },
       });
 
-      // Scroll To Screen's Top After Get banks
+      // Scroll To Screen's Top After Get orders-and-quotations
       document.body.scrollTop = 0; // For Safari
       document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     },
     async setTableRows() {
       this.loading = true;
       try {
-        console.log("this.filterOptions.name", this.filterOptions);
         let res = await this.$axios({
           method: "GET",
-          url: "referral_provider-codes",
+          url: "orders",
           params: {
             page: this.paginations.current_page,
-            name: this.filterOptions.name,
+            serial_number: this.filterOptions.serial_number,
+            subCategoryId: this.filterOptions.sub_category?.id,
+            "created_at[0]": this.filterOptions.from_date,
+            "created_at[1]": this.filterOptions.to_date,
             isActive: this.filterOptions.is_active?.value,
           },
         });
         this.loading = false;
-        this.tableRows = res.data.data.data;
-        // console.log(res.data.data.items?.id.bank.name);
-        this.paginations.last_page = res.data.data.meta.last_page;
-        this.paginations.items_per_page = res.data.data.meta.per_page;
+        console.log(res.data.data);
+        this.tableRows = res.data.data?.orders?.data;
+        this.paginations.last_page = res.data.data?.orders?.meta?.last_page;
+        this.paginations.items_per_page = res.data.data?.orders?.meta?.per_page;
       } catch (error) {
         this.loading = false;
+        console.log(error.response.data.message);
+      }
+    },
+
+    async getSubCategories() {
+      try {
+        let res = await this.$axios({
+          method: "GET",
+          url: "sub-categories?is_active=1&limit=0&page=0",
+        });
+        console.log("aaaa",res.data.data);
+        this.subCategories = res.data.data?.data;
+      } catch (error) {
         console.log(error.response.data.message);
       }
     },
@@ -422,7 +473,7 @@ export default {
       try {
         await this.$axios({
           method: "POST",
-          url: `referral_provider-codes/activate/${item.id}`,
+          url: `orders/activate/${item.id}`,
           data: REQUEST_DATA,
         });
         this.setTableRows();
@@ -436,10 +487,10 @@ export default {
     // ==================== Start:: Crud ====================
     // ===== Start:: End
     editItem(item) {
-      this.$router.push({ path: `/banks/edit/${item.id}` });
+      this.$router.push({ path: `/orders-and-quotations/edit/${item.id}` });
     },
     showItem(item) {
-      this.$router.push({ path: `/banks/show/${item.id}` });
+      this.$router.push({ path: `/orders-and-quotations/show/${item.id}` });
     },
     // ===== End:: End
 
@@ -453,7 +504,7 @@ export default {
       try {
         await this.$axios({
           method: "DELETE",
-          url: `referral_provider-codes/${this.itemToDelete.id}`,
+          url: `orders/${this.itemToDelete.id}`,
         });
         this.dialogDelete = false;
         this.setTableRows();
@@ -476,6 +527,7 @@ export default {
       this.paginations.current_page = +this.$route.query.page;
     }
     this.setTableRows();
+    this.getSubCategories();
     // End:: Fire Methods
   },
 };
