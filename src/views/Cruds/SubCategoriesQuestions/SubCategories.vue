@@ -23,19 +23,10 @@
               <base-input
                 col="6"
                 type="text"
-                :placeholder="$t('PLACEHOLDERS.question_content')"
-                v-model.trim="filterOptions.question"
+                :placeholder="$t('PLACEHOLDERS.sub_service_name')"
+                v-model.trim="filterOptions.name"
               />
               <!-- End:: Question Text Input -->
-
-              <!-- Start:: Status Input -->
-              <base-select-input
-                col="6"
-                :optionsList="activeStatuses"
-                :placeholder="$t('PLACEHOLDERS.status')"
-                v-model="filterOptions.status"
-              />
-              <!-- End:: Status Input -->
             </div>
 
             <div class="btns_wrapper">
@@ -59,7 +50,7 @@
       <!--  =========== Start:: Table Title =========== -->
       <div class="table_title_wrapper">
         <div class="title_text_wrapper">
-          <h5>{{ $t("PLACEHOLDERS.sub_categories_questions_all") }}: {{ subCategoryName }}</h5>
+          <h5>{{ $t("PLACEHOLDERS.sub_services_questions") }}</h5>
           <button
             v-if="!filterFormIsActive"
             class="filter_toggler"
@@ -67,14 +58,6 @@
           >
             <i class="fal fa-search"></i>
           </button>
-        </div>
-        <div
-          class="title_route_wrapper"
-          v-if="$can('subcategories create', 'subcategories')"
-        >
-          <router-link :to="`/sub-categories-questions/create/${$route.params?.id}`">
-            {{ $t("PLACEHOLDERS.sub_categories_questions_create") }}
-          </router-link>
         </div>
       </div>
       <!--  =========== End:: Table Title =========== -->
@@ -108,18 +91,13 @@
           </p>
         </template>
 
+        <!-- Start:: Question Text -->
         <template v-slot:[`item.question`]="{ item }">
-          <template>
-            <h6 v-if="item.question?.length === 0">
-              -
-            </h6>
-            <div class="actions" v-else>
-              <button class="btn_show" @click="showReplayModal(item?.question)">
-                <i class="fal fa-file-alt"></i>
-              </button>
-            </div>
-          </template>
+          <p class="text-truncate" style="max-width: 300px;" :title="item.question">
+            {{ item.question }}
+          </p>
         </template>
+        <!-- End:: Question Text -->
 
         <!-- Start:: Activation -->
         <template v-slot:[`item.is_active`]="{ item }">
@@ -152,9 +130,9 @@
         <!-- Start:: Actions -->
         <template v-slot:[`item.actions`]="{ item }">
           <div class="actions">
-            <!-- <a-tooltip
+            <a-tooltip
               placement="bottom"
-              v-if="$can('subcategories show', 'subcategories')"
+              v-if="$can('subcategories index', 'subcategories') && item?.number_of_questions > 0"
             >
               <template slot="title">
                 <span>{{ $t("BUTTONS.show") }}</span>
@@ -162,33 +140,8 @@
               <button class="btn_show" @click="showItem(item)">
                 <i class="fal fa-eye"></i>
               </button>
-            </a-tooltip> -->
-
-            <a-tooltip
-              placement="bottom"
-              v-if="$can('subcategories edit', 'subcategories')"
-            >
-              <template slot="title">
-                <span>{{ $t("BUTTONS.edit") }}</span>
-              </template>
-              <button class="btn_edit" @click="editItem(item)">
-                <i class="fal fa-edit"></i>
-              </button>
             </a-tooltip>
-
-            <a-tooltip
-              placement="bottom"
-              v-if="$can('subcategories delete', 'subcategories')"
-            >
-              <template slot="title">
-                <span>{{ $t("BUTTONS.delete") }}</span>
-              </template>
-              <button class="btn_delete" @click="selectDeleteItem(item)">
-                <i class="fal fa-trash-alt"></i>
-              </button>
-            </a-tooltip>
-
-            <template v-else>
+            <template v-if="item?.number_of_questions == 0">
               <i
                 class="fal fa-lock-alt fs-5 blue-grey--text text--darken-1"
               ></i>
@@ -199,14 +152,6 @@
 
         <!-- ======================== Start:: Dialogs ======================== -->
         <template v-slot:top>
-          <!-- Start:: Replay Modal -->
-          <description-modal
-            v-if="dialogReplay"
-            :modalIsOpen="dialogReplay"
-            :modalDesc="selectedReplayTextToShow"
-            @toggleModal="dialogReplay = !dialogReplay"
-          />
-          <!-- End:: Replay Modal -->
           <!-- Start:: Delete Modal -->
           <v-dialog v-model="dialogDelete">
             <v-card>
@@ -285,7 +230,6 @@ export default {
 
   data() {
     return {
-      subCategoryName: null,
       // Start:: Loading Data
       loading: false,
       isWaitingRequest: false,
@@ -294,8 +238,7 @@ export default {
       // Start:: Filter Data
       filterFormIsActive: false,
       filterOptions: {
-        question: null,
-        status: null,
+        name: null,
       },
       // End:: Filter Data
 
@@ -310,38 +253,19 @@ export default {
           sortable: false,
         },
         {
-          text: this.$t("PLACEHOLDERS.question_content"),
-          value: "question",
-          sortable: false,
-          align: "center",
-        },
-        {
-          text: this.$t("PLACEHOLDERS.question_type"),
-          value: "type_trans",
-          sortable: false,
-          align: "center",
-        },
-        {
           text: this.$t("PLACEHOLDERS.sub_service_name"),
-          value: "sub_category_id.name",
+          value: "name",
           sortable: false,
           align: "center",
         },
         {
-          text: this.$t("PLACEHOLDERS.created_at"),
-          value: "created_at",
+          text: this.$t("PLACEHOLDERS.sub_service_q_number"),
+          value: "number_of_questions",
           sortable: false,
           align: "center",
         },
         {
-          text: this.$t("PLACEHOLDERS.status"),
-          value: "is_active",
-          align: "center",
-          sortable: false,
-          width: "120",
-        },
-        {
-          text: this.$t("TABLES.Admins.actions"),
+          text: this.$t("PLACEHOLDERS.show_questions"),
           value: "actions",
           sortable: false,
           align: "center",
@@ -349,9 +273,6 @@ export default {
       ],
       tableRows: [],
       // End:: Table Data
-
-      dialogReplay: false,
-      selectedReplayTextToShow: "",
 
       // Start:: Dialogs Control Data
       dialogDelete: false,
@@ -378,26 +299,21 @@ export default {
   },
 
   methods: {
-    showReplayModal(question) {
-      this.dialogReplay = true;
-      this.selectedReplayTextToShow = question;
-    },
     // Start:: Handel Filter
     async submitFilterForm() {
       if (this.$route.query.page !== "1") {
         await this.$router.push({
-          path: "/sub-categories-questions/all/" + this.$route.params?.id,
+          path: "/sub-categories-questions/sub-categories",
           query: { page: 1 },
         });
       }
       this.setTableRows();
     },
     async resetFilter() {
-      this.filterOptions.question = null;
-      this.filterOptions.status = null;
+      this.filterOptions.name = null;
       if (this.$route.query.page !== "1") {
         await this.$router.push({
-          path: "/sub-categories-questions/all/" + this.$route.params?.id,
+          path: "/sub-categories-questions/sub-categories",
           query: { page: 1 },
         });
       }
@@ -423,17 +339,15 @@ export default {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: "sub-categorys-questions?sub_category_id=" + this.$route.params?.id,
+          url: "sub-categories?is_active=1",
           params: {
             page: this.paginations.current_page,
-            question: this.filterOptions.question,
-            is_active: this.filterOptions.status?.value,
+            name: this.filterOptions.name,
           },
         });
         this.loading = false;
         // console.log("All Data ==>", res.data.data);
         this.tableRows = res.data.data.data;
-        this.subCategoryName = res.data.data.data[0]?.sub_category_id?.name;
         this.paginations.last_page = res.data.data.meta.last_page;
         this.paginations.items_per_page = res.data.data.meta.per_page;
       } catch (error) {
@@ -449,7 +363,7 @@ export default {
       this.$router.push({ path: `/sub-categories-questions/edit/${item.id}` });
     },
     showItem(item) {
-      this.$router.push({ path: `/sub-categories-questions/show/${item.id}` });
+      this.$router.push({ path: `/sub-categories-questions/all/${item.id}` });
     },
     // ===== End:: Edit
 

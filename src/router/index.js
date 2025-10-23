@@ -375,6 +375,7 @@ import AllSubCategoriesQuestions from "../views/Cruds/SubCategoriesQuestions/Sho
 import CreateSubCategoriesQuestions from "../views/Cruds/SubCategoriesQuestions/Create.vue";
 import EditSubCategoriesQuestions from "../views/Cruds/SubCategoriesQuestions/Edit.vue";
 import ShowSubCategoriesQuestions from "../views/Cruds/SubCategoriesQuestions/Show.vue";
+import SubCategories from "../views/Cruds/SubCategoriesQuestions/SubCategories.vue";
 // ============== End:: SubCategoriesQuestions Routes
 
 // ============== Start:: Coupons Routes
@@ -2981,7 +2982,7 @@ const routes = [
         },
         children: [
           {
-            path: "all",
+            path: "all/:id",
             name: "AllSubCategoriesQuestions",
             component: AllSubCategoriesQuestions,
             meta: {
@@ -2993,9 +2994,10 @@ const routes = [
             },
           },
           {
-            path: "create",
+            path: "create/:id",
             name: "CreateSubCategoriesQuestions",
             component: CreateSubCategoriesQuestions,
+            props: true,
             meta: {
               middleware: [auth],
               requiresPermission: {
@@ -3026,6 +3028,19 @@ const routes = [
               middleware: [auth],
               requiresPermission: {
                 action: "subcategoryquestions show",
+                subject: "subcategoryquestions",
+              },
+            },
+          },
+          {
+            path: "sub-categories",
+            name: "SubCategories",
+            component: SubCategories,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "subcategoryquestions index",
                 subject: "subcategoryquestions",
               },
             },

@@ -337,7 +337,7 @@
         @click="$emit('fireToggleNavDrawerEmit')"
         v-if="$can('subcategoryquestions index', 'subcategoryquestions')"
       >
-        <router-link to="/sub-categories-questions/all">
+        <router-link to="/sub-categories-questions/sub-categories">
           <span class="route_icon">
             <img
               src="@/assets/media/icons/ui_icons/subcategories_less_radius.svg"

@@ -48,7 +48,7 @@
             v-if="data.feedback"
             col="12"
             type="text"
-            :placeholder="$t('PLACEHOLDERS.comment')"
+            :placeholder="$t('TABLES.Rates.comment')"
             v-model.trim="data.feedback"
             disabled
           />
@@ -110,8 +110,8 @@ export default {
         this.data.email = res.data.data.Rate?.user?.email;
         this.data.mobile = res.data.data.Rate?.user?.mobile;
         this.data.rate = res.data.data.Rate?.rate;
-        this.data.feedback = res.data.data.Rate.feedback;
-        this.data.created_at = res.data.data.Rate.created_at;
+        this.data.feedback = res.data.data.Rate?.message;
+        this.data.created_at = res.data.data.Rate?.created_at;
       } catch (error) {
         this.loading = false;
         console.log(error?.response?.data?.message);

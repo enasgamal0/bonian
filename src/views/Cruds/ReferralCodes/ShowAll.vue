@@ -102,18 +102,18 @@
         </template>
 
         <!-- Start:: Activation -->
-        <template v-slot:[`item.is_active`]="{ item }">
+        <template v-slot:[`item.provider.code_status`]="{ item }">
           <!-- v-if="permissions.activate" -->
           <div
             class="activation"
             dir="ltr"
             style="z-index: 1"
-            v-if="$can('banks activate', 'banks')"
+            v-if="$can('referralprovidercodes activate', 'referralprovidercodes')"
           >
             <v-switch
               class="mt-2"
               color="success"
-              v-model="item.is_active"
+              v-model="item.provider.code_status"
               hide-details
               @change="changeActivationStatus(item)"
             ></v-switch>
@@ -124,7 +124,7 @@
         <!-- Start:: Actions -->
         <template v-slot:[`item.actions`]="{ item }">
           <div class="actions">
-            <a-tooltip placement="bottom" v-if="$can('banks delete', 'banks')">
+            <a-tooltip placement="bottom" v-if="$can('referralprovidercodes delete', 'referralprovidercodes')">
               <template slot="title">
                 <span>{{ $t("BUTTONS.delete") }}</span>
               </template>
@@ -132,7 +132,7 @@
                 <i class="fal fa-trash-alt"></i>
               </button>
             </a-tooltip>
-            <a-tooltip placement="bottom" v-if="$can('banks edit', 'banks')">
+            <a-tooltip placement="bottom" v-if="$can('referralprovidercodes edit', 'referralprovidercodes')">
               <template slot="title">
                 <span>{{ $t("BUTTONS.edit") }}</span>
               </template>
@@ -141,7 +141,7 @@
                 <i class="fal fa-edit"></i>
               </button>
             </a-tooltip>
-            <a-tooltip placement="bottom" v-if="$can('banks show', 'banks')">
+            <a-tooltip placement="bottom" v-if="$can('referralprovidercodes show', 'referralprovidercodes')">
               <template slot="title">
                 <span>{{ $t("BUTTONS.show") }}</span>
               </template>
@@ -237,7 +237,7 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: "AllBanks",
+  name: "AllReferralCodes",
 
   computed: {
     ...mapGetters({
@@ -287,20 +287,38 @@ export default {
           sortable: false,
         },
         {
-          text: this.$t("PLACEHOLDERS.name"),
-          value: "name",
+          text: this.$t("PLACEHOLDERS.provider_name_referral"),
+          value: "provider.name",
           sortable: false,
           align: "center",
         },
         {
-          text: this.$t("PLACEHOLDERS.status"),
-          value: "is_active",
+          text: this.$t("PLACEHOLDERS.referral_code"),
+          value: "provider.code",
+          sortable: false,
+          align: "center",
+        },
+        {
+          text: this.$t("PLACEHOLDERS.joined_provider"),
+          value: "joined_provider.name",
+          sortable: false,
+          align: "center",
+        },
+        {
+          text: this.$t("PLACEHOLDERS.points"),
+          value: "points",
           sortable: false,
           align: "center",
         },
         {
           text: this.$t("PLACEHOLDERS.created_at"),
           value: "created_at",
+          sortable: false,
+          align: "center",
+        },
+        {
+          text: this.$t("PLACEHOLDERS.status"),
+          value: "provider.code_status",
           sortable: false,
           align: "center",
         },
@@ -349,7 +367,7 @@ export default {
     // Start:: Handel Filter
     async submitFilterForm() {
       if (this.$route.query.page !== "1") {
-        await this.$router.push({ path: "/banks/all", query: { page: 1 } });
+        await this.$router.push({ path: "/referral_codes/all", query: { page: 1 } });
       }
       this.setTableRows();
     },
@@ -360,7 +378,7 @@ export default {
       this.filterOptions.to_date = null;
 
       if (this.$route.query.page !== "1") {
-        await this.$router.push({ path: "/banks/all", query: { page: 1 } });
+        await this.$router.push({ path: "/referral_codes/all", query: { page: 1 } });
       }
       this.setTableRows();
     },
@@ -375,7 +393,7 @@ export default {
         },
       });
 
-      // Scroll To Screen's Top After Get banks
+      // Scroll To Screen's Top After Get ReferralCodes
       document.body.scrollTop = 0; // For Safari
       document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     },
@@ -394,7 +412,6 @@ export default {
         });
         this.loading = false;
         this.tableRows = res.data.data.data;
-        // console.log(res.data.data.items?.id.bank.name);
         this.paginations.last_page = res.data.data.meta.last_page;
         this.paginations.items_per_page = res.data.data.meta.per_page;
       } catch (error) {
@@ -436,10 +453,10 @@ export default {
     // ==================== Start:: Crud ====================
     // ===== Start:: End
     editItem(item) {
-      this.$router.push({ path: `/banks/edit/${item.id}` });
+      this.$router.push({ path: `/referral_codes/edit/${item.id}` });
     },
     showItem(item) {
-      this.$router.push({ path: `/banks/show/${item.id}` });
+      this.$router.push({ path: `/referral_codes/show/${item.id}` });
     },
     // ===== End:: End
 

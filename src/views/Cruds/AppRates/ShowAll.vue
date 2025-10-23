@@ -132,11 +132,11 @@
         </template>
 
         <!-- Start:: Rate Comment Btns -->
-        <template v-slot:[`item.comment`]="{ item }">
-          <h6 v-if="!item.comment">-</h6>
+        <template v-slot:[`item.message`]="{ item }">
+          <h6 v-if="!item.message">-</h6>
 
           <div class="actions" v-else>
-            <button class="btn_show" @click="showCommentModal(item.comment)">
+            <button class="btn_show" @click="showCommentModal(item.message)">
               <i class="fal fa-file-alt"></i>
             </button>
           </div>
@@ -465,7 +465,7 @@ export default {
           params: {
             page: this.paginations.current_page,
             // number_order: this.filterOptions.orderNum,
-            name: this.filterOptions.client_name,
+            user: this.filterOptions.client_name,
             rate: this.filterOptions.rate?.value,
             'created_at[0]': this.filterOptions.from_date,
             'created_at[1]': this.filterOptions.to_date,
