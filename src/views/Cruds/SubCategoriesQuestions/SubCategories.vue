@@ -132,7 +132,7 @@
           <div class="actions">
             <a-tooltip
               placement="bottom"
-              v-if="$can('subcategories index', 'subcategories') && item?.number_of_questions > 0"
+              v-if="$can('subcategories index', 'subcategories') && item?.num_of_questions > 0"
             >
               <template slot="title">
                 <span>{{ $t("BUTTONS.show") }}</span>
@@ -141,7 +141,7 @@
                 <i class="fal fa-eye"></i>
               </button>
             </a-tooltip>
-            <template v-if="item?.number_of_questions == 0">
+            <template v-if="item?.num_of_questions == 0">
               <i
                 class="fal fa-lock-alt fs-5 blue-grey--text text--darken-1"
               ></i>
@@ -260,7 +260,7 @@ export default {
         },
         {
           text: this.$t("PLACEHOLDERS.sub_service_q_number"),
-          value: "number_of_questions",
+          value: "num_of_questions",
           sortable: false,
           align: "center",
         },

@@ -20,8 +20,20 @@
     "generalSettings": "إعدادات عامة",
     "appSettings": "إعدادات التطبيق"
   },
-
+"LABELS": {
+    "codeOwnerName": "اسم صاحب الكود",
+    "referralCode": "كود الإحالة",
+    "joinedProviderName": "اسم مقدم الخدمة المنضم",
+    "joinedProviderEmail": "البريد الإلكتروني للمنضم",
+    "joinDate": "تاريخ الإنضمام",
+    "referralPoints": "عدد النقاط المكتسبة من الإحالة",
+    "totalPoints": "رصيد النقاط الإجمالي",
+    "codeStatus": "حالة الكود"
+  },
   "SIDENAV": {
+     "referral-providers-codes": {
+      "show": "عرض تفاصيل كود الإحالة"
+    },
     "dashboard": "الرئيسية",
     "control_admins": "إدارة لوحة التحكم",
     "placese": "إدارة الاماكن",
@@ -1297,6 +1309,16 @@
   },
 
   "PLACEHOLDERS": {
+    "codeOwnerName": "اسم صاحب الكود",
+    "referralCode": "كود الإحالة",
+    "joinedProviderName": "اسم مقدم الخدمة المنضم عبر الكود",
+    "joinedProviderEmail": "البريد الإلكتروني للمنضم",
+    "joinDate": "تاريخ الانضمام",
+    "referralPoints": "عدد النقاط المكتسبة من الإحالة",
+    "totalPoints": "رصيد النقاط الإجمالي لصاحب الكود",
+    "provider_name_referral": "اسم صاحب الكود",
+    "joined_provider_name_referral": "اسم المنضم عبر الكود",
+    "points": "عدد النقاط المكتسبة من الإحالة",
     "offers_num": "عروض",
     "riyal_price": "السعر (بالريال)",
     "riyal_total_price": "السعر الإجمالي (بالريال)",
@@ -2562,6 +2584,8 @@
   },
 
   "MESSAGES": {
+    "errorOccurred": "حدث خطأ",
+    "somethingWentWrong": "حدث خطأ ما، يرجى المحاولة مرة أخرى",
     "excel_success": "تم إضافة البيانات بنجاح",
     "uploadedSuccessfully": "تم رفع الملف بنجاح",
     "uploadFailed": "حدث خطأ أثناء رفع الملف، حاول مرة أخرى",

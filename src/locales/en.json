@@ -20,8 +20,21 @@
     "generalSettings": "General Settings",
     "appSettings": "App Settings"
   },
+  "LABELS": {
+    "codeOwnerName": "Code Owner Name",
+    "referralCode": "Referral Code",
+    "joinedProviderName": "Joined Provider Name",
+    "joinedProviderEmail": "Joined Provider Email",
+    "joinDate": "Join Date",
+    "referralPoints": "Referral Points Earned",
+    "totalPoints": "Total Points Balance",
+    "codeStatus": "Code Status"
+  },
 
   "SIDENAV": {
+    "referral-providers-codes": {
+      "show": "Show Referral Code Details"
+    },
     "dashboard": "Home",
     "control_admins": "Control Panel Management",
     "placese": "Places Management",
@@ -1296,6 +1309,16 @@
   },
 
   "PLACEHOLDERS": {
+    "codeOwnerName": "Code provider name",
+    "referralCode": "Referral code",
+    "joinedProviderName": "Joined provider name",
+    "joinedProviderEmail": "Joined provider email",
+    "joinDate": "Join date",
+    "referralPoints": "Referral earned points",
+    "totalPoints": "Total points balance of the code provider",
+    "provider_name_referral": "Code provider name",
+    "joined_provider_name_referral": "Joined provider name",
+    "points": "Referral earned points",
     "offers_num": "Offers",
     "riyal_price": "Price (in Riyal)",
     "riyal_total_price": "Total Price (in Riyal)",
@@ -2561,6 +2584,8 @@
   },
 
   "MESSAGES": {
+    "errorOccurred": "Error Occurred",
+    "somethingWentWrong": "Something went wrong, please try again",
     "excel_success": "Influencer Data has been imported successfully",
     "uploadedSuccessfully": "The File has been Uploaded Successfully",
     "uploadFailed": "An Error occurred while Uploading the File, Please Try Again",

@@ -22,19 +22,37 @@
             <div class="row justify-content-center align-items-center w-100">
               <!-- Start:: Name Input -->
               <base-input
-                col="6"
+                col="5"
                 type="text"
-                :placeholder="$t('PLACEHOLDERS.name')"
-                v-model.trim="filterOptions.name"
+                :placeholder="$t('PLACEHOLDERS.provider_name_referral')"
+                v-model.trim="filterOptions.providerName"
               />
               <!-- End:: Name Input -->
 
+              <!-- Start:: Code Input -->
+              <base-input
+                col="5"
+                type="text"
+                :placeholder="$t('PLACEHOLDERS.referral_code')"
+                v-model.trim="filterOptions.code"
+              />
+              <!-- End:: Code Input -->
+
+              <!-- Start:: Joined Provider Name Input -->
+              <base-input
+                col="5"
+                type="text"
+                :placeholder="$t('PLACEHOLDERS.joined_provider_name_referral')"
+                v-model.trim="filterOptions.joinedProviderName"
+              />
+              <!-- End:: Joined Provider Name Input -->
+
               <!-- Start:: Status Input -->
               <base-select-input
-                col="6"
+                col="5"
                 :optionsList="activeStatuses"
                 :placeholder="$t('PLACEHOLDERS.status')"
-                v-model="filterOptions.is_active"
+                v-model="filterOptions.status"
               />
               <!-- End:: Status Input -->
             </div>
@@ -270,10 +288,10 @@ export default {
       // Start:: Filter Data
       filterFormIsActive: false,
       filterOptions: {
-        name: null,
-        is_active: null,
-        from_date: null,
-        to_date: null,
+        providerName: null,
+        code: null,
+        joinedProviderName: null,
+        status: null,
       },
       // End:: Filter Data
 
@@ -299,7 +317,7 @@ export default {
           align: "center",
         },
         {
-          text: this.$t("PLACEHOLDERS.joined_provider"),
+          text: this.$t("PLACEHOLDERS.joined_provider_name_referral"),
           value: "joined_provider.name",
           sortable: false,
           align: "center",
@@ -307,12 +325,6 @@ export default {
         {
           text: this.$t("PLACEHOLDERS.points"),
           value: "points",
-          sortable: false,
-          align: "center",
-        },
-        {
-          text: this.$t("PLACEHOLDERS.created_at"),
-          value: "created_at",
           sortable: false,
           align: "center",
         },
@@ -367,18 +379,18 @@ export default {
     // Start:: Handel Filter
     async submitFilterForm() {
       if (this.$route.query.page !== "1") {
-        await this.$router.push({ path: "/referral_codes/all", query: { page: 1 } });
+        await this.$router.push({ path: "/referral-providers-codes/all", query: { page: 1 } });
       }
       this.setTableRows();
     },
     async resetFilter() {
-      this.filterOptions.name = null;
-      this.filterOptions.is_active = null;
-      this.filterOptions.from_date = null;
-      this.filterOptions.to_date = null;
+      this.filterOptions.providerName = null;
+      this.filterOptions.code = null;
+      this.filterOptions.joinedProviderName = null;
+      this.filterOptions.status = null;
 
       if (this.$route.query.page !== "1") {
-        await this.$router.push({ path: "/referral_codes/all", query: { page: 1 } });
+        await this.$router.push({ path: "/referral-providers-codes/all", query: { page: 1 } });
       }
       this.setTableRows();
     },
@@ -400,14 +412,15 @@ export default {
     async setTableRows() {
       this.loading = true;
       try {
-        console.log("this.filterOptions.name", this.filterOptions);
         let res = await this.$axios({
           method: "GET",
           url: "referral_provider-codes",
           params: {
             page: this.paginations.current_page,
-            name: this.filterOptions.name,
-            isActive: this.filterOptions.is_active?.value,
+            providerName: this.filterOptions.providerName,
+            code: this.filterOptions.code,
+            joinedProviderName: this.filterOptions.joinedProviderName,
+            status: this.filterOptions.status?.value,
           },
         });
         this.loading = false;
@@ -453,10 +466,10 @@ export default {
     // ==================== Start:: Crud ====================
     // ===== Start:: End
     editItem(item) {
-      this.$router.push({ path: `/referral_codes/edit/${item.id}` });
+      this.$router.push({ path: `/referral-providers-codes/edit/${item.id}` });
     },
     showItem(item) {
-      this.$router.push({ path: `/referral_codes/show/${item.id}` });
+      this.$router.push({ path: `/referral-providers-codes/show/${item.id}` });
     },
     // ===== End:: End
 

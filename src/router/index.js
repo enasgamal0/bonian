@@ -2846,6 +2846,19 @@ const routes = [
               },
             },
           },
+          {
+            path: "show/:id",
+            name: "ShowReferralProvidersCodes",
+            component: ShowReferralCodes,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "referralprovidercodes show",
+                subject: "referralprovidercodes",
+              },
+            },
+          },
         ],
       },
       // End:: referral-providers-codes Routes Config
