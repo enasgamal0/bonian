@@ -143,9 +143,14 @@
         <!-- Start:: Actions -->
         <template v-slot:[`item.actions`]="{ item }">
           <div class="actions">
-            <button class="btn_show" @click="showItem(item)">
+            <button
+              class="btn_show"
+              @click="showItem(item)"
+              v-if="item.status != 'cancelled'"
+            >
               <i class="fal fa-eye"></i>
             </button>
+            <i v-if="item.status == 'cancelled'" class="fal fa-lock-alt fs-5 blue-grey--text text--darken-1"></i>
           </div>
         </template>
         <!-- End:: Actions -->
@@ -179,7 +184,9 @@
                   <p>{{ p?.name }} - {{ p?.quantity }} × {{ p?.price }}</p>
                 </div>
                 <div v-for="a in selectedOffer?.attachments" :key="a.id">
-                  <a :href="a?.attachment" target="_blank">{{ a?.attachment }}</a>
+                  <a :href="a?.attachment" target="_blank">{{
+                    a?.attachment
+                  }}</a>
                 </div>
               </v-card-text>
               <v-card-actions>
@@ -447,7 +454,7 @@ export default {
           method: "GET",
           url: "sub-categories?is_active=1&limit=0&page=0",
         });
-        console.log("aaaa",res.data.data);
+        console.log("aaaa", res.data.data);
         this.subCategories = res.data.data?.data;
       } catch (error) {
         console.log(error.response.data.message);
