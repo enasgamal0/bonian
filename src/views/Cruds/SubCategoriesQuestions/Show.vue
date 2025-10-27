@@ -218,7 +218,7 @@ export default {
           data: REQUEST_DATA,
         });
         this.isWaitingRequest = false;
-        this.$message.success(this.$t("MESSAGES.updatedSuccessfully"));
+        this.$message.success(this.$t("MESSAGES.editedSuccessfully"));
         this.$router.push({ path: "/sub-categories-questions/all" });
       } catch (error) {
         this.isWaitingRequest = false;
