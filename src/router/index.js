@@ -3007,7 +3007,7 @@ const routes = [
             },
           },
           {
-            path: "create/:id",
+            path: "create",
             name: "CreateSubCategoriesQuestions",
             component: CreateSubCategoriesQuestions,
             props: true,

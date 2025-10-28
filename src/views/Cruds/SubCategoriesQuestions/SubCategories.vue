@@ -59,6 +59,14 @@
             <i class="fal fa-search"></i>
           </button>
         </div>
+        <div
+          class="title_route_wrapper"
+          v-if="$can('subcategories create', 'subcategories')"
+        >
+          <router-link :to="`/sub-categories-questions/create`">
+            {{ $t("PLACEHOLDERS.sub_categories_questions_create") }}
+          </router-link>
+        </div>
       </div>
       <!--  =========== End:: Table Title =========== -->
 

@@ -57,7 +57,7 @@
       <!--  =========== End:: Filter Form =========== -->
 
       <!--  =========== Start:: Table Title =========== -->
-      <div class="table_title_wrapper">
+      <div class="table_title_wrapper d-flex">
         <div class="title_text_wrapper">
           <h5>{{ $t("PLACEHOLDERS.sub_categories_questions_all") }}: {{ subCategoryName }}</h5>
           <button
@@ -68,14 +68,11 @@
             <i class="fal fa-search"></i>
           </button>
         </div>
-        <div
-          class="title_route_wrapper"
-          v-if="$can('subcategories create', 'subcategories')"
-        >
-          <router-link :to="`/sub-categories-questions/create/${$route.params?.id}`">
-            {{ $t("PLACEHOLDERS.sub_categories_questions_create") }}
-          </router-link>
-        </div>
+        <div class="text-end">
+      <v-btn @click="$router.push('/sub-categories-questions/sub-categories')" style="color: #1b706f">
+        <i class="fas fa-backward"></i>
+      </v-btn>
+    </div>
       </div>
       <!--  =========== End:: Table Title =========== -->
 
