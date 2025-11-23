@@ -267,12 +267,12 @@ export default {
         {
           id: 1,
           name: this.$t("STATUS.active"),
-          value: 1,
+          value: true,
         },
         {
           id: 2,
           name: this.$t("STATUS.notActive"),
-          value: 0,
+          value: false,
         },
       ];
     },
