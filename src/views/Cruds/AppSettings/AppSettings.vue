@@ -32,8 +32,8 @@
           <base-input
             type="text"
             col="6"
-            :placeholder="$t('PLACEHOLDERS.order_duration_hours')"
-            v-model.trim="data.order_duration_hours"
+            :placeholder="$t('PLACEHOLDERS.request_period_day')"
+            v-model.trim="data.request_period_day"
             required
           />
 
@@ -93,7 +93,7 @@ export default {
         const settings = res.data.data.data[0].value;
         this.data.tax = settings.tax;
         this.data.payment_amount = settings.Payment_amount;
-        this.data.order_duration_hours = settings.Request_period_hour;
+        this.data.request_period_day = settings.Request_period_day;
         this.data.points_per_join = settings.Points_every_joining;
         this.data.point_value_per_sar = settings.Points_value_per_riyal;
       } catch (error) {
@@ -107,8 +107,8 @@ export default {
       REQUEST_DATA.append("value[tax]", this.data.tax);
       REQUEST_DATA.append("value[Payment_amount]", this.data.payment_amount);
       REQUEST_DATA.append(
-        "value[Request_period_hour]",
-        this.data.order_duration_hours
+        "value[Request_period_day]",
+        this.data.request_period_day
       );
       REQUEST_DATA.append(
         "value[Points_every_joining]",

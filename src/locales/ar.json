@@ -1375,7 +1375,7 @@
     "show_splash": "عرض بيانات شاشة افتتاحية",
     "vat_percentage": "نسبة ضريبة القيمة المضافة للدفع",
     "payment_amount": "مبلغ الدفع (بالريال)",
-    "order_duration_hours": "مدة الطلب (حتى ينتهي) بالساعات",
+    "request_period_day": "مدة الطلب (حتى ينتهي) بالأيام",
     "points_per_join": "النقاط على كل عملية انضمام",
     "point_value_per_sar": "قيمة النقاط بالنسبة للريال الواحد",
     "recommendations": "إدارة التوصيات",

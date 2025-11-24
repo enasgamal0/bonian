@@ -1375,7 +1375,7 @@
     "show_splash": "Show Opening Screen Data",
     "vat_percentage": "VAT percentage for payment",
     "payment_amount": "Payment Amount (SAR)",
-    "order_duration_hours": "Order duration (until expiry) in hours",
+    "request_period_day": "Order duration (until expiry) in days",
     "points_per_join": "Points Per Join",
     "point_value_per_sar": "Point Value Per SAR",
     "recommendations": "Recommendations Management",
