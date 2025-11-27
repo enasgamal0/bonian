@@ -109,31 +109,18 @@
         </template>
 
         <!-- Start:: Notification Content -->
-        <!-- <template v-slot:[`item.data.body`]="{ item }">
-          <span class="text-danger" v-if="!item.data.body">
-            {{ $t("TABLES.noData") }}
-          </span>
-          <div class="actions" v-else>
-            <button
-              class="btn_show"
-              @click="showNotificationModal(item.data.body)"
-            >
-              <i class="fal fa-file-alt"></i>
-            </button>
-          </div>
-        </template> -->
-        <template v-slot:[`item.data.title`]="{ item }">
-          <h6 class="text-danger" v-if="!item?.title">---</h6>
-          <div v-if="item?.title">
-            {{ item?.title }}
+        <template v-slot:[`item.title`]="{ item }">
+          <h6 class="text-danger" v-if="!getNotificationTitle(item)">---</h6>
+          <div v-else>
+            {{ getNotificationTitle(item) }}
           </div>
         </template>
-        <template v-slot:[`item.data.body`]="{ item }">
-          <h6 class="text-danger" v-if="!item?.body">---</h6>
+        <template v-slot:[`item.body`]="{ item }">
+          <h6 class="text-danger" v-if="!getNotificationBody(item)">---</h6>
           <div
             class="dis"
-            v-if="item?.body"
-            @click="showDescriptionModal(item?.body)"
+            v-else
+            @click="showDescriptionModal(getNotificationBody(item))"
           >
             <i class="fas fa-file-alt"></i>
           </div>
@@ -241,13 +228,13 @@ export default {
         },
         {
           text: this.$t("TABLES.Notifications.title"),
-          value: "data.title",
+          value: "title",
           align: "center",
           sortable: false,
         },
         {
           text: this.$t("TABLES.Notifications.notification"),
-          value: "data.body",
+          value: "body",
           align: "center",
           sortable: false,
         },
@@ -294,6 +281,14 @@ export default {
   },
 
   methods: {
+    getNotificationTitle(item) {
+      if (!item) return null;
+      return this.getAppLocale === "ar" ? item.title_ar || item.title : item.title_en || item.title;
+    },
+    getNotificationBody(item) {
+      if (!item) return null;
+      return this.getAppLocale === "ar" ? item.body_ar || item.body : item.body_en || item.body;
+    },
     showDescriptionModal(description) {
       this.dialogDescription = true;
       this.selectedDescriptionTextToShow = description;
@@ -339,23 +334,23 @@ export default {
         let res = await this.$axios({
           method: "GET",
           // url: "notification/admin-notifications",
-          url: "notification/all_notifications",
+          url: "notification/index",
           params: {
             page: this.paginations.current_page,
             title: this.filterOptions.name,
           },
         });
         this.loading = false;
-        res.data.data.forEach((item, index) => {
+        res.data.data.data?.forEach((item, index) => {
           item.serialNumber =
             (this.paginations.current_page - 1) *
               this.paginations.items_per_page +
             index +
             1;
         });
-        this.tableRows = res.data.data;
-        this.paginations.last_page = res.data.meta.last_page;
-        this.paginations.items_per_page = res.data.meta.per_page;
+        this.tableRows = res.data.data.data;
+        this.paginations.last_page = res.data.data.meta.last_page;
+        this.paginations.items_per_page = res.data.data.meta.per_page;
       } catch (error) {
         this.loading = false;
         console.log(error.response.data.message);

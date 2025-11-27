@@ -201,20 +201,17 @@ export default {
     async getNotificationData() {
       try {
         let res = await this.$axios({
-          method: "POST",
-          url: `notification/show`,
-          data: {
-            notification_id: this.$route.params.id,
-          },
+          method: "GET",
+          url: `notification/show/${this.$route.params.id}`,
         });
 
-        this.data.titleAr = res.data.data.notification.data.title.ar;
-        this.data.titleEn = res.data.data.notification.data.title.en;
-        this.data.contentAr = res.data.data.notification.data.body.ar;
-        this.data.contentEn = res.data.data.notification.data.body.en;
+        this.data.titleAr = res.data.data.notification.title_ar;
+        this.data.titleEn = res.data.data.notification.title_en;
+        this.data.contentAr = res.data.data.notification.body_ar;
+        this.data.contentEn = res.data.data.notification.body_en;
         this.data.date = res.data.data.notification.created_at;
-        // this.data.receiverType = res.data.data.notification.data.type;
-        this.data.client = res.data.data.notification?.users;
+        this.data.receiverType = res.data.data.notification.role_translation || res.data.data.notification.role;
+        this.data.client = res.data.data.users || [];
       } catch (error) {
         this.loading = false;
         console.log(error.response.data.message);

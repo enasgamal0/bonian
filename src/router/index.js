@@ -52,6 +52,13 @@ import AllAppRates from "../views/Cruds/AppRates/ShowAll.vue";
 import ShowAppRates from "../views/Cruds/AppRates/Show.vue";
 // ============== End:: AppRates Routes
 
+// ============== Start:: LiveChat Routes
+import LiveChatHome from "../views/Cruds/LiveChat/Home.vue";
+import AllLiveChat from "../views/Cruds/LiveChat/ShowAll.vue";
+import ShowLiveChat from "../views/Cruds/LiveChat/Show.vue";
+import ChatLiveChat from "../views/Cruds/LiveChat/Chat.vue";
+// ============== End:: LiveChat Routes
+
 // ============== Start:: ReferralCodes Routes
 import ReferralCodesHome from "../views/Cruds/ReferralCodes/Home.vue";
 import AllReferralCodes from "../views/Cruds/ReferralCodes/ShowAll.vue";
@@ -749,22 +756,21 @@ const routes = [
 
       // Start:: Packages Financial Reports Routes Config
       {
-        path: "/packages-financial-reports",
-        name: "PackagesFinancialReportsHome",
-        component: PackagesFinancialReportsHome,
+        path: "/financial-reports",
+        name: "FinancialReportsHome",
+        component: FinancialReportsHome,
         meta: {
           middleware: [auth],
         },
         children: [
           {
             path: "all",
-            name: "AllPackagesFinancialReports",
-            component: AllPackagesFinancialReports,
+            name: "AllFinancialReports",
+            component: AllFinancialReports,
             meta: {
               middleware: [auth],
               requiresPermission: {
-                action: "financialreports packages",
-                subject: "financialreports",
+                
               },
             },
           },
@@ -2824,6 +2830,57 @@ const routes = [
         ],
       },
       // End:: app-rates Routes Config
+
+      // Start:: LiveChat Routes Config
+      {
+        path: "/live-chat",
+        name: "LiveChat",
+        component: LiveChatHome,
+        meta: {
+          middleware: [auth],
+        },
+        children: [
+          {
+            path: "all",
+            name: "AllLiveChat",
+            component: AllLiveChat,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: true,
+                subject: true,
+              },
+            },
+          },
+          {
+            path: "show/:id",
+            name: "ShowLiveChat",
+            component: ShowLiveChat,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: true,
+                subject: true,
+              },
+            },
+          },
+          {
+            path: "chat/:id",
+            name: "ChatLiveChat",
+            component: ChatLiveChat,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: true,
+                subject: true,
+              },
+            },
+          },
+        ],
+      },
+      // End:: LiveChat Routes Config
 
       // Start:: referral-providers-codes Routes Config
       {

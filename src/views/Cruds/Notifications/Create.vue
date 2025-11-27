@@ -17,7 +17,7 @@
         <div class="row">
           <!-- Start:: service_providers Type Input -->
           <!-- <base-select-input
-            v-if="data.providers && data.receiverType.value === 'provider'"
+            v-if="data.providers && data.receiverType?.value === 'provider'"
             col="6"
             :optionsList="data.providers"
             :placeholder="$t('PLACEHOLDERS.service_providers_plural')"
@@ -84,15 +84,27 @@
 
           <!-- Start:: Clients Type Input -->
           <base-select-input
-            v-if="data.clients && data.receiverType.value === 'client'"
+            v-if="data.clients && data.receiverType?.value === 'client'"
             col="6"
-:optionsList="data.clients?.concat(data.influencers)"
+            :optionsList="data.clients"
             :placeholder="$t('PLACEHOLDERS.clients_menu')"
             v-model="data.client"
             required
             multiple
           />
           <!-- End:: Clients Type Input -->
+
+          <!-- Start:: Providers Type Input -->
+          <base-select-input
+            v-if="data.influencers && data.receiverType?.value === 'provider'"
+            col="6"
+            :optionsList="data.influencers"
+            :placeholder="$t('PLACEHOLDERS.service_providers_plural')"
+            v-model="data.provider"
+            required
+            multiple
+          />
+          <!-- End:: Providers Type Input -->
 
           <!-- Start:: Submit Button Wrapper -->
           <div class="btn_wrapper">
@@ -137,6 +149,11 @@ export default {
           id: 2,
           name: this.$t("PLACEHOLDERS.all"),
           value: "all",
+        },
+        {
+          id: 3,
+          name: this.$t("PLACEHOLDERS.service_providers_plural"),
+          value: "provider",
         },
       ];
     },
@@ -194,9 +211,8 @@ export default {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: `clients?page=0&limit=0&is_active=1`,
+          url: `users?page=0&limit=0&is_active=1`,
         });
-
         this.data.clients = res.data.data.data;
       } catch (error) {
         console.log(error.response.data.message);
@@ -207,7 +223,7 @@ export default {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: `influencers?status=accepted&page=0&limit=0`,
+          url: `providers?status=accepted&page=0&limit=0`,
         });
         this.data.influencers = res.data.data.data;
       } catch (error) {
@@ -219,28 +235,18 @@ export default {
     validateFormInputs() {
       this.isWaitingRequest = true;
 
-      // if (!this.data.receiverType) {
-      //   this.isWaitingRequest = false;
-      //   this.$message.error(this.$t("VALIDATION.receiverType"));
-      //   return;
-      // } else if (
-      //   this.data.receiverType?.value === "clients" &&
-      //   this.data.clients.length === 0
-      // ) {
-      //   this.isWaitingRequest = false;
-      //   this.$message.error(this.$t("VALIDATION.clientAtLeast"));
-      //   return;
-      // } else if (
-      //   this.data.receiverType?.value === "providers" &&
-      //   this.data.providers.length === 0
-      // ) {
-      //   this.isWaitingRequest = false;
-      //   this.$message.error(this.$t("VALIDATION.driverAtLeast"));
-      //   return;
-      // }
-
-      // else
-      if (!this.data.titleAr) {
+      if (!this.data.receiverType || !this.data.receiverType?.value) {
+        this.isWaitingRequest = false;
+        this.$message.error(this.$t("VALIDATION.receiverType"));
+        return;
+      } else if (
+        (this.data.receiverType?.value === "client" || this.data.receiverType?.value === "provider") &&
+        (!this.data.client || this.data.client.length === 0)
+      ) {
+        this.isWaitingRequest = false;
+        this.$message.error(this.$t("VALIDATION.clientAtLeast"));
+        return;
+      } else if (!this.data.titleAr) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.titleAr"));
         return;
@@ -267,13 +273,18 @@ export default {
     async submitForm() {
       const REQUEST_DATA = new FormData();
       // Start:: Append Request Data
-      if (this.data.receiverType.value == "client") {
-        REQUEST_DATA.append("to_type", "client");
+      if (this.data.receiverType?.value == "client") {
+        REQUEST_DATA.append("role", "client");
         this.data.client.forEach((element) => {
           REQUEST_DATA.append(`users[]`, element.id);
         });
-      } else if (this.data.receiverType.value == "all") {
-        REQUEST_DATA.append("to_type", "all");
+      } else if (this.data.receiverType?.value == "all") {
+        REQUEST_DATA.append("role", "all");
+      } else if (this.data.receiverType?.value == "provider") {
+        REQUEST_DATA.append("role", "provider");
+        this.data.client.forEach((element) => {
+          REQUEST_DATA.append(`users[]`, element.id);
+        });
       }
       REQUEST_DATA.append("title[ar]", this.data.titleAr);
       REQUEST_DATA.append("title[en]", this.data.titleEn);

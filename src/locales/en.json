@@ -32,6 +32,9 @@
   },
 
   "SIDENAV": {
+    "LiveChat": {
+      "title": "Chats"
+    },
     "referral-providers-codes": {
       "show": "Show Referral Code Details"
     },
@@ -55,7 +58,7 @@
       "financial_reports": "Financial Reports"
     },
     "notifications": {
-      "title": "Notifications",
+      "title": "Notifications Management",
       "showAll": "All Notifications",
       "add": "Send New Notification"
     },
@@ -105,7 +108,9 @@
     "ContactMessages": {
       "title": "Contact Messages",
       "showAll": "All Contact Messages",
-      "show": "Show Message Data"
+      "show": "Show Message Data",
+      "liveChat": "Chats"
+
     },
     "AppContent": {
       "addresses": "Addresses Management",
@@ -957,6 +962,8 @@
   },
 
   "STATUS": {
+    "unread": "Unread",
+    "read": "Read",
     "received_offers": "Offers Received",
     "blocked": "Block",
     "no_response": "No Response",
@@ -1184,6 +1191,7 @@
   },
 
   "BUTTONS": {
+    "chat": "Open Chat",
     "showDetails": "Show Details",
     "reset": "Reset",
     "addOption": "Add a New Option",
@@ -1309,6 +1317,10 @@
   },
 
   "PLACEHOLDERS": {
+    "type_message": "Type your message here...",
+    "last_message": "Last Message",
+    "data_last_message": "Last Message Date",
+    "last_message_status": "Status",
     "codeOwnerName": "Code provider name",
     "referralCode": "Referral code",
     "joinedProviderName": "Joined provider name",
@@ -1494,8 +1506,16 @@
     "total_app_profit": "Total App Profit",
     "total_tax_value": "Total Added Tax",
     "total_money": "Total Management Revenue",
+    "total_payments": "Total Payments",
+    "payment_count": "Number of Payments",
+    "last_payment_date": "Last Payment Date",
+    "payment_history": "Payment History",
+    "provider_payment_owner": "Payment Owner",
+    "transfer_date": "Transfer Date",
+    "tax_value": "Tax Value",
+    "financial_reports": "Financial Reports",
     "auctions_report": "Auctions Financial Reports",
-    "packages_report": "Packages Financial Reports",
+    "packages_report": "Financial Reports Management",
     "advertiser_mobile": "Advertiser Mobile",
     "auctionNumber": "Auction Number",
     "startPrice": "Start Price",
