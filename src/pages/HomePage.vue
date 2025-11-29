@@ -11,7 +11,7 @@
       <!--  =========== End:: Table Title =========== -->
 
       <!--  =========== Start:: Data Table =========== -->
-      <div class="statics mt-4" v-if="statics && statics?.length">
+      <div class="statics mt-4" v-if="statics">
         <div class="row">
           <div
             class="col-lg-6 col-md-6 col-12"
@@ -21,25 +21,29 @@
             <div class="box">
               <div class="icon">
                 <i
-                  v-if="key === 'website_clients'"
+                  v-if="key === 'orders_count'"
+                  class="fas fa-shopping-cart"
+                ></i>
+
+                <i
+                  v-else-if="key === 'clients_count'"
                   class="fas fa-users"
                 ></i>
 
                 <i
-                  v-else-if="key === 'website_influencers'"
-                  class="fas fa-users"
+                  v-else-if="key === 'providers_count'"
+                  class="fas fa-user-tie"
                 ></i>
 
               </div>
 
               <div class="info_box">
-                <span v-if="key === 'website_clients'">{{
-                  $t("PLACEHOLDERS.website_clients")
-                }}</span>
+                <span v-if="key === 'orders_count'">{{ $t("PLACEHOLDERS.orders_count") }}</span>
 
-                <span v-else-if="key === 'website_influencers'">{{
-                  $t("PLACEHOLDERS.website_influencers")
-                }}</span>
+                <span v-else-if="key === 'clients_count'">{{ $t("PLACEHOLDERS.clients_count") }}</span>
+
+                <span v-else-if="key === 'providers_count'">{{ $t("PLACEHOLDERS.providers_count") }}</span>
+                
                 <p class="number_box">{{ value }}</p>
               </div>
             </div>
@@ -74,12 +78,13 @@ export default {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: "statistic",
+          url: "statistics",
         });
-
+        console.log(res.data);
         this.statics = {
-          website_clients: res.data.data.website_clients,
-          website_influencers: res.data.data.website_influencers,
+          orders_count: res.data.data.orders_count,
+          clients_count: res.data.data.clients_count,
+          providers_count: res.data.data.providers_count,
         };
       } catch (error) {
         this.loading = false;
@@ -89,7 +94,7 @@ export default {
   },
 
   mounted() {
-    // this.getStatics();
+    this.getStatics();
   },
 };
 </script>

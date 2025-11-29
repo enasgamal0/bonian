@@ -1309,6 +1309,9 @@
   },
 
   "PLACEHOLDERS": {
+    "providers_count": "إجمالي عدد مقدمي الخدمات",
+    "clients_count": "إجمالي عدد العملاء",
+    "orders_count": "إجمالي عدد طلبات الخدمات",
     "codeOwnerName": "اسم صاحب الكود",
     "referralCode": "كود الإحالة",
     "joinedProviderName": "اسم مقدم الخدمة المنضم عبر الكود",

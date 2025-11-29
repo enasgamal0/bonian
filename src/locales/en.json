@@ -1309,6 +1309,9 @@
   },
 
   "PLACEHOLDERS": {
+    "providers_count": "Providers count",
+    "clients_count": "Clients count",
+    "orders_count": "Orders count",
     "codeOwnerName": "Code provider name",
     "referralCode": "Referral code",
     "joinedProviderName": "Joined provider name",
