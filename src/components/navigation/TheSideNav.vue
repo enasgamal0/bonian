@@ -949,9 +949,9 @@
       <div
         class="home_route"
         @click="$emit('fireToggleNavDrawerEmit')"
-        v-if="$can('financialreports packages', 'financialreports')"
       >
-        <router-link to="/packages-financial-reports/all">
+      <!-- v-if="$can('financialreports packages', 'financialreports')" -->
+        <router-link to="/financial-reports/all">
           <span class="route_icon">
             <img
               src="@/assets/media/icons/ui_icons/bill.svg"
@@ -1106,7 +1106,7 @@
       <!-- End:: Orders and Quotations Management Route -->
 
       <!-- Start:: notifications Route -->
-      <!-- <div
+      <div
         class="home_route"
         @click="$emit('fireToggleNavDrawerEmit')"
         v-if="$can('notifications index', 'notifications')"
@@ -1124,7 +1124,7 @@
             {{ $t("SIDENAV.notifications.title") }}
           </span>
         </router-link>
-      </div> -->
+      </div>
       <!-- End:: notifications Route -->
 
       <!-- Start:: FAQ Route -->
@@ -1210,6 +1210,28 @@
         </a-menu>
       </div>
       <!-- End:: Side Nav Routes -->
+
+      <!-- Start:: LiveChat Route -->
+      <div
+        class="home_route"
+        @click="$emit('fireToggleNavDrawerEmit')"
+      >
+        <!-- v-if="$can('live-chat index', 'live-chat')" -->
+        <router-link to="/live-chat/all">
+          <span class="route_icon">
+            <img
+              src="@/assets/media/icons/ui_icons/messages.svg"
+              alt="icon"
+              width="40"
+              height="40"
+            />
+          </span>
+          <span class="route_text">
+            {{ $t("SIDENAV.LiveChat.title") }}
+          </span>
+        </router-link>
+      </div>
+      <!-- End:: LiveChat Route -->
 
       <!-- Start:: contacts Route -->
       <div

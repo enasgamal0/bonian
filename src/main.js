@@ -28,13 +28,13 @@ import firebase from "firebase/app";
 import "firebase/firebase-messaging";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBUhjzUxO8OPPylra2BQb62dRSRavk_ovA",
-  authDomain: "bonian-2025-c3816.firebaseapp.com",
-  projectId: "bonian-2025-c3816",
-  storageBucket: "bonian-2025-c3816.firebasestorage.app",
-  messagingSenderId: "920754583159",
-  appId: "1:920754583159:web:5abf8f1844f846e3edf872",
-  measurementId: "G-9MSQFYDB88"
+  apiKey: "AIzaSyC7Hso4S6WneO0lk6SeozfzoQjUBPZQlI0",
+  authDomain: "bunian-tech.firebaseapp.com",
+  projectId: "bunian-tech",
+  storageBucket: "bunian-tech.firebasestorage.app",
+  messagingSenderId: "113785147585",
+  appId: "1:113785147585:web:9f9812b6eab9448ac18440",
+  measurementId: "G-JS78WLD1WR"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -48,18 +48,16 @@ window.Pusher = Pusher;
 window.Echo = new Echo({
   broadcaster: "pusher",
   key: "9077e2ce86701f17f3b2",
-  cluster: "eu",
+  cluster: "mt1",
   forceTLS: true,
   disableStats: true,
   enabledTransports: ["ws", "wss"],
-  // authEndpoint: "https://backend.Tanfeez.com/broadcasting/auth", // Update with the correct auth endpoint
-  // auth: {
-  //   headers: {
-  //     Authorization: `Bearer ${localStorage.getItem(
-  //       "Tanfeez_admin_dashboard_user_token"
-  //     )}`, // Use getItem() to retrieve the value
-  //   },
-  // },
+  authEndpoint: "https://backend.bonian.moltaqadev.com/broadcasting/auth",
+  auth: {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("bonian_provider_dashboard_user_token")}`,
+    },
+  },
 });
 
 // casl vue permissions

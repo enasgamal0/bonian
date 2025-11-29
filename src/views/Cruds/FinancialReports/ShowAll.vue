@@ -20,22 +20,15 @@
           <form @submit.prevent="submitFilterForm">
             <div class="row justify-content-center align-items-center w-100">
               <base-input
-                col="5"
+                col="4"
                 type="text"
-                :placeholder="$t('PLACEHOLDERS.advertiser_name')"
-                v-model="filterOptions.advertiser_name"
-              />
-
-              <base-input
-                col="5"
-                type="text"
-                :placeholder="$t('PLACEHOLDERS.advertiser_mobile')"
-                v-model="filterOptions.advertiser_mobile"
+                :placeholder="$t('PLACEHOLDERS.provider_name')"
+                v-model="filterOptions.provider_name"
               />
 
               <!-- Start:: Start Date Input -->
               <base-picker-input
-                col="5"
+                col="4"
                 type="date"
                 :placeholder="$t('PLACEHOLDERS.time_from')"
                 v-model.trim="filterOptions.from_date"
@@ -44,7 +37,7 @@
 
               <!-- Start:: End Date Input -->
               <base-picker-input
-                col="5"
+                col="4"
                 type="date"
                 :placeholder="$t('PLACEHOLDERS.time_to')"
                 v-model.trim="filterOptions.to_date"
@@ -74,7 +67,7 @@
       <div class="table_title_wrapper">
         <div class="title_text_wrapper">
           <h5>
-            {{ $t("PLACEHOLDERS.auctions_report") }}
+            {{ $t("PLACEHOLDERS.financial_reports") }}
           </h5>
           <button
             v-if="!filterFormIsActive"
@@ -86,7 +79,7 @@
         </div>
 
         <div class="title_route_wrapper">
-          <base-button
+          <!-- <base-button
             class="mt-0 pdf_btn"
             styleType="solid_btn"
             :btnText="$t('BUTTONS.downloadPdf')"
@@ -95,7 +88,7 @@
             <template v-slot:btn_icon>
               <i class="fal fa-file-pdf"></i>
             </template>
-          </base-button>
+          </base-button> -->
           <base-button
             class="mt-0 excel_btn"
             styleType="solid_btn"
@@ -123,25 +116,15 @@
         :items-per-page="paginations.items_per_page"
         hide-default-footer
       >
-        <template v-slot:[`item.advertiser_id`]="{ index }">
-          {{
-            (paginations.current_page - 1) * paginations.items_per_page +
-            index +
-            1
-          }}
-        </template>
         <!-- Start:: No Data State -->
         <template v-slot:no-data>
           {{ $t("TABLES.noData") }}
         </template>
-        <!-- Start:: No Data State -->
+        <!-- End:: No Data State -->
 
         <template v-slot:[`item.serial`]="{ item, index }">
           <div class="table_image_wrapper">
-            <h6 class="text-danger" v-if="!item.advertiser_id">
-              {{ $t("TABLES.noData") }}
-            </h6>
-            <p v-else>
+            <p>
               {{
                 (paginations.current_page - 1) * paginations.items_per_page +
                 index +
@@ -156,9 +139,9 @@
           <div class="actions">
             <a-tooltip placement="bottom">
               <template slot="title">
-                <span>{{ $t("BUTTONS.show") }}</span>
+                <span>{{ $t("PLACEHOLDERS.payment_history") }}</span>
               </template>
-              <button class="btn_show" @click="showItem(item)">
+              <button class="btn_show" @click="showPaymentHistory(item)">
                 <i class="fal fa-eye"></i>
               </button>
             </a-tooltip>
@@ -168,30 +151,6 @@
       </v-data-table>
       <!--  =========== End:: Data Table =========== -->
 
-      <!-- ==== Start:: Overall_statistics Addresses ==== -->
-      <div class="table_content mt-5">
-        <v-simple-table class="stat-table">
-          <template v-slot:default>
-            <thead class="all-stat">
-              <tr>
-                <th class="text-center" style="color: white !important">
-                  {{ $t("PLACEHOLDERS.total_app_profit") }}
-                </th>
-                <th class="text-center" style="color: white !important">
-                  {{ $t("PLACEHOLDERS.total_paid_tax") }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="text-center">
-                <td>{{ totals.total_paid_price }}</td>
-                <td>{{ totals.total_paid_tax }}</td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-      </div>
-      <!-- ==== End:: Overall_statistics Addresses ==== -->
     </main>
     <!-- End:: Main Section -->
 
@@ -216,13 +175,66 @@
     </template>
     <!-- End:: Pagination -->
 
+    <!-- Start:: Payment History Modal -->
+    <v-dialog v-model="paymentHistoryDialog" max-width="900px" persistent>
+      <v-card>
+        <v-card-title class="d-flex justify-space-between align-center">
+          <span>{{ $t("PLACEHOLDERS.payment_history") }}</span>
+          <v-btn icon @click="paymentHistoryDialog = false">
+            <i class="fal fa-times"></i>
+          </v-btn>
+        </v-card-title>
+        <v-card-text>
+          <div v-if="paymentHistoryLoading" class="text-center py-5">
+            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+          </div>
+          <div v-else-if="paymentHistoryData.length === 0" class="text-center py-5">
+            {{ $t("TABLES.noData") }}
+          </div>
+          <v-simple-table v-else>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th>{{ $t("PLACEHOLDERS.provider_name") }}</th>
+                  <th>{{ $t("PLACEHOLDERS.client_name") }}</th>
+                  <th>{{ $t("PLACEHOLDERS.order_number") }}</th>
+                  <th>{{ $t("PLACEHOLDERS.sub_service") }}</th>
+                  <th>{{ $t("PLACEHOLDERS.riyal_price") }}</th>
+                  <th>{{ $t("PLACEHOLDERS.tax_value") }}</th>
+                  <th>{{ $t("PLACEHOLDERS.transfer_date") }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(payment, index) in paymentHistoryData" :key="index">
+                  <td>{{ payment.provider_name || "-" }}</td>
+                  <td>{{ payment.client_name || "-" }}</td>
+                  <td>{{ payment.order_number || "-" }}</td>
+                  <td>{{ payment.sub_service || "-" }}</td>
+                  <td>{{ payment.amount || "-" }}</td>
+                  <td>{{ payment.tax_value || "-" }}</td>
+                  <td>{{ payment.transfer_date || "-" }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="paymentHistoryDialog = false">
+            {{ $t("BUTTONS.close") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- End:: Payment History Modal -->
+
     <!-- Start:: Generate PDF Template Content -->
     <vue-html2pdf
       :show-layout="false"
       :float-layout="true"
       :enable-download="true"
       :preview-modal="true"
-      :filename="$t('PLACEHOLDERS.auctions_report')"
+      :filename="$t('PLACEHOLDERS.financial_reports')"
       :pdf-quality="2"
       pdf-format="a4"
       :manual-pagination="false"
@@ -234,8 +246,15 @@
       <section slot="pdf-content">
         <div class="pdf_file_content">
           <h3 class="file_title">
-            {{ $t("PLACEHOLDERS.auctions_report") }}
+            {{ $t("PLACEHOLDERS.financial_reports") }}
           </h3>
+          <p v-if="filterOptions.provider_name" class="mb-2">
+            {{ $t("PLACEHOLDERS.provider_name") }}: {{ filterOptions.provider_name }}
+          </p>
+          <p v-if="filterOptions.from_date || filterOptions.to_date" class="mb-2">
+            {{ $t("PLACEHOLDERS.from_date") }}: {{ filterOptions.from_date || "-" }} | 
+            {{ $t("PLACEHOLDERS.to_date") }}: {{ filterOptions.to_date || "-" }}
+          </p>
           <v-simple-table>
             <template v-slot:default>
               <thead>
@@ -249,7 +268,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(row, index) in tableRows" :key="row.advertiser_id">
+                <tr v-for="(row, index) in tableRows" :key="row.id">
                   <td>
                     {{
                       (paginations.current_page - 1) *
@@ -258,41 +277,15 @@
                       1
                     }}
                   </td>
-                  <td>{{ row.advertiser_name }}</td>
-                  <td>{{ row.advertiser_mobile }}</td>
-                  <td>{{ row.total_finished_auctions }}</td>
-                  <td>{{ row.sum_last_bid }}</td>
-                  <td>{{ row.total }}</td>
-                  <td>{{ row.total_paid_price }}</td>
-                  <td>{{ row.total_paid_tax }}</td>
+                  <td>{{ row.provider_name }}</td>
+                  <td>{{ row.total_price }}</td>
+                  <td>{{ row.total_tax }}</td>
+                  <td>{{ row.payment_count || row.payments_count || "-" }}</td>
+                  <td>{{ row.last_subscription_date }}</td>
                 </tr>
               </tbody>
             </template>
           </v-simple-table>
-          <!-- ==== Start:: Overall_statistics Addresses ==== -->
-          <div class="table_content mt-5">
-            <v-simple-table class="stat-table">
-              <template v-slot:default>
-                <thead class="all-stat">
-                  <tr>
-                    <th class="text-center" style="color: white !important">
-                      {{ $t("PLACEHOLDERS.total_app_profit") }}
-                    </th>
-                    <th class="text-center" style="color: white !important">
-                      {{ $t("PLACEHOLDERS.total_paid_tax") }}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="text-center">
-                    <td>{{ totals.total_paid_price }}</td>
-                    <td>{{ totals.total_paid_tax }}</td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
-          </div>
-          <!-- ==== End:: Overall_statistics Addresses ==== -->
         </div>
       </section>
     </vue-html2pdf>
@@ -326,57 +319,54 @@ export default {
 
       filterFormIsActive: false,
       filterOptions: {
-        advertiser_name: null,
-        advertiser_mobile: null,
+        provider_name: null,
         from_date: null,
         to_date: null,
       },
+      paymentHistoryDialog: false,
+      paymentHistoryLoading: false,
+      paymentHistoryData: [],
+      selectedProviderId: null,
       tableHeaders: [
         {
           text: this.$t("TABLES.Admins.serialNumber"),
-          value: "advertiser_id",
+          value: "serial",
           align: "center",
           sortable: false,
         },
         {
-          text: this.$t("PLACEHOLDERS.advertiser_name"),
-          value: "advertiser_name",
+          text: this.$t("PLACEHOLDERS.provider_name"),
+          value: "provider_name",
           align: "center",
           sortable: false,
         },
         {
-          text: this.$t("PLACEHOLDERS.advertiser_mobile"),
-          value: "advertiser_mobile",
-          align: "center",
-          sortable: false,
-        },
-        {
-          text: this.$t("PLACEHOLDERS.total_finished_auctions"),
-          value: "total_finished_auctions",
-          align: "center",
-          sortable: false,
-        },
-        {
-          text: this.$t("PLACEHOLDERS.total_finished_auctions_total"),
-          value: "sum_last_bid",
-          align: "center",
-          sortable: false,
-        },
-        {
-          text: this.$t("PLACEHOLDERS.total_money"),
-          value: "total",
-          align: "center",
-          sortable: false,
-        },
-        {
-          text: this.$t("PLACEHOLDERS.total_app_profit"),
-          value: "total_paid_price",
+          text: this.$t("PLACEHOLDERS.total_payments"),
+          value: "total_price",
           align: "center",
           sortable: false,
         },
         {
           text: this.$t("PLACEHOLDERS.total_paid_tax"),
-          value: "total_paid_tax",
+          value: "total_tax",
+          align: "center",
+          sortable: false,
+        },
+        {
+          text: this.$t("PLACEHOLDERS.payment_count"),
+          value: "payment_count",
+          align: "center",
+          sortable: false,
+        },
+        {
+          text: this.$t("PLACEHOLDERS.last_payment_date"),
+          value: "last_subscription_date",
+          align: "center",
+          sortable: false,
+        },
+        {
+          text: this.$t("TABLES.actions"),
+          value: "actions",
           align: "center",
           sortable: false,
         },
@@ -387,13 +377,6 @@ export default {
         last_page: 1,
         items_per_page: 6,
       },
-      totals: {
-        total_finished_auctions: 0,
-        total_paid_price: 0,
-        total_paid_tax: 0,
-        total_app_profit: 0,
-        total_tax_value: 0,
-      },
     };
   },
 
@@ -402,8 +385,7 @@ export default {
       this.setTableRows();
     },
     async resetFilter() {
-      this.filterOptions.advertiser_name = null;
-      this.filterOptions.advertiser_mobile = null;
+      this.filterOptions.provider_name = null;
       this.filterOptions.from_date = null;
       this.filterOptions.to_date = null;
       this.setTableRows();
@@ -413,118 +395,116 @@ export default {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: "financial-reports/auctions",
+          url: "financial-reports",
           params: {
             page: this.paginations.current_page,
-            userName: this.filterOptions.advertiser_name,
-            userMobile: this.filterOptions.advertiser_mobile,
-            from: this.filterOptions.from_date,
-            to: this.filterOptions.to_date,
+            provider_name: this.filterOptions.provider_name,
+            search: this.filterOptions.provider_name,
+            date_from: this.filterOptions.from_date,
+            date_to: this.filterOptions.to_date,
           },
         });
         this.loading = false;
-        this.tableRows = res.data.data.data.data;
-        this.totals.total_finished_auctions =
-          res.data.data.totals.total_finished_auctions;
-        this.totals.total_paid_price = res.data.data.totals.total_paid_price;
-        this.totals.total_paid_tax = res.data.data.totals.total_paid_tax;
-        this.totals.total_app_profit = res.data.data.totals.total_app_profit;
-        this.totals.total_tax_value = res.data.data.totals.total_tax_value;
-        this.paginations.last_page = res.data.data.meta.last_page;
+        const financialReports = res.data.data.financial_reports || [];
+        // Map the data to match table structure
+        this.tableRows = financialReports.map((report) => ({
+          ...report,
+          // payment_count might need to be calculated or provided by API
+          // For now, we'll show "-" if not available
+          payment_count: report.payment_count || report.payments_count || "-",
+        }));
+        
+        // Update pagination if API provides meta data
+        if (res.data.data.meta) {
+          this.paginations.last_page = res.data.data.meta.last_page;
+          this.paginations.current_page = res.data.data.meta.current_page || 1;
+        } else if (res.data.meta) {
+          this.paginations.last_page = res.data.meta.last_page || 1;
+          this.paginations.current_page = res.data.meta.current_page || 1;
+        } else {
+          // Default pagination if not provided
+          this.paginations.last_page = 1;
+        }
       } catch (error) {
         this.loading = false;
-        console.log(error.response.data.message);
+        console.log(error.response?.data?.message || error.message);
+      }
+    },
+    updateRouterQueryParam(pagenationValue) {
+      this.$router.push({
+        query: {
+          ...this.$route.query,
+          page: pagenationValue,
+        },
+      });
+
+      // Scroll To Screen's Top After Get Products
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    },
+    async showPaymentHistory(item) {
+      this.selectedProviderId = item.id;
+      this.paymentHistoryDialog = true;
+      this.paymentHistoryLoading = true;
+      this.paymentHistoryData = [];
+      
+      try {
+        // Fetch payment history for this provider
+        // Adjust the endpoint based on your actual API
+        let res = await this.$axios({
+          method: "GET",
+          url: `financial-reports/${item.id}/payments`,
+          // Or use query params: url: "financial-reports/payments", params: { provider_id: item.id }
+        });
+        
+        this.paymentHistoryData = res.data.data || [];
+      } catch (error) {
+        console.log(error.response?.data?.message || error.message);
+        // If endpoint doesn't exist, show a message or use mock data structure
+        this.paymentHistoryData = [];
+      } finally {
+        this.paymentHistoryLoading = false;
       }
     },
     async downloadPdf() {
       await this.$refs.html2Pdf.generatePdf();
     },
     async downloadExcelAllData() {
-      this.loading = true;
+      this.excelDownloadBtnIsLoading = true;
       try {
         let res = await this.$axios({
           method: "GET",
-          url: "financial-reports/auctions",
+          url: "financial-reports",
           params: {
-            userName: this.filterOptions.advertiser_name,
-            userMobile: this.filterOptions.advertiser_mobile,
+            provider_name: this.filterOptions.provider_name,
             from: this.filterOptions.from_date,
             to: this.filterOptions.to_date,
           },
         });
-        const allData = res.data.data.data.data;
+        const allData = res.data.data.financial_reports || [];
 
         // Map data with translated headers
         const translatedData = allData.map((row, index) => {
           if (this.getAppLocale == "ar") {
             return {
-              [this.$t("PLACEHOLDERS.total_paid_tax")]: row.total_paid_tax,
-              [this.$t("PLACEHOLDERS.total_app_profit")]: row.total_paid_price,
-              [this.$t("PLACEHOLDERS.total_money")]: row.total,
-              [this.$t("PLACEHOLDERS.total_finished_auctions_total")]:
-                row.sum_last_bid,
-              [this.$t("PLACEHOLDERS.total_finished_auctions")]:
-                row.total_finished_auctions,
-              [this.$t("PLACEHOLDERS.advertiser_mobile")]:
-                row.advertiser_mobile,
-              [this.$t("PLACEHOLDERS.advertiser_name")]: row.advertiser_name,
               [this.$t("TABLES.Admins.serialNumber")]: index + 1,
+              [this.$t("PLACEHOLDERS.provider_name")]: row.provider_name,
+              [this.$t("PLACEHOLDERS.total_payments")]: row.total_price,
+              [this.$t("PLACEHOLDERS.total_paid_tax")]: row.total_tax,
+              [this.$t("PLACEHOLDERS.payment_count")]: row.payment_count || row.payments_count || "-",
+              [this.$t("PLACEHOLDERS.last_payment_date")]: row.last_subscription_date,
             };
           } else {
             return {
               [this.$t("TABLES.Admins.serialNumber")]: index + 1,
-              [this.$t("PLACEHOLDERS.advertiser_name")]: row.advertiser_name,
-              [this.$t("PLACEHOLDERS.advertiser_mobile")]:
-                row.advertiser_mobile,
-              [this.$t("PLACEHOLDERS.total_finished_auctions")]:
-                row.total_finished_auctions,
-              [this.$t("PLACEHOLDERS.total_finished_auctions_total")]:
-                row.sum_last_bid,
-              [this.$t("PLACEHOLDERS.total_money")]: row.total,
-              [this.$t("PLACEHOLDERS.total_app_profit")]: row.total_paid_price,
-              [this.$t("PLACEHOLDERS.total_paid_tax")]: row.total_paid_tax,
+              [this.$t("PLACEHOLDERS.provider_name")]: row.provider_name,
+              [this.$t("PLACEHOLDERS.total_payments")]: row.total_price,
+              [this.$t("PLACEHOLDERS.total_paid_tax")]: row.total_tax,
+              [this.$t("PLACEHOLDERS.payment_count")]: row.payment_count || row.payments_count || "-",
+              [this.$t("PLACEHOLDERS.last_payment_date")]: row.last_subscription_date,
             };
           }
         });
-
-        translatedData.push({});
-        if (this.getAppLocale === "ar") {
-          // Append overall statistics at the bottom
-          translatedData.push({
-            [this.$t("PLACEHOLDERS.advertiser_mobile")]: this.$t(
-              "PLACEHOLDERS.total_app_profit"
-            ),
-            [this.$t("PLACEHOLDERS.total_finished_auctions")]:
-              this.totals.total_paid_price,
-          });
-
-          // Append overall statistics at the bottom
-          translatedData.push({
-            [this.$t("PLACEHOLDERS.advertiser_mobile")]: this.$t(
-              "PLACEHOLDERS.total_tax_value"
-            ),
-            [this.$t("PLACEHOLDERS.total_finished_auctions")]:
-              this.totals.total_paid_tax,
-          });
-        } else {
-          // Append overall statistics at the bottom
-          translatedData.push({
-            [this.$t("TABLES.Admins.serialNumber")]: this.$t(
-              "PLACEHOLDERS.total_app_profit"
-            ),
-            [this.$t("PLACEHOLDERS.advertiser_name")]:
-              this.totals.total_paid_price,
-          });
-
-          // Append overall statistics at the bottom
-          translatedData.push({
-            [this.$t("TABLES.Admins.serialNumber")]: this.$t(
-              "PLACEHOLDERS.total_tax_value"
-            ),
-            [this.$t("PLACEHOLDERS.advertiser_name")]:
-              this.totals.total_paid_tax,
-          });
-        }
 
         const worksheet = XLSX.utils.json_to_sheet(translatedData);
         const workbook = XLSX.utils.book_new();
@@ -543,7 +523,7 @@ export default {
         link.href = url;
         link.setAttribute(
           "download",
-          `${this.$t("PLACEHOLDERS.auctions_report")}.xlsx`
+          `${this.$t("PLACEHOLDERS.financial_reports")}.xlsx`
         );
         document.body.appendChild(link);
         link.click();
@@ -551,7 +531,7 @@ export default {
       } catch (error) {
         console.log(error.response?.data?.message || error.message);
       } finally {
-        this.loading = false;
+        this.excelDownloadBtnIsLoading = false;
       }
     },
   },

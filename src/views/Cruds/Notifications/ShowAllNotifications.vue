@@ -129,14 +129,14 @@ export default {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: "notification/admin-notifications",
+          url: "notification/user-notifications",
           params: {
             page: this.paginations.current_page,
           },
         });
-        this.receivedMessages = res.data.data;
-        this.paginations.last_page = res.data.meta.last_page;
-        this.paginations.items_per_page = res.data.meta.per_page;
+        this.receivedMessages = res.data.data.data;
+        this.paginations.last_page = res.data.data.meta.last_page;
+        this.paginations.items_per_page = res.data.data.meta.per_page;
       } catch (error) {
         this.loading = false;
         console.log(error.response.data.message);
@@ -167,13 +167,13 @@ export default {
 
         let res = await this.$axios({
           method: "POST",
-          url: `notification/mark-as-read`,
+          url: `notification/make-as-read`,
           data: REQUEST_DATA,
         });
 
         this.$message.success(res.data.message);
         // Update the local state for the specific message
-        const message = this.receivedMessages.find((msg) => msg.id === item_id);
+        const message = this.receivedMessages?.find((msg) => msg.id === item_id);
         if (message) {
           message.is_read = true;
         }
