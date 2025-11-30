@@ -10,13 +10,26 @@
             v-for="(message, index) in receivedMessages"
             :key="'k' + index"
           >
-            <router-link v-if="message?.data?.type != 'delete_account'" :to="message?.data?.type === 'contact_us' ? '/contact-messages/all' : message?.data?.type === 'new_client' ? `/Clients/show/${message?.data.id}` : message?.data?.type === 'new_influencer' ? `/influencers/show/${message?.data.id}` : ''">
+            <router-link
+              v-if="message?.type != 'delete_account'"
+              :to="
+                message?.type === 'contact_us'
+                  ? '/contact-messages/all'
+                  : message?.type === 'new_client'
+                  ? `/Clients/show/${message?.redirect_id}`
+                  : message?.type === 'create_order' || message?.type === 'create_offer'
+                  ? `/orders-and-quotations/show/${message?.redirect_id}`
+                  : message?.type === 'Chat' || message?.type === 'open_chat'
+                  ? `/live-chat/chat/${message?.redirect_id}`
+                  : ''
+              "
+            >
               <h3>{{ message.title }}</h3>
               <p>{{ message.body }}</p>
             </router-link>
-            <div v-if="message?.data?.type == 'delete_account'">
-                <h3>{{ message.title }}</h3>
-                <p>{{ message.body }}</p>
+            <div v-if="message?.type == 'delete_account'">
+              <h3>{{ message.title }}</h3>
+              <p>{{ message.body }}</p>
             </div>
             <div
               class="delete_notification"
@@ -29,7 +42,7 @@
             <div
               class="delete_notification"
               :class="{ read: message.is_read }"
-              style="cursor: default;"
+              style="cursor: default"
               v-if="message.is_read"
             >
               <i class="fas fa-check-double"></i>
@@ -173,7 +186,9 @@ export default {
 
         this.$message.success(res.data.message);
         // Update the local state for the specific message
-        const message = this.receivedMessages?.find((msg) => msg.id === item_id);
+        const message = this.receivedMessages?.find(
+          (msg) => msg.id === item_id
+        );
         if (message) {
           message.is_read = true;
         }

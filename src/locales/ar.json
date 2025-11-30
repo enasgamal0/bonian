@@ -1510,7 +1510,7 @@
     "total_money": "إجمالي إيرادات الإدارة",
     "total_payments": "إجمالي المدفوعات",
     "payment_count": "عدد المدفوعات",
-    "last_payment_date": "تاريخ اخر عمليه دفع",
+    "last_payment_date": "تاريخ آخر عمليه دفع",
     "payment_history": "سجل المدفوعات",
     "provider_payment_owner": "صاحب عملية الدفع",
     "transfer_date": "تاريخ التحويل",
