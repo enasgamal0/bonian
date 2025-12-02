@@ -951,7 +951,7 @@
         @click="$emit('fireToggleNavDrawerEmit')"
       >
       <!-- v-if="$can('financialreports packages', 'financialreports')" -->
-        <router-link to="/financial-reports/all">
+        <router-link to="/financial-reports/all" v-if="$can('financialreports index', 'financialreports')">
           <span class="route_icon">
             <img
               src="@/assets/media/icons/ui_icons/bill.svg"
@@ -1217,7 +1217,7 @@
         @click="$emit('fireToggleNavDrawerEmit')"
       >
         <!-- v-if="$can('live-chat index', 'live-chat')" -->
-        <router-link to="/live-chat/all">
+        <router-link to="/live-chat/all" v-if="$can('chats index', 'chats')">
           <span class="route_icon">
             <img
               src="@/assets/media/icons/ui_icons/messages.svg"

@@ -23,6 +23,7 @@ import CreateRole from "../views/Cruds/Roles/Create.vue";
 // ============== Start:: Financial Reports Routes
 import FinancialReportsHome from "../views/Cruds/FinancialReports/Home.vue";
 import AllFinancialReports from "../views/Cruds/FinancialReports/ShowAll.vue";
+import ShowFinancialReports from "../views/Cruds/FinancialReports/Show.vue";
 // ============== End:: Financial Reports Routes
 
 // ============== Start:: Financial Reports Routes
@@ -770,7 +771,20 @@ const routes = [
             meta: {
               middleware: [auth],
               requiresPermission: {
-                
+                action: "financialreports index",
+                subject: "financialreports",
+              },
+            },
+          },
+          {
+            path: "show/:id",
+            name: "ShowFinancialReports",
+            component: ShowFinancialReports,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "financialreports show",
+                subject: "financialreports",
               },
             },
           },
@@ -2847,24 +2861,24 @@ const routes = [
             meta: {
               middleware: [auth],
               requiresPermission: {
-                action: true,
-                subject: true,
+                action: "chats index",
+                subject: "chats",
               },
             },
           },
-          {
-            path: "show/:id",
-            name: "ShowLiveChat",
-            component: ShowLiveChat,
-            props: true,
-            meta: {
-              middleware: [auth],
-              requiresPermission: {
-                action: true,
-                subject: true,
-              },
-            },
-          },
+          // {
+          //   path: "show/:id",
+          //   name: "ShowLiveChat",
+          //   component: ShowLiveChat,
+          //   props: true,
+          //   meta: {
+          //     middleware: [auth],
+          //     requiresPermission: {
+          //       action: "chats show",
+          //       subject: "chats",
+          //     },
+          //   },
+          // },
           {
             path: "chat/:id",
             name: "ChatLiveChat",
@@ -2873,8 +2887,8 @@ const routes = [
             meta: {
               middleware: [auth],
               requiresPermission: {
-                action: true,
-                subject: true,
+                action: "chats show",
+                subject: "chats",
               },
             },
           },

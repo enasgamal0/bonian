@@ -157,7 +157,7 @@
     </transition>
 
     <!-- Reply Box -->
-    <div class="chat-input">
+    <div class="chat-input" v-if="$can('chats send', 'chats')">
       <!-- Attachment Button -->
       <v-btn icon color="#1b706f" @click="$refs.fileInput.click()" large style="background-color: #1b6f6d4d">
         <i class="fas fa-paperclip"></i>

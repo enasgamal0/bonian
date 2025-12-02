@@ -353,8 +353,14 @@ export default {
           sortable: false,
         },
         {
+          text: this.$t("PLACEHOLDERS.total_amount"),
+          value: "total_amount",
+          align: "center",
+          sortable: false,
+        },
+        {
           text: this.$t("PLACEHOLDERS.payment_count"),
-          value: "payment_count",
+          value: "num_payments",
           align: "center",
           sortable: false,
         },
@@ -443,28 +449,7 @@ export default {
       document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     },
     async showPaymentHistory(item) {
-      this.selectedProviderId = item.id;
-      this.paymentHistoryDialog = true;
-      this.paymentHistoryLoading = true;
-      this.paymentHistoryData = [];
-      
-      try {
-        // Fetch payment history for this provider
-        // Adjust the endpoint based on your actual API
-        let res = await this.$axios({
-          method: "GET",
-          url: `financial-reports/${item.id}/payments`,
-          // Or use query params: url: "financial-reports/payments", params: { provider_id: item.id }
-        });
-        
-        this.paymentHistoryData = res.data.data || [];
-      } catch (error) {
-        console.log(error.response?.data?.message || error.message);
-        // If endpoint doesn't exist, show a message or use mock data structure
-        this.paymentHistoryData = [];
-      } finally {
-        this.paymentHistoryLoading = false;
-      }
+      this.$router.push({ path: `/financial-reports/show/${item.provider_id}` });
     },
     async downloadPdf() {
       await this.$refs.html2Pdf.generatePdf();
@@ -472,16 +457,44 @@ export default {
     async downloadExcelAllData() {
       this.excelDownloadBtnIsLoading = true;
       try {
-        let res = await this.$axios({
-          method: "GET",
-          url: "financial-reports",
-          params: {
-            provider_name: this.filterOptions.provider_name,
-            from: this.filterOptions.from_date,
-            to: this.filterOptions.to_date,
-          },
-        });
-        const allData = res.data.data.financial_reports || [];
+        let allData = [];
+        let currentPage = 1;
+        let lastPage = 1;
+        let hasMorePages = true;
+
+        // Fetch all pages
+        while (hasMorePages) {
+          let res = await this.$axios({
+            method: "GET",
+            url: "financial-reports",
+            params: {
+              page: currentPage,
+              provider_name: this.filterOptions.provider_name,
+              search: this.filterOptions.provider_name,
+              date_from: this.filterOptions.from_date,
+              date_to: this.filterOptions.to_date,
+            },
+          });
+
+          const pageData = res.data.data.financial_reports || [];
+          allData = allData.concat(pageData);
+
+          // Check pagination metadata
+          if (res.data.data.meta) {
+            lastPage = res.data.data.meta.last_page || 1;
+            currentPage = res.data.data.meta.current_page || 1;
+          } else if (res.data.meta) {
+            lastPage = res.data.meta.last_page || 1;
+            currentPage = res.data.meta.current_page || 1;
+          }
+
+          // Check if there are more pages
+          if (currentPage >= lastPage || pageData.length === 0) {
+            hasMorePages = false;
+          } else {
+            currentPage++;
+          }
+        }
 
         // Map data with translated headers
         const translatedData = allData.map((row, index) => {

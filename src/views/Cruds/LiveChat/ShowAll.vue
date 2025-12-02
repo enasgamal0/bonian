@@ -215,7 +215,7 @@
         <!-- Start:: Actions -->
         <template v-slot:[`item.actions`]="{ item }">
           <div class="actions text-center">
-            <a-tooltip placement="bottom">
+            <a-tooltip placement="bottom" v-if="$can('chats read', 'chats') || $can('chats show', 'chats')">
               <template #title>
                 <span>{{ $t("BUTTONS.chat") }}</span>
               </template>
@@ -226,6 +226,11 @@
                 ></i>
               </button>
             </a-tooltip>
+            <template v-else>
+              <i
+                class="fal fa-lock-alt fs-5 blue-grey--text text--darken-1"
+              ></i>
+            </template>
           </div>
         </template>
         <!-- End:: Actions -->
