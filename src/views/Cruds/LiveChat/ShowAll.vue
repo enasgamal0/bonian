@@ -139,10 +139,10 @@
         <!-- End:: User Name -->
 
         <!-- Start:: Order ID -->
-        <template v-slot:[`item.order_id`]="{ item }">
+        <!-- <template v-slot:[`item.order_id`]="{ item }">
           <span v-if="item.order_id">{{ item.order_id }}</span>
           <span v-else>-</span>
-        </template>
+        </template> -->
         <!-- End:: Order ID -->
 
         <!-- Start:: Last Message -->
@@ -199,7 +199,7 @@
         <!-- Start:: Unread Indicator -->
         <template v-slot:[`item.unread_messages_count`]="{ item }">
           <v-chip
-            v-if="item.unread_messages_count == 0"
+            v-if="item.last_message?.readed_at"
             color="green"
             text-color="white"
             small
@@ -348,11 +348,11 @@ export default {
           value: "user.name",
           align: "center",
         },
-        {
-          text: this.$t("PLACEHOLDERS.orderNumber"),
-          value: "order_id",
-          align: "center",
-        },
+        // {
+        //   text: this.$t("PLACEHOLDERS.orderNumber"),
+        //   value: "order_id",
+        //   align: "center",
+        // },
         {
           text: this.$t("PLACEHOLDERS.last_message"),
           value: "last_message.message_text",

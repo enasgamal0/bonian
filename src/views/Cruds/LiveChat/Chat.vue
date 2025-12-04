@@ -30,7 +30,7 @@
       </div>
 
       <!-- Order Info & Actions -->
-      <div class="chat-center">
+      <!-- <div class="chat-center">
         <template v-if="chat.order_id">
           <div class="order-info">
             <span class="order-number">
@@ -48,7 +48,7 @@
             </v-btn>
           </div>
         </template>
-      </div>
+      </div> -->
     </div>
 
     <!-- Messages -->

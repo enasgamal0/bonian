@@ -18,7 +18,7 @@
             v-for="(value, key) in statics"
             :key="'i' + key"
           >
-            <div class="box">
+            <div class="box" @click="navigateToPage(key)" style="cursor: pointer;">
               <div class="icon">
                 <i
                   v-if="key === 'orders_count'"
@@ -89,6 +89,17 @@ export default {
       } catch (error) {
         this.loading = false;
         console.log(error.response.data.message);
+      }
+    },
+    navigateToPage(key) {
+      const routes = {
+        orders_count: "/orders-and-quotations/all",
+        clients_count: "/Clients/all",
+        providers_count: "/Providers/all",
+      };
+      
+      if (routes[key]) {
+        this.$router.push(routes[key]);
       }
     },
   },

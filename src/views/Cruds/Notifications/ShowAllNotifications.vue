@@ -6,27 +6,15 @@
         <transition-group name="fade" v-if="receivedMessages.length">
           <div
             class="notification"
-            :class="{ read: message.is_read == true }"
+            :class="{ read: message.is_read == true, clickable: !message.is_read || hasRedirectPath(message) }"
             v-for="(message, index) in receivedMessages"
             :key="'k' + index"
+            @click="handleNotificationClick($event, message)"
           >
-            <router-link
-              v-if="message?.type != 'delete_account'"
-              :to="
-                message?.type === 'contact_us'
-                  ? '/contact-messages/all'
-                  : message?.type === 'new_client'
-                  ? `/Clients/show/${message?.redirect_id}`
-                  : message?.type === 'create_order' || message?.type === 'create_offer'
-                  ? `/orders-and-quotations/show/${message?.redirect_id}`
-                  : message?.type === 'Chat' || message?.type === 'open_chat'
-                  ? `/live-chat/chat/${message?.redirect_id}`
-                  : ''
-              "
-            >
+            <div v-if="message?.type != 'delete_account'">
               <h3>{{ message.title }}</h3>
               <p>{{ message.body }}</p>
-            </router-link>
+            </div>
             <div v-if="message?.type == 'delete_account'">
               <h3>{{ message.title }}</h3>
               <p>{{ message.body }}</p>
@@ -34,7 +22,7 @@
             <div
               class="delete_notification"
               :class="{ read: message.is_read }"
-              @click="NotificationsReaded(message.id)"
+              @click.stop="NotificationsReaded(message.id)"
               v-if="!message.is_read"
             >
               <i class="fas fa-check-double"></i>
@@ -200,6 +188,43 @@ export default {
         this.$message.error(error.response.data.errors);
       }
     },
+    hasRedirectPath(message) {
+      return !!this.getRedirectPath(message);
+    },
+    async handleNotificationClick(event, message) {
+      // Prevent if clicking on delete_notification icon
+      if (event.target.closest('.delete_notification')) {
+        return;
+      }
+      
+      // Mark as read first if not already read
+      if (!message.is_read) {
+        await this.NotificationsReaded(message.id);
+      }
+      
+      // Then redirect if there's a redirect path
+      const redirectPath = this.getRedirectPath(message);
+      if (redirectPath) {
+        this.$router.push(redirectPath);
+      }
+    },
+    getRedirectPath(message) {
+      if (message?.type == 'delete_account') {
+        return null;
+      }
+      
+      if (message?.type === 'contact_us') {
+        return '/contact-messages/all';
+      } else if (message?.type === 'new_client') {
+        return `/Clients/show/${message?.redirect_id}`;
+      } else if (message?.type === 'create_order' || message?.type === 'create_offer') {
+        return `/orders-and-quotations/show/${message?.redirect_id}`;
+      } else if (message?.type === 'Chat' || message?.type === 'open_chat') {
+        return `/live-chat/chat/${message?.redirect_id}`;
+      }
+      
+      return null;
+    },
     updateRouterQueryParam(pagenationValue) {
       this.$router.push({
         query: {
@@ -265,6 +290,10 @@ export default {
   text-align: center;
   margin-bottom: 20px;
   position: relative;
+
+  &.clickable {
+    cursor: pointer;
+  }
 
   .delete_notification {
     position: absolute;
