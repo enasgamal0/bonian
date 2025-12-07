@@ -100,10 +100,10 @@
         :search="searchValue"
         :headers="tableHeaders"
         :items="tableRows"
+        :items-per-page="paginations.items_per_page"
         item-class="ltr"
         hide-default-footer
       >
-        <!-- :items-per-page="paginations.items_per_page" -->
         <!-- Start:: No Data State -->
         <template v-slot:no-data>
           {{ $t("TABLES.noData") }}
@@ -324,14 +324,14 @@
     <!-- End:: Main Section -->
 
     <!-- Start:: Pagination -->
-    <!-- <template>
+    <template>
       <div class="pagination_container text-center mt-3 mb-0">
         <v-pagination class="py-0" square v-model="paginations.current_page" :length="paginations.last_page"
           :total-visible="6" @input="updateRouterQueryParam($event)" :prev-icon="getAppLocale == 'ar' ? 'fal fa-angle-right' : 'fal fa-angle-left'
             " :next-icon="getAppLocale == 'ar' ? 'fal fa-angle-left' : 'fal fa-angle-right'
               " />
       </div>
-    </template> -->
+    </template>
     <!-- End:: Pagination -->
 
     <!-- Start:: Generate PDF Template Content -->
@@ -575,7 +575,7 @@ export default {
           method: "GET",
           url: "users",
           params: {
-            // page: this.paginations.current_page,
+            page: this.paginations.current_page,
             name: this.filterOptions.name,
             mobile: this.filterOptions.mobile,
             is_active: this.filterOptions.status?.value,
