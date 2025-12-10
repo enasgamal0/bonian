@@ -53,6 +53,12 @@ import AllAppRates from "../views/Cruds/AppRates/ShowAll.vue";
 import ShowAppRates from "../views/Cruds/AppRates/Show.vue";
 // ============== End:: AppRates Routes
 
+// ============== Start:: ProviderRates Routes
+import ProviderRatesHome from "../views/Cruds/ProviderRates/Home.vue";
+import AllProviderRates from "../views/Cruds/ProviderRates/ShowAll.vue";
+import ShowProviderRates from "../views/Cruds/ProviderRates/Show.vue";
+// ============== End:: ProviderRates Routes
+
 // ============== Start:: LiveChat Routes
 import LiveChatHome from "../views/Cruds/LiveChat/Home.vue";
 import AllLiveChat from "../views/Cruds/LiveChat/ShowAll.vue";
@@ -2844,6 +2850,44 @@ const routes = [
         ],
       },
       // End:: app-rates Routes Config
+
+      // Start:: provider-rates Routes Config
+      {
+        path: "/provider-rates",
+        name: "ProviderRatesHome",
+        component: ProviderRatesHome,
+        meta: {
+          middleware: [auth],
+        },
+        children: [
+          {
+            path: "all",
+            name: "AllProviderRates",
+            component: AllProviderRates,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "providerRates index",
+                subject: "providerRates",
+              },
+            },
+          },
+          {
+            path: "show/:id",
+            name: "ShowProviderRates",
+            component: ShowProviderRates,
+            props: true,
+            meta: {
+              middleware: [auth],
+              requiresPermission: {
+                action: "providerRates show",
+                subject: "providerRates",
+              },
+            },
+          },
+        ],
+      },
+      // End:: provider-rates Routes Config
 
       // Start:: LiveChat Routes Config
       {

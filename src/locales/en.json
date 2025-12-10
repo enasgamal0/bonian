@@ -229,6 +229,9 @@
       "widthmarin": "Range of the unit Area allocated to the flexible rate (in m)",
       "Days": "peak days"
     },
+    "ProviderRates": {
+      "title": "Provider Ratings Management"
+    },
     "location_setting": {
       "mobile": "mobile number",
       "client_android": "Link to download the Android guest application",
@@ -917,6 +920,14 @@
       "sendDate": "Send Date",
       "publishStatus": "Publish Status"
     },
+    "ProviderRates": {
+      "serialNumber": "Serial Number",
+      "userName": "User Name",
+      "userMobile": "Mobile Number",
+      "providerName": "Provider Name",
+      "comment": "Comment",
+      "actions": "Actions"
+    },
     "Reasons": {
       "nameAr": "Reason (AR)",
       "nameEn": "Reason (EN)"
@@ -1048,6 +1059,11 @@
     "order_details": "Order Details",
     "offer_details": "Offer Details",
     "DeleteRate": "Are you sure you want to delete this rate?",
+    "DeleteProviderRate": "Are you sure you want to delete this provider rating?",
+    "showProviderRate": "Show Provider Rating",
+    "userData": "User Data",
+    "providerData": "Provider Data",
+    "ratingData": "Rating Data",
     "showAdmin": "Show Admin Data",
     "showProvider": "Show Provider Data",
     "addRecommendation": "Add a New Recommendation",
@@ -1221,6 +1237,8 @@
     "next": "Next",
     "home": "Home",
     "sendRequest": "Send Request",
+    "publishRating": "Publish Rating",
+    "deleteRating": "Delete Rating",
     "ok": "Ok",
     "share": "Share",
     "block": "Blocking",
@@ -2640,6 +2658,8 @@
     "reject_admin": "Reject Join Request",
     "reject_join_request": "Join Request Has Been Rejected",
     "accept_join_request": "Join Request Has Been Accepted",
-    "reject_request": "The request has been successfully rejected."
+    "reject_request": "The request has been successfully rejected.",
+    "ratingPublishedSuccessfully": "Rating has been published successfully",
+    "deleteRatingConfirmation": "Are you sure you want to delete this rating? It will be permanently removed from the system."
   }
 }

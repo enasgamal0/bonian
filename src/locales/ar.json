@@ -238,6 +238,9 @@
       "NumRates": "عدد النقاط المكتسبة بعد تقييم المضيف للضيف بـ 5 نجوم",
       "Numfinish": "عدد النقاط المكتسبة بعد طلب حجز حالته (منتهي)"
     },
+    "ProviderRates": {
+      "title": "إدارة تقييمات مقدمي الخدمات"
+    },
     "price_setting": {
       "Numpricemarin": "عدد الوحدات للسعر المرن",
       "widthmarin": "رينج مساحة الوحدة المخصصة للسعر المرن (بالمتر)",
@@ -911,6 +914,14 @@
       "sendDate": "تاريخ الإرسال",
       "publishStatus": "حالة النشر"
     },
+    "ProviderRates": {
+      "serialNumber": "رقم التقييم",
+      "userName": "اسم المستخدم",
+      "userMobile": "رقم الجوال",
+      "providerName": "اسم مقدم الخدمة",
+      "comment": "التعليق",
+      "actions": "الإجراءات"
+    },
     "Reasons": {
       "nameAr": "السبب بالعربية",
       "nameEn": "السبب بالإنجليزية"
@@ -1047,6 +1058,11 @@
     "order_details": "تفاصيل الطلب",
     "offer_details": "تفاصيل عرض السعر",
     "DeleteRate": "هل أنت متأكد من حذف هذا التقييم؟",
+    "DeleteProviderRate": "هل أنت متأكد من حذف تقييم مقدم الخدمة هذا؟",
+    "showProviderRate": "عرض تقييم مقدم الخدمة",
+    "userData": "بيانات المستخدم",
+    "providerData": "بيانات مقدم الخدمة",
+    "ratingData": "بيانات التقييم",
     "showAdmin": "عرض بيانات مدير",
     "showProvider": "عرض بيانات مقدم الخدمة",
     "addRecommendation": "إضافة توصية جديدة",
@@ -1218,6 +1234,8 @@
     "next": "التالي",
     "home": "الرئيسية",
     "sendRequest": "إرسال الطلب",
+    "publishRating": "نشر التقييم",
+    "deleteRating": "حذف التقييم",
     "ok": "حسنًا",
     "uploadimage": "رفع صورة",
     "previous": "السابق",
@@ -2403,6 +2421,9 @@
     "comments_management": "إدارة التعليقات",
     "app_ratings": "تقييمات التطبيق",
     "store_ratings": "تقييمات المتجر (الصالون)",
+    "provider_ratings": "تقييمات مقدمي الخدمات",
+    "provider_name": "اسم مقدم الخدمة",
+    "orderNumber": "رقم الطلب",
     "salon_name": "اسم الصالون",
 
     "service_provider_wallet_requests": "طلبات تصفية محفظة مقدم الخدمة",
@@ -2639,6 +2660,8 @@
     "reject_admin": "رفض طلب الانضمام",
     "reject_join_request": " تم رفض  طلب الانضمام",
     "accept_join_request": " تم قبول  طلب الانضمام",
-    "reject_request": "تم رفض الطلب بنجاح"
+    "reject_request": "تم رفض الطلب بنجاح",
+    "ratingPublishedSuccessfully": "تم نشر التقييم بنجاح",
+    "deleteRatingConfirmation": "هل أنت متأكد من حذف هذا التقييم؟ سيتم حذفه نهائياً من النظام."
   }
 }

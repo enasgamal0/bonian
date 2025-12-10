@@ -1055,7 +1055,31 @@
           </span>
         </router-link>
       </div>
-      <!-- Start:: rates Route -->
+      <!-- End:: rates Route -->
+
+      <!-- Start:: Provider Rates Route -->
+      <div
+        class="home_route"
+        @click="$emit('fireToggleNavDrawerEmit')"
+        v-if="
+          $can('rates index', 'rates')
+        "
+      >
+        <router-link to="/provider-rates/all">
+          <span class="route_icon">
+            <img
+              src="@/assets/media/icons/ui_icons/star.svg"
+              alt="icon"
+              width="40"
+              height="40"
+            />
+          </span>
+          <span class="route_text">
+            {{ $t("SIDENAV.ProviderRates.title") }}
+          </span>
+        </router-link>
+      </div>
+      <!-- End:: Provider Rates Route -->
 
       <!-- Start:: Referral Codes Route -->
        <div
